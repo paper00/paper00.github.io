@@ -137,7 +137,7 @@
 <h2 id="路由选择"><a href="#路由选择" class="headerlink" title="路由选择"></a><strong>路由选择</strong></h2><h3 id="扩散法（洪泛法）"><a href="#扩散法（洪泛法）" class="headerlink" title="扩散法（洪泛法）"></a>扩散法（洪泛法）</h3><p><del>路由表一般结构：</del><br><del>目的节点   |   最短距离   |   最佳输出链路   |   …… ~</del></p>
 <h3 id="动态路由算法"><a href="#动态路由算法" class="headerlink" title="动态路由算法"></a><strong>动态路由算法</strong></h3><h4 id="1-热土豆算法"><a href="#1-热土豆算法" class="headerlink" title="1. 热土豆算法"></a>1. <strong>热土豆算法</strong></h4><p>基本思想：</p>
 <ul>
-<li>当节点收到一个分组后，选择一条 <code>输出队列</code> 最短的 <code>链路</code> 尽快地将其 <code>转发</code> 出去，而 <strong>不管</strong> <code>目的节点</code><br>&emsp;&emsp;位于何方。</li>
+<li>当节点收到一个分组后，选择一条 <code>输出队列</code> 最短的 <code>链路</code> 尽快地将其 <code>转发</code> 出去，而 <strong>不管</strong> <code>目的节点</code> 位于何方。</li>
 <li>优点：尽量 <strong>提高</strong> <code>链路</code> 的 <code>利用率</code></li>
 <li>缺点：盲目性</li>
 <li>改进：与 <code>固定式路由</code> 算法混合使用<br>  &emsp;&emsp;首先根据固定路由算法选择可能的输出链路，并给这些链路赋上一定权值<br>  &emsp;&emsp;再根据链路队列长度，附上一定权值<br>  &emsp;&emsp;选择这两个权值之和最小的链路</li>
