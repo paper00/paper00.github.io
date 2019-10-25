@@ -98,6 +98,130 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/20/Docker/">Docker</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/scrap/">scrap</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="Docker-简介"><a href="#Docker-简介" class="headerlink" title="Docker 简介"></a><strong>Docker 简介</strong></h3><ul>
+<li>Docker 是一个开源的 <code>应用容器引擎</code>，基于 Go 语言并遵从Apache2.0协议开源。</li>
+<li>Docker可以让开发者打包他们的 <code>应用</code> 以及 <code>依赖包</code> 到一个轻量级、可移植的 <code>容器</code> 中，然后 <code>发布</code> 到任何流行的 <strong><strong>Linux</strong></strong> 机器上，也可以实现虚拟化。</li>
+<li>Linux容器的封装</li>
+</ul>
+<h3 id="Docker的应用场景"><a href="#Docker的应用场景" class="headerlink" title="Docker的应用场景"></a><strong>Docker的应用场景</strong></h3><ul>
+<li>Web应用的自动化 <code>打包</code> 和 <code>发布</code></li>
+<li>自动化测试和持续集成、发布</li>
+<li>在服务性环境中 <code>部署</code> 和调整数据库或其他的后台应用</li>
+<li>微服务的架构</li>
+</ul>
+<h3 id="Docker-容器和虚拟机的对比"><a href="#Docker-容器和虚拟机的对比" class="headerlink" title="Docker 容器和虚拟机的对比"></a><strong>Docker 容器和虚拟机的对比</strong></h3><ul>
+<li>虚拟化<br>&emsp;&emsp;虚拟机的虚拟化可能需要 <code>硬件</code> 的支持<br>&emsp;&emsp;容器基于 <code>操作系统</code> 的级别进行虚拟化</li>
+<li>Docker 容器</li>
+</ul>
+<ol>
+<li>更少占用</li>
+<li>启动更快</li>
+<li>一致的环境</li>
+<li>可以在任何地方运行</li>
+</ol>
+<ul>
+<li>可以在同一个 <code>操作系统</code> 上运行很多的 <code>容器</code>，轻量化.</li>
+</ul>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E7%BD%91%E7%BB%9C%E5%B1%82/">网络层</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%85%B6%E8%AE%A1%E7%AE%97/">网络及其计算</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="网络层功能"><a href="#网络层功能" class="headerlink" title="网络层功能"></a><strong>网络层功能</strong></h2><ul>
+<li>管理数据通信</li>
+<li>在 <code>数据链路层</code> 的支持下，将 <code>报文分组</code> 从 <code>源节点</code> 传输到 <code>目的节点</code><br>&emsp;&emsp;<code>报文(message)</code> 是网络中交换与传输的数据单元<br>&emsp;&emsp;(报文包含了将要发送的完整的数据信息，长度不限且可变)<br>&emsp;&emsp;<code>分组</code> 是在Internet中传送数据的单元</li>
+</ul>
+<h2 id="网络层与数据链路层的区别"><a href="#网络层与数据链路层的区别" class="headerlink" title="网络层与数据链路层的区别"></a><strong>网络层与数据链路层的区别</strong></h2><ul>
+<li>数据链路层：仅完成 <code>相邻节点</code> 之间的 <code>数据传输</code></li>
+<li>网络层：完成 <code>源节点</code> 到 <code>目的节点</code> 之间的 <code>数据传输</code></li>
+</ul>
+<h2 id="网络地址"><a href="#网络地址" class="headerlink" title="网络地址"></a><strong>网络地址</strong></h2><ul>
+<li>是 <code>主机</code> 或 <code>节点</code> 的标示</li>
+<li>是 <code>结构化地址</code>，由 <code>网络号</code> 和 <code>主机号</code> 组成<br>&emsp;&emsp;网络地址 = 网络号 + 主机号</li>
+</ul>
+<h2 id="网络层协议涉及的主要内容"><a href="#网络层协议涉及的主要内容" class="headerlink" title="网络层协议涉及的主要内容"></a><strong>网络层协议涉及的主要内容</strong></h2><ul>
+<li>网络服务方式</li>
+<li>分组格式</li>
+<li>路由选择</li>
+<li>子网划分</li>
+<li>异构网络互联</li>
+</ul>
+<h2 id="路由选择"><a href="#路由选择" class="headerlink" title="路由选择"></a><strong>路由选择</strong></h2><h3 id="扩散法（洪泛法）"><a href="#扩散法（洪泛法）" class="headerlink" title="扩散法（洪泛法）"></a>扩散法（洪泛法）</h3><p><del>路由表一般结构：</del><br><del>目的节点   |   最短距离   |   最佳输出链路   |   …… ~</del></p>
+<h3 id="动态路由算法"><a href="#动态路由算法" class="headerlink" title="动态路由算法"></a><strong>动态路由算法</strong></h3><h4 id="1-热土豆算法"><a href="#1-热土豆算法" class="headerlink" title="1. 热土豆算法"></a>1. <strong>热土豆算法</strong></h4><p>基本思想：</p>
+<ul>
+<li>当节点收到一个分组后，选择一条 <code>输出队列</code> 最短的 <code>链路</code> 尽快地将其 <code>转发</code> 出去，而 <strong>不管</strong> <code>目的节点</code> 位于何方。</li>
+<li>优点：尽量 <strong>提高</strong> <code>链路</code> 的 <code>利用率</code></li>
+<li>缺点：盲目性</li>
+<li>改进：与 <code>固定式路由</code> 算法混合使用<br>  &emsp;&emsp;首先根据固定路由算法选择可能的输出链路，并给这些链路赋上一定权值<br>  &emsp;&emsp;再根据链路队列长度，附上一定权值<br>  &emsp;&emsp;选择这两个权值之和最小的链路</li>
+</ul>
+<h4 id="2-逆向自学习算法"><a href="#2-逆向自学习算法" class="headerlink" title="2. 逆向自学习算法"></a>2. <strong>逆向自学习算法</strong></h4><ul>
+<li>每个节点保存一张转发表(路由表)，该表主要字段包括：</li>
+<li>……&emsp;&emsp;|&emsp;&emsp;目的地址&emsp;&emsp;|&emsp;&emsp;输出端口&emsp;&emsp;|&emsp;&emsp;时间&emsp;&emsp;|&emsp;&emsp;……</li>
+<li>初始时转发表为空</li>
+</ul>
+<ol>
+<li>当 <code>数据包</code> 到达 <code>节点</code> 时<br>将数据包的 <code>源地址</code> 视为 <code>转发表</code> 的 <code>目的地址</code>，输入端口视为转发表的输出端口；如果转发表存在该目的地址，则刷新该记录；如果转发表不存在该目的地址，则增加一条新记录</li>
+<li>根据数据包的目的地址，查询转发表；如果找到，则从指定的输出端口转发；如果找不到，则广播。</li>
+<li>定期扫描转发表，<code>清除</code> 过时的记录。</li>
+</ol>
+<h4 id="3-D-V算法"><a href="#3-D-V算法" class="headerlink" title="3. D-V算法"></a>3. <strong>D-V算法</strong></h4><ul>
+<li>距离向量路由算法</li>
+<li>基本思想：<br>&emsp;&emsp;每个节点都保存一张动态路由表。与固定式路由选择不同的是：<code>相邻节点</code> 之间 <code>定期交换</code>路由信息（如每隔30秒），并根据最新路由信息，刷新路由表。<br><img src="/images/ex2.jpg" alt="路由表"><br>&emsp;&emsp;目的节点 + 最短距离 + 最佳输出链路</li>
+<li>初始化：<br>&emsp;&emsp;当节点加入网络时，获取直接相连</li>
+<li>优点：<br>&emsp;&emsp;仅 <code>相邻节点</code> 交换路由信息，所以 <code>运算量</code> 和交换的 <code>信息量</code> 较 <strong>小</strong></li>
+<li>缺点：<br>&emsp;&emsp;收敛速度 <strong>慢</strong>，对网络变化需经若干周期才能做出反应。特别是对 <code>好消息反应快</code>，对 <code>坏消息反应迟钝</code>。</li>
+</ul>
+<h4 id="4-L-S算法"><a href="#4-L-S算法" class="headerlink" title="4. L-S算法"></a>4. <strong>L-S算法</strong></h4><ul>
+<li>链路状态路由选择算法</li>
+<li>基本思想：<br>&emsp;&emsp;<code>所有</code> 节点 <code>相互</code> 交换路由信息，并根据最新路由信息刷新路由表</li>
+<li>L-S算法描述：<br>&emsp;&emsp;发现邻居节点<br>&emsp;&emsp;&emsp;&emsp;当一个 <code>路由器</code> 启动以后，通过向每个 <code>端口</code> 发送特殊的HELLO分组来 <code>发现</code> 邻居节点；收到HELLO<br>&emsp;&emsp;&emsp;&emsp;分组的路由器应返回一个<br>&emsp;&emsp;???</li>
+</ul>
+<h2 id="路由协议"><a href="#路由协议" class="headerlink" title="路由协议"></a><strong>路由协议</strong></h2><h3 id="路由信息协议（RIP）"><a href="#路由信息协议（RIP）" class="headerlink" title="路由信息协议（RIP）"></a><strong>路由信息协议（RIP）</strong></h3><ul>
+<li>RIP采用D-V算法，用于小规模网络</li>
+<li>技术特点<br>&emsp;&emsp;距离：下跳数，允许对下跳数加权<br>&emsp;&emsp;路由信息交换周期：缺省值为30秒<br>&emsp;&emsp;无穷计数问题：RIP选择16为∞</li>
+</ul>
+<h3 id="开放最短路由优先协议（OSPF）"><a href="#开放最短路由优先协议（OSPF）" class="headerlink" title="开放最短路由优先协议（OSPF）"></a><strong>开放最短路由优先协议（OSPF）</strong></h3><ul>
+<li>OSPF采用 <code>L-S算法</code>，是目前Internet的主要 <code>内部网关协议</code></li>
+<li>自治系统（AS）</li>
+<li>OSPF技术特点<br>&emsp;&emsp;距离：允许网络管理员选择多种“距离”度量，如延迟、数据率、通信费用、下跳数等。<br>&emsp;&emsp;？？？</li>
+</ul>
+<h3 id="边界网关协议（BGP）"><a href="#边界网关协议（BGP）" class="headerlink" title="边界网关协议（BGP）"></a><strong>边界网关协议（BGP）</strong></h3><ul>
+<li>内部网关协议（IGP）与外部网关协议（EGP）的区别：<br>&emsp;&emsp;IGP注重效率<br>&emsp;&emsp;EGP注重策略</li>
+<li>作为Internet外部网关协议，用于不同AS之间的路由选择</li>
+<li>技术特点：<br>&emsp;&emsp;BGP采用 <code>路经向量路由</code> 算法，路由表中记录到达目的地的 <code>确切路由</code>，而不是 <code>最短距离</code>，从而解决“无穷<br>&emsp;&emsp;级数”问题。</li>
+</ul>
+<h3 id="IP协议"><a href="#IP协议" class="headerlink" title="IP协议"></a><strong>IP协议</strong></h3><ul>
+<li>IP协议是Internet体系结构的<code>核心协议</code>，已成为连接<code>异构网络</code>的工业标准</li>
+<li>IP提供<code>非面向连接</code>的数据报服务，每个IP分组长度 &lt;= 64K字节，<code>传输效率高</code>，但不能保证分组可靠的、<br>&emsp;&emsp;按序到达。</li>
+<li>IP协议需要路由协议，ICMP, ARP, RARP 等协议支持</li>
+</ul>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">数据链路层</a>
         </h1>
 
@@ -405,37 +529,13 @@
 </ol>
 
         </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/json%E4%B8%8Ebson%E7%9A%84%E5%8C%BA%E5%88%AB/">json与bson的区别</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-20
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="bson"><a href="#bson" class="headerlink" title="bson"></a><strong>bson</strong></h2><p><code>bson</code>是由10gen开发的一个<code>数据格式</code>，目前主要用于<code>mongoDB</code>中，是<code>mongoDB</code>的数据存储格式，<code>bson</code>基于<code>json</code>格式</p>
-<h2 id="bson主要会实现以下三点目标："><a href="#bson主要会实现以下三点目标：" class="headerlink" title="bson主要会实现以下三点目标："></a><strong>bson主要会实现以下三点目标：</strong></h2><ol>
-<li>更快的遍历速度<br><code>bson</code>对<code>json</code>的一大改进就是，它会将<code>json</code>的每一个元素的<code>长度</code>放在元素的<code>头部</code>，这样你只需要读取到元素长度就能直接seek到指定的点上进行读取了。</li>
-<li>操作更简易<br>对<code>json</code>来说，数据存储是无类型的，比如你要修改基本一个值，从9到10，由于从一个字符变成了两个，所以可能其后面的所有内容都需要往后移一位才可以。<br>而使用<code>bson</code>，你可以指定这个列为数字列，那么无论数字从9长到10还是100，我们都只是在存储数字的那一位上进行修改，不会导致数据总长变大。<br>当然，在mongoDB中，如果数字从整形增大到长整型，还是会导致数据总长变大的。</li>
-<li>增加了额外的数据类型<br><code>bson</code>在其基础上增加了<code>byte array</code>数据类型。这使得二进制的存储不再需要先<code>base64</code>转换后再存成<code>json</code>，大大减少了计算开销和数据大小。<br>当然，在有的时候，<code>bson</code>相对<code>json</code>来说也并没有<code>空间</code>上的优势，比如对 <strong>{“field”:7}</strong>，在<code>json</code>的存储上7只使用了<strong>1个字节</strong>，而如果用<code>bson</code>，那就是至少<strong>4个字节 (32位)</strong></li>
-</ol>
-<h2 id="综上所述："><a href="#综上所述：" class="headerlink" title="综上所述："></a><strong>综上所述：</strong></h2><ul>
-<li>数据结构：<br>  <code>json</code>是像<code>字符串</code>一样存储的，<code>bson</code>是<code>按结构</code>存储的（像数组 或者说struct）</li>
-<li>存储空间：<br>  bson &gt; json</li>
-<li>操作速度：<br>  bson &gt; json<br>  (比如，遍历查找：json需要扫字符串，而bson可以直接定位)</li>
-<li>修改：<br>  json也要大动大移，bson就不需要。</li>
-</ul>
-
-        </div></article>
       <nav class="pagination"><a class="prev" href="/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
+      </a>
+    <a class="next" href="/page/3/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
       </a>
     </nav></section></div></div>
       </main>
