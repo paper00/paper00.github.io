@@ -113,9 +113,9 @@
     <div class="post-toc" id="post-toc">
     <h2 class="post-toc-title">Contents</h2>
     <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Snowflake-雪花算法"><span class="toc-text">Snowflake 雪花算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么使用雪花算法？❄️"><span class="toc-text">为什么使用雪花算法？❄️</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#常见企业级使用的方案"><span class="toc-text">常见企业级使用的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-UUID"><span class="toc-text">1. UUID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-基于数据库方案"><span class="toc-text">2. 基于数据库方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-雪花算法"><span class="toc-text">3. 雪花算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在-Spring-Boot-项目中的用法"><span class="toc-text">在 Spring Boot 项目中的用法</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么使用雪花算法？❄️"><span class="toc-text">为什么使用雪花算法？❄️</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#常见企业级使用的方案"><span class="toc-text">常见企业级使用的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-UUID"><span class="toc-text">1. UUID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-基于数据库方案"><span class="toc-text">2. 基于数据库方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-雪花算法"><span class="toc-text">3. 雪花算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在-Spring-Boot-项目中的用法"><span class="toc-text">在 Spring Boot 项目中的用法</span></a></li></ol>
     </div>
-  </div><div class="post-content"><h1 id="Snowflake-雪花算法"><a href="#Snowflake-雪花算法" class="headerlink" title="Snowflake 雪花算法"></a>Snowflake 雪花算法</h1><h2 id="为什么使用雪花算法？❄️"><a href="#为什么使用雪花算法？❄️" class="headerlink" title="为什么使用雪花算法？❄️"></a>为什么使用雪花算法？❄️</h2><p>在复杂的系统中，往往需要对大量的数据如订单，账户进行标识，以一个有意义的有序的序列号来作为全局唯一的ID，即需要一个 <code>ID号生成器</code>。</p>
+  </div><div class="post-content"><h2 id="为什么使用雪花算法？❄️"><a href="#为什么使用雪花算法？❄️" class="headerlink" title="为什么使用雪花算法？❄️"></a>为什么使用雪花算法？❄️</h2><p>在复杂的系统中，往往需要对大量的数据如订单，账户进行标识，以一个有意义的有序的序列号来作为全局唯一的ID，即需要一个 <code>ID号生成器</code>。</p>
 <p><code>ID号生成器</code> 是服务端系统的基础设施，而且 <code>ID号</code> 这个东西基本搞后端开发的程序员天天都要接触。而关于 <code>ID生成的算法</code> 现在业界首屈一指的当属  <code>Snowflake</code> 雪花算法。</p>
 <h3 id="常见企业级使用的方案"><a href="#常见企业级使用的方案" class="headerlink" title="常见企业级使用的方案"></a>常见企业级使用的方案</h3><h4 id="1-UUID"><a href="#1-UUID" class="headerlink" title="1. UUID"></a>1. UUID</h4><p>UUID = 4个连字号(-) + 32个字节长的字符串，总共36个字节长。比如：</p>
 <blockquote>
@@ -190,9 +190,9 @@
       
       <footer class="post-footer">
         <div class="post-tags">
-            <a href="/tags/Spring-Boot/">Spring Boot</a>
             <a href="/tags/Snowflake/">Snowflake</a>
             <a href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/">雪花算法</a>
+            <a href="/tags/Spring-Boot/">Spring Boot</a>
             </div>
         
         <nav class="post-nav"><a class="prev" href="/2019/11/11/Spring%20Boot%20%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%A7%A3%E5%AF%86/">
