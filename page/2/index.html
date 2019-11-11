@@ -98,6 +98,40 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/21/Dart/">Dart</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-21
+        </span><span class="post-category">
+            <a href="/categories/scrap/">scrap</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a><strong>匿名函数</strong></h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span>(Function calback) &#123;</span><br><span class="line">    calback(<span class="string">"hello"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">test</span>((param) &#123;</span><br><span class="line">       // Print hello</span><br><span class="line">       <span class="built_in">print</span>(param);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数作为变量"><a href="#函数作为变量" class="headerlink" title="函数作为变量"></a><strong>函数作为变量</strong></h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var say = (str) &#123;</span><br><span class="line">    <span class="built_in">print</span>(str);</span><br><span class="line">&#125;;</span><br><span class="line">say(<span class="string">"Hello, World!"</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a><strong>异步</strong></h3><ul>
+<li><code>Future</code> 表示一个异步操作的最终完成（或失败）及其结果值的表示</li>
+</ul>
+<p>&emsp;&emsp;<code>Future.delayed</code>： 创建一个延时任务<br>&emsp;&emsp;<code>Future.then</code>：接受异步结果</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Futrue.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"Hello, World!"</span>;</span><br><span class="line">&#125;).<span class="keyword">then</span>(data) &#123;</span><br><span class="line">    <span class="built_in">print</span>(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;<code>Future.wait</code> 只有数组中 <code>所有Future</code> 都执行成功后，才会触发 <code>then</code> 的成功回调，只要有一个<br>&emsp;&emsp;<code>Future</code> 执行失败，就会触发错误回调</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Future.wait([</span><br><span class="line">    // 2秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"Hello, "</span>;</span><br><span class="line">    &#125;),</span><br><span class="line">    // 4秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 4), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"World!"</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]).<span class="keyword">then</span>((results) &#123;</span><br><span class="line">      <span class="built_in">print</span>(results[0] + results[1]);</span><br><span class="line">  &#125;).catchError((e) &#123;</span><br><span class="line">      <span class="built_in">print</span>(e);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Dart提供了类似ES7中的 <code>async</code>, <code>await</code> 等异步操作</li>
+<li><code>async</code> 和 <code>await</code> 往往是成对出现的，如果一个方法中有耗时的操作，你需要将这个方法设置成 <code>async</code>，并给其中的耗时操作加上 <code>await</code>关键字，如果这个方法有返回值，你需要将返回值塞到 <code>Future</code> 中并返回</li>
+</ul>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'dart.async'</span>;</span><br><span class="line">import <span class="string">'package:http/http.dart'</span> as http;</span><br><span class="line"></span><br><span class="line">Future&lt;String&gt; getNetData() async &#123;</span><br><span class="line">    http.Response res = await.get(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">    <span class="built_in">return</span> res.body;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    getNetData().<span class="keyword">then</span>((str) &#123;</span><br><span class="line">        <span class="built_in">print</span>(str);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/20/Docker/">Docker</a>
         </h1>
 
@@ -214,11 +248,24 @@
 <li>技术特点：<br>&emsp;&emsp;BGP采用 <code>路经向量路由</code> 算法，路由表中记录到达目的地的 <code>确切路由</code>，而不是 <code>最短距离</code>，从而解决“无穷<br>&emsp;&emsp;级数”问题。</li>
 </ul>
 <h3 id="IP协议"><a href="#IP协议" class="headerlink" title="IP协议"></a><strong>IP协议</strong></h3><ul>
-<li>IP协议是Internet体系结构的<code>核心协议</code>，已成为连接<code>异构网络</code>的工业标准</li>
-<li>IP提供<code>非面向连接</code>的数据报服务，每个IP分组长度 &lt;= 64K字节，<code>传输效率高</code>，但不能保证分组可靠的、<br>&emsp;&emsp;按序到达。</li>
-<li>IP协议需要路由协议，ICMP, ARP, RARP 等协议支持</li>
+<li>IP协议是Internet体系结构的<code>核心协议</code>，已成为连接<code>异构网络</code>的工业标准。</li>
+<li>IP提供<code>非面向连接</code>的数据报服务，每个IP分组长度 &lt;= 64K字节，<code>传输效率高</code>，但不能保证分组可靠的、按序到达。</li>
+<li>IP协议需要路由协议，ICMP, ARP, RARP 等协议支持。</li>
+<li><strong>服务类型</strong>：<br>&emsp;&emsp;告诉路由器该IP分组想获得何种服务，包括优先级、延迟、吞吐量和可靠性要求。该字段共<code>有8位</code>。  ß<br>&emsp;&emsp;前3位：表示优先权<br>&emsp;&emsp;中3位 (D, T, R)：表示想获得的服务质量（延迟、吞吐量、可靠性）<br>&emsp;&emsp;后2位：保留<br>&emsp;&emsp;注：几乎所有路由器都 <code>忽略</code> “服务类型”字段</li>
+<li><strong>总长度</strong>：表示整个IP分组长度，包括报头和数据部分：该字段16位，所以IP分组最大长度 2^16 - 1 = 65535字节（大概 64KB)</li>
+<li><strong>标识</strong>：16位，用来表示一个分组，统一分组的不同分段具有相同的标识。</li>
+<li><strong>标志</strong>：3位</li>
 </ul>
-
+<ol>
+<li>第一位：保留</li>
+<li>第二位：DF位 (Don’t Fragment)，若DF = 1，则IP分组在传输中不允许分段，如目的主机从远方引导启动机器的影响文件，目的主机无能力重组分组。若DF = 0, 则允许分段。</li>
+<li>第三位：MF位 (More Fragment)，若MF = 0，则该分段是原分组的最后一个分段。</li>
+</ol>
+<ul>
+<li>特殊的IP地址：<br>&emsp;&emsp;32位全 “0” ：表示本地地址，进党初始启动时使用，以后不再使用<br>&emsp;&emsp;32位全 ”1“ ：本地<br>&emsp;&emsp;？？？</li>
+<li>内部IP地址（私用地址）<br>&emsp;&emsp;A类：10.0.0.0（1个网络）<br>&emsp;&emsp;B类：172.16.0.0 - 172.31.0.0（16个网络）<br>&emsp;&emsp;C类：192.168.0.0 - 192.168.255.0（256个网络）<br>Internet的 <code>路由器</code> 不会<code>转发</code> 目的地址为 <code>上述</code> 地址的IP地址，即私用地址不能穿越内部网络边界<br>路由器IP寻址<br>路由器根据 <code>目的网络号</code> 而不是 <code>目的IP地址</code> 转发IP分组，以减少路由表的信息量。<br>当一个 <code>分组</code> 到达时，<code>路由器</code> 获取它的 <code>网络号</code>。如果是本网，则该IP分组直接发送到指定主机；如果是其他网络，则根据 <code>路由表</code> 转发到下一个 <code>路由器</code>。<br>如果 <code>路由表</code> 找不到目的网络，则将该分组转发到 <code>“缺省链路”</code><br>IP协议用于分组传输，Internet还需要一些控制协议，包括 ICMP, ARP, RARP等<br>ICMP协议<br>用于报告IP协议运行过程中意外事件的发生，也用于 <code>网络测试</code>。<br>ICMP消息主要有12中，这些ICMP消息封装在IP分组中传输。因此，ICMP消息可视为 ”IP控制分组“<br>主要ICMP消息：<br>目的不可达：当目的路由器无法找到目的主机，或者DF为“1”的分组经过MTU较小的网络二无法传输时，返回该消息<br>超时<br>参数出错</li>
+</ul>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
         </div></article>
       <article class="post">
     <header class="post-header">
@@ -442,91 +489,6 @@
 </ol>
 </li>
 </ul>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E6%A6%82%E8%BF%B0/">概述</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-20
-        </span><span class="post-category">
-            <a href="/categories/%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%85%B6%E8%AE%A1%E7%AE%97/">网络及其计算</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a><strong>网络协议</strong></h2><p>各独立的计算机系统必须严格遵循事先约定好的一整套<code>通信规程</code>，包括规定要交换的数据格式、 控制信息的格式和控制功能、通信过程中事件执行的次序 等。这些<code>通信规程</code>称之为<strong><code>网络协议</code></strong>。 </p>
-<h2 id="网络体系结构"><a href="#网络体系结构" class="headerlink" title="网络体系结构"></a><strong>网络体系结构</strong></h2><ul>
-<li><code>网络分层结构</code>及其<code>协议</code>的集合<ol>
-<li>会晤层</li>
-<li>语言层</li>
-<li>物理层</li>
-</ol>
-</li>
-<li>真正的物理通信总是发生在物理层。除<code>物理层</code>外，其余各<code>对等层</code>实体间都是<strong><code>虚拟通信</code></strong></li>
-<li>通信必须在对等层进行，不允许交差通信</li>
-<li>对等层通信通过<code>协议</code>实现, 相邻层之间交互通过<code>服务</code>实现。 </li>
-</ul>
-<h2 id="OSI-参考模型-Open-System-Interconnection"><a href="#OSI-参考模型-Open-System-Interconnection" class="headerlink" title="OSI 参考模型 (Open System Interconnection)"></a><strong>OSI 参考模型 (Open System Interconnection)</strong></h2><p><img src="/images/OSI.png" alt="7层模型"></p>
-<ol>
-<li><strong>应用层(A)</strong>：为用户提供各种<code>网络服务</code>，包括文件服务file、电子邮件服务email，数据库服务db，WWW，DNS等</li>
-<li><strong>表示层 (P)</strong>：数据 <code>格式</code> 转化、数据加密/解密、数据压缩/解压</li>
-<li><strong>会话层 (S)</strong>：进行<code>会话</code>管理，包括通信方向控制，谁是发送者？接收者？谁付费？故障点恢复等</li>
-<li><strong>传输层 (T)</strong>：完成报文段在源/目的<code>主机进程</code>之间的 <strong><strong>传输</strong></strong></li>
-<li><strong>网络层 (N)</strong>：完成报文分组在源/目的<code>节点</code>之间 <strong><strong>传输</strong></strong></li>
-<li><strong>数据链路层 (DL)</strong>：完成<code>数据帧</code>在相邻节点间<code>“透明”</code> <strong><strong>传输</strong></strong>，<code>“透明”</code>的含义是：无差错，无丢失，无重复，无顺序错误</li>
-<li><strong>物理层 (PH)</strong>：完成原始<code>数据位流</code>在<code>物理介质</code>上 <strong><strong>传输</strong></strong>，而不管位流的信息含义<br>1-3层完成<code>数据处理</code><br>4-7层完成<code>网络通信</code></li>
-</ol>
-<h2 id="Internet参考模型-TCP-IP协议"><a href="#Internet参考模型-TCP-IP协议" class="headerlink" title="Internet参考模型 (TCP/IP协议)"></a><strong>Internet参考模型 (TCP/IP协议)</strong></h2><p>两个核心协议：<code>TCP</code>和<code>IP</code>协议<br><img src="https://www.zhezuo.com/wp-content/uploads/bbs_files/editor/screenshot/image/20190919/1568883648213581.png" alt="Internet参考模型"></p>
-<ol>
-<li><h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a><strong>应用层</strong></h3><ul>
-<li>对应OSI应用层、表示层和会话层</li>
-<li>该层协议主要包括</li>
-</ul>
-<ol>
-<li>FTP （文件传输协议）</li>
-<li>SMTP（简单邮件传输协议）</li>
-<li>TELNET（远程网络登录协议）</li>
-<li>DSN（域名服务）</li>
-<li>HTTP（超文本传输协议）</li>
-<li>SNMP（简单网络管理协议）</li>
-</ol>
-</li>
-<li><h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a><strong>传输层</strong></h3><ul>
-<li>对应OSI传输层</li>
-<li>该层协议：</li>
-</ul>
-<ol>
-<li>TCP（传输控制协议）<br>可靠的、面向<code>连接</code>的传输协议<br>将报文以<code>文字流形式</code>从 <strong><strong>源主机进程</strong></strong> 发送到 <strong><strong>目的主机进程</strong></strong></li>
-<li>UDP（用户数据报协议）<br>不可靠的、非面向<code>连接</code>的传输协议</li>
-</ol>
-</li>
-<li><h3 id="互联网层"><a href="#互联网层" class="headerlink" title="互联网层"></a><strong>互联网层</strong></h3><ul>
-<li>对应OSI网络层</li>
-<li>该层协议：</li>
-</ul>
-<ol>
-<li>IP (Internet Protocol）<br>IP是Internet参考模型的核心协议<br>将IP分组以<code>数据报方式</code>从 <strong><strong>源主机</strong></strong> 放松到 <strong><strong>目的主机</strong></strong></li>
-</ol>
-</li>
-<li><h3 id="子网层"><a href="#子网层" class="headerlink" title="子网层"></a><strong>子网层</strong></h3><ul>
-<li>对应OSI物理层和数据链层</li>
-<li>该层协议：</li>
-</ul>
-<ol>
-<li>以太网协议(802.3)</li>
-<li>FDDI</li>
-<li>PPP</li>
-<li>SLIP</li>
-<li>Token Bus(802.4)</li>
-<li>Token Ring(802.5)</li>
-<li>百兆、千兆、万兆以太网</li>
-</ol>
-</li>
-</ol>
 
         </div></article>
       <nav class="pagination"><a class="prev" href="/">

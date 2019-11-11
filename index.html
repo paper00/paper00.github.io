@@ -98,6 +98,35 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/11/11/Spring%20Boot%20%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%A7%A3%E5%AF%86/">Spring Boot 接口参数自动加解密</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-11-11
+        </span><span class="post-category">
+            <a href="/categories/scrap/">scrap</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h1 id="Spring-Boot-接口参数自动加解密"><a href="#Spring-Boot-接口参数自动加解密" class="headerlink" title="Spring Boot 接口参数自动加解密"></a>Spring Boot 接口参数自动加解密</h1><h3 id="Maven，pom-xml中添加依赖"><a href="#Maven，pom-xml中添加依赖" class="headerlink" title="Maven，pom.xml中添加依赖"></a>Maven，pom.xml中添加依赖</h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;cn.shuibo&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;rsa-encrypt-body-spring-boot&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.0.0.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动类Application中添加-EnableSecurity注解"><a href="#启动类Application中添加-EnableSecurity注解" class="headerlink" title="启动类Application中添加@EnableSecurity注解"></a>启动类Application中添加@EnableSecurity注解</h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">@EnableSecurity</span><br><span class="line">public class DemoApplication &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="在application-yml或者application-properties中添加RSA公钥及私钥"><a href="#在application-yml或者application-properties中添加RSA公钥及私钥" class="headerlink" title="在application.yml或者application.properties中添加RSA公钥及私钥"></a>在application.yml或者application.properties中添加RSA公钥及私钥</h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rsa:</span><br><span class="line">  encrypt:</span><br><span class="line">    debug: <span class="literal">false</span> <span class="comment"># true表示开启调试，不加密。（方便开发时测试）</span></span><br><span class="line">    publicKey: 123456</span><br><span class="line">    privateKey: 123456</span><br></pre></td></tr></table></figure>
+
+<h3 id="对返回值进行加密"><a href="#对返回值进行加密" class="headerlink" title="对返回值进行加密"></a>对返回值进行加密</h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Encrypt</span><br><span class="line">@GetMapping(<span class="string">"/encryption"</span>)</span><br><span class="line">public TestBean <span class="function"><span class="title">encryption</span></span>()&#123;</span><br><span class="line">    TestBean testBean = new TestBean();</span><br><span class="line">    testBean.setName(<span class="string">"shuibo.cn"</span>);</span><br><span class="line">    testBean.setAge(18);</span><br><span class="line">    <span class="built_in">return</span> testBean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="对传过来的加密参数解密"><a href="#对传过来的加密参数解密" class="headerlink" title="对传过来的加密参数解密"></a>对传过来的加密参数解密</h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Decrypt</span><br><span class="line">@PostMapping(<span class="string">"/decryption"</span>)</span><br><span class="line">public String Decryption(@RequestBody TestBean testBean)&#123;</span><br><span class="line">    <span class="built_in">return</span> testBean.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="https://www.shuibo.cn/" target="_blank" rel="noopener">参考</a></p>
+</blockquote>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/25/Snowflake-%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/">Snowflake 雪花算法</a>
         </h1>
 
@@ -287,40 +316,6 @@
 <li><strong><strong>密码重置</strong></strong>，密码重置后，原本的token依然可以访问系统，这时候也需要强制修改secret。</li>
 <li>基于第2点和第3点，建议不同用户取不同secret。</li>
 </ol>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/21/Dart/">Dart</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-21
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a><strong>匿名函数</strong></h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span>(Function calback) &#123;</span><br><span class="line">    calback(<span class="string">"hello"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">test</span>((param) &#123;</span><br><span class="line">       // Print hello</span><br><span class="line">       <span class="built_in">print</span>(param);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="函数作为变量"><a href="#函数作为变量" class="headerlink" title="函数作为变量"></a><strong>函数作为变量</strong></h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var say = (str) &#123;</span><br><span class="line">    <span class="built_in">print</span>(str);</span><br><span class="line">&#125;;</span><br><span class="line">say(<span class="string">"Hello, World!"</span>);</span><br></pre></td></tr></table></figure>
-
-<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a><strong>异步</strong></h3><ul>
-<li><code>Future</code> 表示一个异步操作的最终完成（或失败）及其结果值的表示</li>
-</ul>
-<p>&emsp;&emsp;<code>Future.delayed</code>： 创建一个延时任务<br>&emsp;&emsp;<code>Future.then</code>：接受异步结果</p>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Futrue.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"Hello, World!"</span>;</span><br><span class="line">&#125;).<span class="keyword">then</span>(data) &#123;</span><br><span class="line">    <span class="built_in">print</span>(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;<code>Future.wait</code> 只有数组中 <code>所有Future</code> 都执行成功后，才会触发 <code>then</code> 的成功回调，只要有一个<br>&emsp;&emsp;<code>Future</code> 执行失败，就会触发错误回调</p>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Future.wait([</span><br><span class="line">    // 2秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"Hello, "</span>;</span><br><span class="line">    &#125;),</span><br><span class="line">    // 4秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 4), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"World!"</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]).<span class="keyword">then</span>((results) &#123;</span><br><span class="line">      <span class="built_in">print</span>(results[0] + results[1]);</span><br><span class="line">  &#125;).catchError((e) &#123;</span><br><span class="line">      <span class="built_in">print</span>(e);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Dart提供了类似ES7中的 <code>async</code>, <code>await</code> 等异步操作</li>
-<li><code>async</code> 和 <code>await</code> 往往是成对出现的，如果一个方法中有耗时的操作，你需要将这个方法设置成 <code>async</code>，并给其中的耗时操作加上 <code>await</code>关键字，如果这个方法有返回值，你需要将返回值塞到 <code>Future</code> 中并返回</li>
-</ul>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'dart.async'</span>;</span><br><span class="line">import <span class="string">'package:http/http.dart'</span> as http;</span><br><span class="line"></span><br><span class="line">Future&lt;String&gt; getNetData() async &#123;</span><br><span class="line">    http.Response res = await.get(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">    <span class="built_in">return</span> res.body;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    getNetData().<span class="keyword">then</span>((str) &#123;</span><br><span class="line">        <span class="built_in">print</span>(str);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
         </div></article>
       <nav class="pagination"><a class="next" href="/page/2/">
