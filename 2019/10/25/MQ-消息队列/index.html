@@ -110,7 +110,7 @@
     <div class="post-toc" id="post-toc">
     <h2 class="post-toc-title">Contents</h2>
     <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#应用场景（优点）"><span class="toc-text">应用场景（优点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#应用场景（优点）"><span class="toc-text">应用场景（优点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#举例：MDB"><span class="toc-text">举例：MDB</span></a></li></ol>
     </div>
   </div><div class="post-content"><p>Message Queue</p>
 <h3 id="应用场景（优点）"><a href="#应用场景（优点）" class="headerlink" title="应用场景（优点）"></a>应用场景（优点）</h3><ol>
@@ -128,10 +128,11 @@
 <li>解决重复消费的方案：<ol>
 <li>比如，你拿到这个消息做数据库的 <code>insert</code> 操作。那就容易了，给这个消息做一个 <code>唯一主键</code>，那么就算出现重复消费的情况，就会导致主键冲突，避免数据库出现脏数据。</li>
 <li>再比如，你拿到这个消息做 <code>redis</code> 的set的操作，那就容易了，不用解决，因为你无论 <code>set</code> 几次结果都是一样的，<code>set</code> 操作本来就算 <code>幂等</code> 操作。</li>
-<li>如果上面两种情况还不行，上大招。准备一个 <code>第三方介质</code>，来做消费记录。以 <code>redis</code> 为例，给消息分配一个 <code>全局id</code>，只要消费过该消息，将&lt;id,message&gt;以K-V形式写入redis。那消费者开始消费前，先去redis中查询 <code>有没消费记录</code> 即可。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></li>
+<li>如果上面两种情况还不行，上大招。准备一个 <code>第三方介质</code>，来做消费记录。以 <code>redis</code> 为例，给消息分配一个 <code>全局id</code>，只要消费过该消息，将&lt;id,message&gt;以K-V形式写入redis。那消费者开始消费前，先去redis中查询 <code>有没消费记录</code> 即可。</li>
 </ol>
 </li>
 </ol>
+<h3 id="举例：MDB"><a href="#举例：MDB" class="headerlink" title="举例：MDB"></a>举例：MDB</h3><p>MDB通过消息方式为调用者提供服务<br>MDB组件实际使用过程中，其客户并不拥有MDB组件的远程引用，而是直接将调用消息发送到特定消息队列，因而客户的调用不强调MDB组件的运行。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></p>
 
       </div>
       
@@ -168,7 +169,7 @@
     <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
   </span>
 
-  <span class="copyright-year">&copy;2018 - 2019<span class="heart">
+  <span class="copyright-year">&copy;2018 - 2020<span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
     <span class="author">paper</span>

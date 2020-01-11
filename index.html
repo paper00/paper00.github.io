@@ -110,15 +110,15 @@
         </div>
     </header>
 
-    <div class="post-content"><h4 id="Maven，pom-xml中添加依赖"><a href="#Maven，pom-xml中添加依赖" class="headerlink" title="Maven，pom.xml中添加依赖"></a>Maven，pom.xml中添加依赖</h4><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;cn.shuibo&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;rsa-encrypt-body-spring-boot&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.0.0.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+    <div class="post-content"><h4 id="Maven，pom-xml中添加依赖"><a href="#Maven，pom-xml中添加依赖" class="headerlink" title="Maven，pom.xml中添加依赖"></a>Maven，pom.xml中添加依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.shuibo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>rsa-encrypt-body-spring-boot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="启动类Application中添加-EnableSecurity注解"><a href="#启动类Application中添加-EnableSecurity注解" class="headerlink" title="启动类Application中添加@EnableSecurity注解"></a>启动类Application中添加@EnableSecurity注解</h4><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">@EnableSecurity</span><br><span class="line">public class DemoApplication &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="启动类Application中添加-EnableSecurity注解"><a href="#启动类Application中添加-EnableSecurity注解" class="headerlink" title="启动类Application中添加@EnableSecurity注解"></a>启动类Application中添加@EnableSecurity注解</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="在application-yml或者application-properties中添加RSA公钥及私钥"><a href="#在application-yml或者application-properties中添加RSA公钥及私钥" class="headerlink" title="在application.yml或者application.properties中添加RSA公钥及私钥"></a>在application.yml或者application.properties中添加RSA公钥及私钥</h4><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rsa:</span><br><span class="line">  encrypt:</span><br><span class="line">    debug: <span class="literal">false</span> <span class="comment"># true表示开启调试，不加密。（方便开发时测试）</span></span><br><span class="line">    publicKey: 123456</span><br><span class="line">    privateKey: 123456</span><br></pre></td></tr></table></figure>
+<h4 id="在application-yml或者application-properties中添加RSA公钥及私钥"><a href="#在application-yml或者application-properties中添加RSA公钥及私钥" class="headerlink" title="在application.yml或者application.properties中添加RSA公钥及私钥"></a>在application.yml或者application.properties中添加RSA公钥及私钥</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">rsa:</span></span><br><span class="line"><span class="attr">  encrypt:</span></span><br><span class="line"><span class="attr">    debug:</span> <span class="literal">false</span> <span class="comment"># true表示开启调试，不加密。（方便开发时测试）</span></span><br><span class="line"><span class="attr">    publicKey:</span> <span class="number">123456</span></span><br><span class="line"><span class="attr">    privateKey:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="对返回值进行加密"><a href="#对返回值进行加密" class="headerlink" title="对返回值进行加密"></a>对返回值进行加密</h4><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Encrypt</span><br><span class="line">@GetMapping(<span class="string">"/encryption"</span>)</span><br><span class="line">public TestBean <span class="function"><span class="title">encryption</span></span>()&#123;</span><br><span class="line">    TestBean testBean = new TestBean();</span><br><span class="line">    testBean.setName(<span class="string">"shuibo.cn"</span>);</span><br><span class="line">    testBean.setAge(18);</span><br><span class="line">    <span class="built_in">return</span> testBean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="对返回值进行加密"><a href="#对返回值进行加密" class="headerlink" title="对返回值进行加密"></a>对返回值进行加密</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Encrypt</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/encryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> TestBean <span class="title">encryption</span><span class="params">()</span></span>&#123;</span><br><span class="line">    TestBean testBean = <span class="keyword">new</span> TestBean();</span><br><span class="line">    testBean.setName(<span class="string">"shuibo.cn"</span>);</span><br><span class="line">    testBean.setAge(<span class="number">18</span>);</span><br><span class="line">    <span class="keyword">return</span> testBean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="对传过来的加密参数解密"><a href="#对传过来的加密参数解密" class="headerlink" title="对传过来的加密参数解密"></a>对传过来的加密参数解密</h4><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Decrypt</span><br><span class="line">@PostMapping(<span class="string">"/decryption"</span>)</span><br><span class="line">public String Decryption(@RequestBody TestBean testBean)&#123;</span><br><span class="line">    <span class="built_in">return</span> testBean.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="对传过来的加密参数解密"><a href="#对传过来的加密参数解密" class="headerlink" title="对传过来的加密参数解密"></a>对传过来的加密参数解密</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Decrypt</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/decryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Decryption</span><span class="params">(@RequestBody TestBean testBean)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> testBean.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p><a href="https://www.shuibo.cn/" target="_blank" rel="noopener">参考</a></p>
@@ -139,8 +139,8 @@
         </div>
     </header>
 
-    <div class="post-content"><h2 id="为什么使用雪花算法？❄️"><a href="#为什么使用雪花算法？❄️" class="headerlink" title="为什么使用雪花算法？❄️"></a>为什么使用雪花算法？❄️</h2><p>在复杂的系统中，往往需要对大量的数据如订单，账户进行标识，以一个有意义的有序的序列号来作为全局唯一的ID，即需要一个 <code>ID号生成器</code>。</p>
-<p><code>ID号生成器</code> 是服务端系统的基础设施，而且 <code>ID号</code> 这个东西基本搞后端开发的程序员天天都要接触。而关于 <code>ID生成的算法</code> 现在业界首屈一指的当属  <code>Snowflake</code> 雪花算法。</p>
+    <div class="post-content"><h3 id="为什么使用雪花算法？❄️"><a href="#为什么使用雪花算法？❄️" class="headerlink" title="为什么使用雪花算法？❄️"></a>为什么使用雪花算法？❄️</h3><p>在复杂的系统中，往往需要对大量的数据如订单，账户进行标识，以一个有意义的有序的序列号来作为全局唯一的ID，即需要一个<code>ID号生成器</code>。</p>
+<p><code>ID号生成器</code>是服务端系统的基础设施，而且<code>ID号</code>这个东西基本搞后端开发的程序员天天都要接触。而关于<code>ID生成的算法</code>现在业界首屈一指的当属<code>Snowflake</code>雪花算法。</p>
 <h3 id="常见企业级使用的方案"><a href="#常见企业级使用的方案" class="headerlink" title="常见企业级使用的方案"></a>常见企业级使用的方案</h3><h4 id="1-UUID"><a href="#1-UUID" class="headerlink" title="1. UUID"></a>1. UUID</h4><p>UUID = 4个连字号(-) + 32个字节长的字符串，总共36个字节长。比如：</p>
 <blockquote>
 <p>550e8400-e29b-41d4-a716-446655440000</p>
@@ -152,11 +152,11 @@
 </ol>
 <p><strong>缺点：</strong></p>
 <ol>
-<li>不易于存储 / 性能问题：UUID太长，128位、36长度字符，不利于Mysql索引（在InnoDB引擎下，<code>UUID的无序性</code> 可能会引起数据位置频繁变动，严重影响 <code>性能</code>），很多场景不适用。</li>
-<li>采用 <code>无意义字符串</code>，数据量增大时造成访问过慢，且 <code>不宜排序</code>。</li>
+<li>不易于存储 / 性能问题：UUID太长，128位、36长度字符，不利于Mysql索引（在InnoDB引擎下，<code>UUID的无序性</code> 可能会引起数据位置频繁变动，严重影响<code>性能</code>），很多场景不适用。</li>
+<li>采用<code>无意义字符串</code>，数据量增大时造成访问过慢，且<code>不宜排序</code>。</li>
 <li>信息不安全：基于MAC地址生成UUID的算法可能会造成MAC地址泄露，这个漏洞曾被用于寻找梅丽莎病毒的制作者位置。</li>
 </ol>
-<h4 id="2-基于数据库方案"><a href="#2-基于数据库方案" class="headerlink" title="2. 基于数据库方案"></a>2. 基于数据库方案</h4><p>自增ID：对于数据敏感场景不宜使用，且不适合于 <code>分布式场景</code>。</p>
+<h4 id="2-基于数据库方案"><a href="#2-基于数据库方案" class="headerlink" title="2. 基于数据库方案"></a>2. 基于数据库方案</h4><p>自增ID：对于数据敏感场景不宜使用，且不适合于<code>分布式场景</code>。</p>
 <p><strong>优点：</strong></p>
 <ol>
 <li>简单，成本小</li>
@@ -164,47 +164,47 @@
 </ol>
 <p><strong>缺点：</strong></p>
 <ol>
-<li>不同 <code>数据库</code> 语法和实现不同，数据库 <code>迁移</code> 的时候或 <code>多数据库版本</code> 支持的时候需要处理。</li>
+<li>不同<code>数据库</code>语法和实现不同，数据库<code>迁移</code>的时候或<code>多数据库版本</code>支持的时候需要处理。</li>
 <li>如果涉及多个系统需要合并或者数据迁移会比较麻烦。</li>
 </ol>
 <h4 id="3-雪花算法"><a href="#3-雪花算法" class="headerlink" title="3. 雪花算法"></a>3. 雪花算法</h4><p><img src="http://www.dubby.cn/upload/1508161671799snowflake-64bit.jpg" alt="snowflake-64bit"><br>算法描述：</p>
 <ul>
 <li>最高位是符号位，始终为0，不可用。</li>
-<li>41位的时间序列，精确到毫秒级，41位的长度可以使用69年。时间位还有一个很重要的作用是可以根据 <code>时间</code> 进行 <code>排序</code>。</li>
-<li>10位的 <code>机器</code> 标识，10位的长度最多支持 <code>部署</code> 1024个节点。</li>
-<li>12位的计数序列号，序列号即一系列的 <code>自增id</code>，可以支持 <code>同一节点</code> 同一毫秒 <code>生成多个ID</code> 序号，<code>12位</code> 的计数序列号支持每个节点每毫秒产生 <code>4096个</code>ID序号。</li>
+<li>41位的时间序列，精确到毫秒级，41位的长度可以使用69年。时间位还有一个很重要的作用是可以根据<code>时间</code>进行<code>排序</code>。</li>
+<li>10位的<code>机器</code> 标识，10位的长度最多支持<code>部署</code>1024个节点。</li>
+<li>12位的计数序列号，序列号即一系列的<code>自增id</code>，可以支持<code>同一节点</code>同一毫秒<code>生成多个ID</code>序号，<code>12位</code>的计数序列号支持每个节点每毫秒产生<code>4096个</code>ID序号。</li>
 </ul>
-<p><code>UidGenerator</code> 是百度开源的一款基于 <code>Snowflake</code> 雪花算法实现的高性能唯一ID生成器。以下是再进行封装的一套更利于Spring Boot项目使用的ID号生成组件，命名为id-spring-boot-starter。</p>
+<p><code>UidGenerator</code>是百度开源的一款基于<code>Snowflake</code>雪花算法实现的高性能唯一ID生成器。以下是再进行封装的一套更利于Spring Boot项目使用的ID号生成组件，命名为id-spring-boot-starter。</p>
 <blockquote>
 <p><a href="https://www.codesheep.cn/2019/09/04/id-springbt-starter/" target="_blank" rel="noopener">参考</a></p>
 </blockquote>
 <h2 id="在-Spring-Boot-项目中的用法"><a href="#在-Spring-Boot-项目中的用法" class="headerlink" title="在 Spring Boot 项目中的用法"></a>在 Spring Boot 项目中的用法</h2><ul>
 <li>导入SQL脚本</li>
 </ul>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DROP TABLE IF EXISTS WORKER_NODE;</span><br><span class="line">CREATE TABLE WORKER_NODE</span><br><span class="line">(</span><br><span class="line">ID BIGINT NOT NULL AUTO_INCREMENT COMMENT <span class="string">'auto increment id'</span>,</span><br><span class="line">HOST_NAME VARCHAR(64) NOT NULL COMMENT <span class="string">'host name'</span>,</span><br><span class="line">PORT VARCHAR(64) NOT NULL COMMENT <span class="string">'port'</span>,</span><br><span class="line">TYPE INT NOT NULL COMMENT <span class="string">'node type: ACTUAL or CONTAINER'</span>,</span><br><span class="line">LAUNCH_DATE DATE NOT NULL COMMENT <span class="string">'launch date'</span>,</span><br><span class="line">MODIFIED TIMESTAMP NOT NULL COMMENT <span class="string">'modified time'</span>,</span><br><span class="line">CREATED TIMESTAMP NOT NULL COMMENT <span class="string">'created time'</span>,</span><br><span class="line">PRIMARY KEY(ID)</span><br><span class="line">)</span><br><span class="line"> COMMENT=<span class="string">'DB WorkerID Assigner for UID Generator'</span>,ENGINE = INNODB;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> WORKER_NODE;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> WORKER_NODE</span><br><span class="line">(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'auto increment id'</span>,</span><br><span class="line">HOST_NAME <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'host name'</span>,</span><br><span class="line">PORT <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'port'</span>,</span><br><span class="line"><span class="keyword">TYPE</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'node type: ACTUAL or CONTAINER'</span>,</span><br><span class="line">LAUNCH_DATE <span class="built_in">DATE</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'launch date'</span>,</span><br><span class="line">MODIFIED <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'modified time'</span>,</span><br><span class="line">CREATED <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'created time'</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span>(<span class="keyword">ID</span>)</span><br><span class="line">)</span><br><span class="line"> <span class="keyword">COMMENT</span>=<span class="string">'DB WorkerID Assigner for UID Generator'</span>,<span class="keyword">ENGINE</span> = <span class="keyword">INNODB</span>;</span><br></pre></td></tr></table></figure>
 
 <p>UidGenerator需要数据库支持</p>
 <ul>
 <li>pom中加入依赖</li>
 </ul>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;cn.codesheep&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;id-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.0.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.codesheep<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>id-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>配置数据库连接</li>
 </ul>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">url: jdbc:mysql://xxx.xxx.xxx.xxx:3306/demo?useUnicode=<span class="literal">true</span>&amp;characterEncoding=utf8&amp;autoReconnect=<span class="literal">true</span>&amp;useOldAliasMetadataBehavior=<span class="literal">true</span>&amp;connectionCollation=utf8mb4_unicode_ci&amp;rewriteBatchedStatements=<span class="literal">true</span>&amp;allowMultiQueries=<span class="literal">true</span></span><br><span class="line">username: xxxxxx</span><br><span class="line">password: xxxxxx</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="attr">jdbc:mysql://xxx.xxx.xxx.xxx:3306/demo?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;useOldAliasMetadataBehavior=true&amp;connectionCollation=utf8mb4_unicode_ci&amp;rewriteBatchedStatements=true&amp;allowMultiQueries=true</span></span><br><span class="line"><span class="attr">username:</span> <span class="string">xxxxxx</span></span><br><span class="line"><span class="attr">password:</span> <span class="string">xxxxxx</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>修改 Spring Boot 主类  </li>
 </ul>
 <p>Spring Boot应用主类上加上mybatis注解即可：</p>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class TestController &#123;</span><br><span class="line"></span><br><span class="line">  @Autowired</span><br><span class="line">  private UidGenService uidGenService;</span><br><span class="line"></span><br><span class="line">  @GetMapping(<span class="string">"/uid"</span>)</span><br><span class="line">  public String <span class="function"><span class="title">genUid</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> String.valueOf(<span class="string">"本次生成的唯一ID号为："</span>+uidGenService.getUid());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> UidGenService uidGenService;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/uid"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">genUid</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> String.valueOf(<span class="string">"本次生成的唯一ID号为："</span>+uidGenService.getUid());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li>首先用 Autowired的方式引入UidGenService类；</li>
 <li>直接调用UidGenService类的getUid()方法即可获得一个Long型的ID号</li>
 </ol>
-<p>为什么叫 <code>雪花算法</code> 呢？私以为众所周知世界上没有一对相同的雪花，而雪花形成的过程中复杂的环境条件则对应了雪花算法中的机器ID,时间戳在现实层面上能够精确到普朗克时间10^-43s，这样时间戳的长度也得以保证。</p>
+<p>为什么叫<code>雪花算法</code>呢？私以为众所周知世界上没有一对相同的雪花，而雪花形成的过程中复杂的环境条件则对应了雪花算法中的机器ID,时间戳在现实层面上能够精确到普朗克时间10^-43s，这样时间戳的长度也得以保证。</p>
 <p>为什么叫雪花算法呢？私以为众所周知世界上没有一对相同的雪花，而雪花形成的过程中复杂的环境条件则对应了雪花算法中的机器ID, 时间戳在现实层面上能够精确到普朗克时间10^-43s，这样时间戳的长度也得以保证。</p>
 <blockquote>
 <p><a href="https://blog.csdn.net/Crazy_xym/article/details/100180398" target="_blank" rel="noopener">参考</a></p>
@@ -238,10 +238,11 @@
 <li>解决重复消费的方案：<ol>
 <li>比如，你拿到这个消息做数据库的 <code>insert</code> 操作。那就容易了，给这个消息做一个 <code>唯一主键</code>，那么就算出现重复消费的情况，就会导致主键冲突，避免数据库出现脏数据。</li>
 <li>再比如，你拿到这个消息做 <code>redis</code> 的set的操作，那就容易了，不用解决，因为你无论 <code>set</code> 几次结果都是一样的，<code>set</code> 操作本来就算 <code>幂等</code> 操作。</li>
-<li>如果上面两种情况还不行，上大招。准备一个 <code>第三方介质</code>，来做消费记录。以 <code>redis</code> 为例，给消息分配一个 <code>全局id</code>，只要消费过该消息，将&lt;id,message&gt;以K-V形式写入redis。那消费者开始消费前，先去redis中查询 <code>有没消费记录</code> 即可。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></li>
+<li>如果上面两种情况还不行，上大招。准备一个 <code>第三方介质</code>，来做消费记录。以 <code>redis</code> 为例，给消息分配一个 <code>全局id</code>，只要消费过该消息，将&lt;id,message&gt;以K-V形式写入redis。那消费者开始消费前，先去redis中查询 <code>有没消费记录</code> 即可。</li>
 </ol>
 </li>
 </ol>
+<h3 id="举例：MDB"><a href="#举例：MDB" class="headerlink" title="举例：MDB"></a>举例：MDB</h3><p>MDB通过消息方式为调用者提供服务<br>MDB组件实际使用过程中，其客户并不拥有MDB组件的远程引用，而是直接将调用消息发送到特定消息队列，因而客户的调用不强调MDB组件的运行。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></p>
 
         </div></article>
       <article class="post">
@@ -260,9 +261,10 @@
 
     <div class="post-content"><ul>
 <li>AOP为Aspect Oriented Programming的缩写，意为：<code>面向切面编程</code></li>
-<li>通过 <code>预编译方式</code> 和运行期 <code>动态代理</code> 实现</li>
+<li>通过 <code>预编译方式</code> 和<code>运行期动态代理</code> 实现</li>
 <li>在 <code>Spring</code> 中，通过 <code>动态代理</code> 和 <code>动态字节码技术</code> 实现了AOP</li>
-<li><code>AOP</code> 是对 <code>OOP</code> 的一个横向的补充，主要作用就是把一些 <code>业务无关</code> 的功能 <code>抽离</code> 出来，例如 #日志打印、#统计数据、#数据验证、#安全控制、#异常处理  等等。这些功能都与某些核心业务无关，但又随处可见，如果都是复制粘贴未免太没逼格，而且难以维护，不优雅。把它们抽离出来，用<code>动态</code>插入的方式嵌到各业务逻辑中。</li>
+<li><code>AOP</code> 是对 <code>OOP</code> 的一个横向的补充，主要作用就是把一些<code>业务无关</code>的功能 <code>抽离</code> 出来</li>
+<li>例如 #日志打印、#统计数据、#数据验证、#安全控制、#异常处理 等等。这些功能都与某些核心业务无关，但又随处可见，如果都是复制粘贴未免太没逼格，而且难以维护，不优雅。把它们抽离出来，用<code>动态</code>插入的方式嵌到各业务逻辑中。</li>
 </ul>
 
         </div></article>
@@ -338,7 +340,7 @@
     <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
   </span>
 
-  <span class="copyright-year">&copy;2018 - 2019<span class="heart">
+  <span class="copyright-year">&copy;2018 - 2020<span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
     <span class="author">paper</span>
