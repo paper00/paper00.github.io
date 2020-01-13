@@ -134,7 +134,7 @@
 <li><code>Joinpoint</code> ：连接点；可以进行横向切入的位置；典型的包括方法调用，对类成员的访问以及异常处理程序块的执行等等</li>
 </ul>
 <ul>
-<li><code>Pointcut</code> ：切入点；表示一组 joint point，它定义了相应的 Advice 将要发生的地方。</li>
+<li><code>Pointcut</code> ：切入点；表示<code>一组</code> joint point，它定义了相应的 <code>Advice</code> 将要<code>发生的地方</code>。</li>
 </ul>
 <ul>
 <li><code>Advice</code> ：通知；切面在某个连接点执行的<code>操作</code>。它通过 before、after 和 around 来区别是在每个 joint point 之前、之后还是代替执行的代码。 </li>
@@ -169,7 +169,7 @@
 <blockquote>
 <p>事务处理</p>
 </blockquote>
-<p>&emsp;等等。这些功能都与某些核心业务无关，但又随处可见，如果都是复制粘贴未免太没逼格，而且难以维护，不优雅。把它们抽离出来，用<code>动态</code>插入的方式嵌到各业务逻辑中。</p>
+<p>&emsp;等等。这些功能都与某些核心业务无关，但又随处可见，如果都是复制粘贴就很麻烦，而且难以维护。把它们抽离出来，用<code>动态</code>插入的方式嵌到各业务逻辑中。</p>
 
       </div>
       
