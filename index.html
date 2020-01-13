@@ -110,16 +110,20 @@
         </div>
     </header>
 
-    <div class="post-content"><h4 id="Maven，pom-xml中添加依赖"><a href="#Maven，pom-xml中添加依赖" class="headerlink" title="Maven，pom.xml中添加依赖"></a>Maven，pom.xml中添加依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.shuibo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>rsa-encrypt-body-spring-boot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+    <div class="post-content"><ul>
+<li>Maven，pom.xml中添加依赖<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.shuibo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>rsa-encrypt-body-spring-boot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<br></li>
+<li>启动类Application中添加@EnableSecurity注解<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br></li>
+<li>在application.yml或者application.properties中添加RSA公钥及私钥<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">rsa:</span></span><br><span class="line"><span class="attr">  encrypt:</span></span><br><span class="line"><span class="attr">    debug:</span> <span class="literal">false</span> <span class="comment"># true表示开启调试，不加密。（方便开发时测试）</span></span><br><span class="line"><span class="attr">    publicKey:</span> <span class="number">123456</span></span><br><span class="line"><span class="attr">    privateKey:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
+<br></li>
+<li>对返回值进行加密<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Encrypt</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/encryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> TestBean <span class="title">encryption</span><span class="params">()</span></span>&#123;</span><br><span class="line">    TestBean testBean = <span class="keyword">new</span> TestBean();</span><br><span class="line">    testBean.setName(<span class="string">"shuibo.cn"</span>);</span><br><span class="line">    testBean.setAge(<span class="number">18</span>);</span><br><span class="line">    <span class="keyword">return</span> testBean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br></li>
+<li>对传过来的加密参数解密<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Decrypt</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/decryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Decryption</span><span class="params">(@RequestBody TestBean testBean)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> testBean.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br>
 
-<h4 id="启动类Application中添加-EnableSecurity注解"><a href="#启动类Application中添加-EnableSecurity注解" class="headerlink" title="启动类Application中添加@EnableSecurity注解"></a>启动类Application中添加@EnableSecurity注解</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="在application-yml或者application-properties中添加RSA公钥及私钥"><a href="#在application-yml或者application-properties中添加RSA公钥及私钥" class="headerlink" title="在application.yml或者application.properties中添加RSA公钥及私钥"></a>在application.yml或者application.properties中添加RSA公钥及私钥</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">rsa:</span></span><br><span class="line"><span class="attr">  encrypt:</span></span><br><span class="line"><span class="attr">    debug:</span> <span class="literal">false</span> <span class="comment"># true表示开启调试，不加密。（方便开发时测试）</span></span><br><span class="line"><span class="attr">    publicKey:</span> <span class="number">123456</span></span><br><span class="line"><span class="attr">    privateKey:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="对返回值进行加密"><a href="#对返回值进行加密" class="headerlink" title="对返回值进行加密"></a>对返回值进行加密</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Encrypt</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/encryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> TestBean <span class="title">encryption</span><span class="params">()</span></span>&#123;</span><br><span class="line">    TestBean testBean = <span class="keyword">new</span> TestBean();</span><br><span class="line">    testBean.setName(<span class="string">"shuibo.cn"</span>);</span><br><span class="line">    testBean.setAge(<span class="number">18</span>);</span><br><span class="line">    <span class="keyword">return</span> testBean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="对传过来的加密参数解密"><a href="#对传过来的加密参数解密" class="headerlink" title="对传过来的加密参数解密"></a>对传过来的加密参数解密</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Decrypt</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/decryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Decryption</span><span class="params">(@RequestBody TestBean testBean)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> testBean.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+</li>
+</ul>
 <blockquote>
 <p><a href="https://www.shuibo.cn/" target="_blank" rel="noopener">参考</a></p>
 </blockquote>
@@ -139,9 +143,9 @@
         </div>
     </header>
 
-    <div class="post-content"><h3 id="为什么使用雪花算法？❄️"><a href="#为什么使用雪花算法？❄️" class="headerlink" title="为什么使用雪花算法？❄️"></a>为什么使用雪花算法？❄️</h3><p>在复杂的系统中，往往需要对大量的数据如订单，账户进行标识，以一个有意义的有序的序列号来作为全局唯一的ID，即需要一个<code>ID号生成器</code>。</p>
-<p><code>ID号生成器</code>是服务端系统的基础设施，而且<code>ID号</code>这个东西基本搞后端开发的程序员天天都要接触。而关于<code>ID生成的算法</code>现在业界首屈一指的当属<code>Snowflake</code>雪花算法。</p>
-<h3 id="常见企业级使用的方案"><a href="#常见企业级使用的方案" class="headerlink" title="常见企业级使用的方案"></a>常见企业级使用的方案</h3><h4 id="1-UUID"><a href="#1-UUID" class="headerlink" title="1. UUID"></a>1. UUID</h4><p>UUID = 4个连字号(-) + 32个字节长的字符串，总共36个字节长。比如：</p>
+    <div class="post-content"><h1 id="为什么使用雪花算法？❄️"><a href="#为什么使用雪花算法？❄️" class="headerlink" title="为什么使用雪花算法？❄️"></a>为什么使用雪花算法？❄️</h1><p>&emsp;在复杂的系统中，往往需要对大量的数据如订单，账户进行标识，以一个有意义的有序的序列号来作为全局唯一的ID，即需要一个<code>ID号生成器</code>。</p>
+<p>&emsp;ID号生成器是服务端系统的基础设施，而且<code>ID号</code>这个东西基本搞后端开发的程序员天天都要接触。而关于<code>ID生成的算法</code>现在业界首屈一指的当属<code>Snowflake</code>雪花算法。</p>
+<h1 id="常见企业级使用的方案"><a href="#常见企业级使用的方案" class="headerlink" title="常见企业级使用的方案"></a>常见企业级使用的方案</h1><h4 id="1-UUID"><a href="#1-UUID" class="headerlink" title="1. UUID"></a>1. UUID</h4><p>UUID = 4个连字号(-) + 32个字节长的字符串，总共36个字节长。比如：</p>
 <blockquote>
 <p>550e8400-e29b-41d4-a716-446655440000</p>
 </blockquote>
@@ -178,7 +182,7 @@
 <blockquote>
 <p><a href="https://www.codesheep.cn/2019/09/04/id-springbt-starter/" target="_blank" rel="noopener">参考</a></p>
 </blockquote>
-<h2 id="在-Spring-Boot-项目中的用法"><a href="#在-Spring-Boot-项目中的用法" class="headerlink" title="在 Spring Boot 项目中的用法"></a>在 Spring Boot 项目中的用法</h2><ul>
+<h3 id="在-Spring-Boot-项目中的用法"><a href="#在-Spring-Boot-项目中的用法" class="headerlink" title="在 Spring Boot 项目中的用法"></a>在 Spring Boot 项目中的用法</h3><ul>
 <li>导入SQL脚本</li>
 </ul>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> WORKER_NODE;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> WORKER_NODE</span><br><span class="line">(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'auto increment id'</span>,</span><br><span class="line">HOST_NAME <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'host name'</span>,</span><br><span class="line">PORT <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'port'</span>,</span><br><span class="line"><span class="keyword">TYPE</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'node type: ACTUAL or CONTAINER'</span>,</span><br><span class="line">LAUNCH_DATE <span class="built_in">DATE</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'launch date'</span>,</span><br><span class="line">MODIFIED <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'modified time'</span>,</span><br><span class="line">CREATED <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'created time'</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span>(<span class="keyword">ID</span>)</span><br><span class="line">)</span><br><span class="line"> <span class="keyword">COMMENT</span>=<span class="string">'DB WorkerID Assigner for UID Generator'</span>,<span class="keyword">ENGINE</span> = <span class="keyword">INNODB</span>;</span><br></pre></td></tr></table></figure>
@@ -204,8 +208,7 @@
 <li>首先用 Autowired的方式引入UidGenService类；</li>
 <li>直接调用UidGenService类的getUid()方法即可获得一个Long型的ID号</li>
 </ol>
-<p>为什么叫<code>雪花算法</code>呢？私以为众所周知世界上没有一对相同的雪花，而雪花形成的过程中复杂的环境条件则对应了雪花算法中的机器ID,时间戳在现实层面上能够精确到普朗克时间10^-43s，这样时间戳的长度也得以保证。</p>
-<p>为什么叫雪花算法呢？私以为众所周知世界上没有一对相同的雪花，而雪花形成的过程中复杂的环境条件则对应了雪花算法中的机器ID, 时间戳在现实层面上能够精确到普朗克时间10^-43s，这样时间戳的长度也得以保证。</p>
+<p>&emsp;为什么叫<code>雪花算法</code>呢？私以为众所周知世界上没有一对相同的雪花，而雪花形成的过程中复杂的环境条件则对应了雪花算法中的机器ID,时间戳在现实层面上能够精确到普朗克时间10^-43s，这样时间戳的长度也得以保证。</p>
 <blockquote>
 <p><a href="https://blog.csdn.net/Crazy_xym/article/details/100180398" target="_blank" rel="noopener">参考</a></p>
 </blockquote>
@@ -247,7 +250,7 @@
         </div></article>
       <article class="post">
     <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/21/AOP/">AOP</a>
+      <h1 class="post-title"><a class="post-link" href="/2019/10/21/AOP%20%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/">AOP 面向切面编程</a>
         </h1>
 
       <div class="post-meta">
@@ -259,13 +262,61 @@
         </div>
     </header>
 
-    <div class="post-content"><ul>
-<li>AOP为Aspect Oriented Programming的缩写，意为：<code>面向切面编程</code></li>
-<li>通过 <code>预编译方式</code> 和<code>运行期动态代理</code> 实现</li>
-<li>在 <code>Spring</code> 中，通过 <code>动态代理</code> 和 <code>动态字节码技术</code> 实现了AOP</li>
-<li><code>AOP</code> 是对 <code>OOP</code> 的一个横向的补充，主要作用就是把一些<code>业务无关</code>的功能 <code>抽离</code> 出来</li>
-<li>例如 #日志打印、#统计数据、#数据验证、#安全控制、#异常处理 等等。这些功能都与某些核心业务无关，但又随处可见，如果都是复制粘贴未免太没逼格，而且难以维护，不优雅。把它们抽离出来，用<code>动态</code>插入的方式嵌到各业务逻辑中。</li>
+    <div class="post-content"><h2 id="AOP-简介"><a href="#AOP-简介" class="headerlink" title="AOP 简介"></a>AOP 简介</h2><ul>
+<li>AOP 为 Aspect Oriented Programming 的缩写，意为：面向切面编程</li>
 </ul>
+<ul>
+<li>通过<code>预编译方式</code>和<code>运行期动态代理</code>实现</li>
+</ul>
+<ul>
+<li>在 Spring 中，通过<code>动态代理</code>和<code>动态字节码技术</code>实现了AOP</li>
+</ul>
+<ul>
+<li><code>AOP</code>是对<code>OOP</code>的一个横向的补充，主要作用就是把一些<code>业务无关</code>的功能<code>抽离</code>出来</li>
+</ul>
+<h2 id="AOP-相关概念"><a href="#AOP-相关概念" class="headerlink" title="AOP 相关概念"></a>AOP 相关概念</h2><ul>
+<li><code>Aspect</code> ：切面；切入系统的一个切面。比如权限管理是一个切面，事务管理也是一个切面。包含着一些 Pointcut 以及相应的 Advice</li>
+</ul>
+<ul>
+<li><code>Joinpoint</code> ：连接点；可以进行横向切入的位置；典型的包括方法调用，对类成员的访问以及异常处理程序块的执行等等</li>
+</ul>
+<ul>
+<li><code>Pointcut</code> ：切入点；表示一组 joint point，它定义了相应的 Advice 将要发生的地方。</li>
+</ul>
+<ul>
+<li><code>Advice</code> ：通知；切面在某个连接点执行的<code>操作</code>。它通过 before、after 和 around 来区别是在每个 joint point 之前、之后还是代替执行的代码。 </li>
+</ul>
+<ul>
+<li><code>Target</code> ：目标；被通知的对象，也就是包含连接点的对象。被称作被通知或被代理对象。</li>
+</ul>
+<ul>
+<li><code>Introduction</code> ：引入；在一些高级语言中，比如 Rudy 与 Groovy，都有开放类的概念，能够在不改变对象和类的代码的前提下，为对象和类添加新的方法。然而对于Java，他不是动态的，类一旦编译完成，就很难再为他添加新的功能。Introduction 就是在不改变一个现有类代码的情况下，为该类添加属性和方法，可以在无需修改现有类的前提下，让它们具有新的行为和状态。其实就是把<code>切面</code>用到<code>目标类</code>中。</li>
+</ul>
+<ul>
+<li><code>AOP Proxy</code> ：AOP 代理；AOP 框架创建的对象，包含通知。 在 Spring 中，AOP 代理可以是 JDK 动态代理或者 CGLIB 代理。</li>
+</ul>
+<ul>
+<li><code>Weaving</code> ：织入；把切面加入程序代码的过程。切面在指定的连接点被织入到目标对象中，在目标对象的生命周期（编译期、类加载期、运行期）里有多个点可以进行织入。Spring AOP 是在<code>运行</code>的某个时刻被织入，在织入切面时，AOP容器会为<code>目标对象</code>动态创建一个<code>代理对象</code>。</li>
+</ul>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><blockquote>
+<p>日志打印</p>
+</blockquote>
+<blockquote>
+<p>统计数据</p>
+</blockquote>
+<blockquote>
+<p>数据验证</p>
+</blockquote>
+<blockquote>
+<p>安全控制</p>
+</blockquote>
+<blockquote>
+<p>异常处理</p>
+</blockquote>
+<blockquote>
+<p>事务处理</p>
+</blockquote>
+<p>&emsp;等等。这些功能都与某些核心业务无关，但又随处可见，如果都是复制粘贴未免太没逼格，而且难以维护，不优雅。把它们抽离出来，用<code>动态</code>插入的方式嵌到各业务逻辑中。</p>
 
         </div></article>
       <article class="post">
@@ -282,7 +333,7 @@
         </div>
     </header>
 
-    <div class="post-content"><h3 id="为什么使用JWT？"><a href="#为什么使用JWT？" class="headerlink" title="为什么使用JWT？"></a><strong>为什么使用JWT？</strong></h3><p>通过 <code>session</code> 管理用户登录状态成本越来越高，因此慢慢发展成为 <code>token</code> 的方式做登录身份校验，然后通过 <code>token</code> 去取 <code>redis</code>中的缓存的用户信息，随着之后jwt的出现，校验方式更加简单化，<code>无需</code> 通过 <code>redis</code> 缓存，而是 <code>直接</code> 根据 <code>token</code> 取出保存的用户信息，以及对 <code>token</code> 可用性校验，单点登录更为简单。</p>
+    <div class="post-content"><h3 id="为什么使用JWT"><a href="#为什么使用JWT" class="headerlink" title="为什么使用JWT?"></a><strong>为什么使用JWT?</strong></h3><p>通过 <code>session</code> 管理用户登录状态成本越来越高，因此慢慢发展成为 <code>token</code> 的方式做登录身份校验，然后通过 <code>token</code> 去取 <code>redis</code>中的缓存的用户信息，随着之后jwt的出现，校验方式更加简单化，<code>无需</code> 通过 <code>redis</code> 缓存，而是 <code>直接</code> 根据 <code>token</code> 取出保存的用户信息，以及对 <code>token</code> 可用性校验，单点登录更为简单。</p>
 <h3 id="公钥和私钥"><a href="#公钥和私钥" class="headerlink" title="公钥和私钥"></a><strong>公钥和私钥</strong></h3><p>是通过一种 <code>算法</code> 得到的一个 <code>密钥对</code> = <code>公钥</code> + <code>私钥</code></p>
 <ul>
 <li><code>公钥</code>：向外界公开</li>

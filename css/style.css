@@ -395,7 +395,8 @@ body {
 
 ::selection {
   background: #c05b4d;
-  color: #fff; }
+  background: rgba(192, 91, 77, 0.61);
+  color: white; }
 
 img {
   max-width: 100%;
@@ -408,11 +409,11 @@ a {
   text-decoration: none; }
 
 h1 {
-  font-size: 26px;
+  font-size: 22px;
   font-family: Athelas, STHeiti, Microsoft Yahei, serif; }
 
 h2 {
-  font-size: 24px;
+  font-size: 21px;
   font-family: Athelas, STHeiti, Microsoft Yahei, serif; }
 
 h3 {
@@ -428,7 +429,7 @@ h5 {
   font-family: Athelas, STHeiti, Microsoft Yahei, serif; }
 
 h6 {
-  font-size: 14px;
+  font-size: 12px;
   font-family: Athelas, STHeiti, Microsoft Yahei, serif; }
 
 .container {
@@ -609,25 +610,31 @@ h6 {
     .post .post-toc {
       display: none; } }
   .post .post-content {
-    line-height: 24px; }
+    line-height: 26px; }
     .post .post-content h1 {
       font-weight: 400;
-      font-family: Georgia, 'Times New Roman', Times, serif; }
+      font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+      margin-top: 40px; }
     .post .post-content h2 {
       font-weight: 400;
-      font-family: Georgia, 'Times New Roman', Times, serif; }
+      font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+      margin-top: 40px; }
     .post .post-content h3 {
       font-weight: 400;
-      font-family: Georgia, 'Times New Roman', Times, serif; }
+      font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+      margin-top: 40px; }
     .post .post-content h4 {
       font-weight: 400;
-      font-family: Georgia, 'Times New Roman', Times, serif; }
+      font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+      margin-top: 40px; }
     .post .post-content h5 {
       font-weight: 400;
-      font-family: Georgia, 'Times New Roman', Times, serif; }
+      font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+      margin-top: 40px; }
     .post .post-content h6 {
       font-weight: 400;
-      font-family: Georgia, 'Times New Roman', Times, serif; }
+      font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+      margin-top: 40px; }
     .post .post-content .headerlink:hover {
       border-bottom: 0; }
     .post .post-content a {
@@ -678,7 +685,8 @@ h6 {
     .post .post-content code {
       padding: 1px 7px;
       border-radius: 4px;
-      color: #c7254e; }
+      color: #c7254e;
+      font-size: 13.6px; }
     .post .post-content .highlight {
       margin: 1em 0;
       border-radius: 5px;
@@ -905,7 +913,7 @@ h6 {
         color: #cc5109; }
     .post .post-content .read-more .read-more-link {
       color: #c05b4d;
-      font-size: 1.1em;
+      font-size: 1em;
       font-family: Athelas, STHeiti, Microsoft Yahei, serif; }
       .post .post-content .read-more .read-more-link:hover {
         border-bottom: 1px solid #c05b4d; }
