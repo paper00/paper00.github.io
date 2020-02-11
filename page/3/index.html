@@ -98,6 +98,230 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">数据链路层</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a><strong>主要功能</strong></h2><ol>
+<li>流量控制</li>
+<li>差错控制</li>
+</ol>
+<h2 id="数据帧（Data-frame）"><a href="#数据帧（Data-frame）" class="headerlink" title="数据帧（Data frame）"></a><strong>数据帧（Data frame）</strong></h2><ul>
+<li><code>数据链路层</code> 的最小数据 <code>传输单位</code> ，即<code>DPDU</code></li>
+<li><strong>一般格式：</strong><br>  &emsp;&emsp;帧同步 | 目的地址 | 源地址 | 控制 | 数据 | 帧校验</li>
+</ul>
+<h2 id="数据链路层协议主要内容"><a href="#数据链路层协议主要内容" class="headerlink" title="数据链路层协议主要内容"></a><strong>数据链路层协议主要内容</strong></h2><ol>
+<li><p>数据链路的建立与拆除</p>
+</li>
+<li><p>帧同步</p>
+</li>
+<li><p>差错控制</p>
+<ul>
+<li><strong>差错产生的主要原因</strong>：<ol>
+<li>热噪声：传输介质内的分子热运动</li>
+<li>冲击噪声：外界干扰</li>
+</ol>
+</li>
+<li><strong>特征</strong>：<ol>
+<li>热噪声：干扰幅度<code>小</code>、持续性、对<code>模拟通信</code>影响大</li>
+<li>冲击噪声：干扰幅度<code>大</code>、突发性、对<code>数字通信</code>影响大</li>
+</ol>
+</li>
+<li>计算机网络中，<code>差错控制</code>主要针对<code>冲击噪声</code></li>
+<li><strong>差错控制方法</strong><br>  &emsp;&emsp;通过特殊的编码 (差错控制码)，使<code>接收端</code>能够<code>发现</code>甚至<code>自动纠正</code>错误<br>  &emsp;&emsp;差错控制编码：<ol>
+<li><strong>较错码</strong>：能够发现差错，但无法自动纠正差错，通过发送方重来获得正确的数据</li>
+<li><strong>纠错码</strong>：不但能够发现差错，而且知道哪些位出错，从而能够自动纠正差错<br>&emsp; <strong>码距</strong>：两个码字的距离<blockquote>
+<p>如：10<strong>001</strong>001<br>&emsp;&emsp;&nbsp;10<strong>110</strong>001 （码距为 3）</p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>流量控制</p>
+<h3 id="停一等协议"><a href="#停一等协议" class="headerlink" title="停一等协议"></a><strong>停一等协议</strong></h3><p> <code>发送窗口</code> 尺寸 Wt = 1，<code>接受窗口</code>尺寸 Wr = 1</p>
+<h3 id="顺序接受管道协议"><a href="#顺序接受管道协议" class="headerlink" title="顺序接受管道协议"></a><strong>顺序接受管道协议</strong></h3><ul>
+<li>（回退n协议）</li>
+<li><code>发送窗口</code> 尺寸 Wt &gt; 1，<code>接受窗口</code>尺寸 Wr = 1</li>
+<li><code>发送方</code> 连续发生 n 帧而 <code>无需对方应答</code>，但需要将 <code>已发出</code> 但 <code>尚未得到确认</code> 的帧 <code>保存</code> 在发送窗口中，以备 <code>重发</code>。</li>
+<li>优点：仅需一个 <code>接收缓冲区</code></li>
+<li>缺点：当信道误码率较高时，会产生大量 <code>重发帧</code>。<h3 id="选择重传协议"><a href="#选择重传协议" class="headerlink" title="选择重传协议"></a><strong>选择重传协议</strong></h3></li>
+<li><code>发送窗口</code>尺寸 Wt &gt; 1，<code>接受窗口</code>尺寸Wr &gt; 1</li>
+<li>若某一帧出错，后面正确到达的帧虽然不能立即送网络层，但可将其保存在接受窗口。因此，仅需重传出错帧。</li>
+<li>优点：仅重传出错帧，不会产生大量<code>重发帧</code>。</li>
+<li>缺点：需要多个<code>接受缓冲区</code></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>设帧序号的位数为n，则：<br>&emsp;&nbsp;Wt &gt;= Wr<br>&emsp;&nbsp;Wt + Wr &lt;= 2^n</p>
+</blockquote>
+<blockquote>
+<p>例：设 n=3，Wt = 7，Wr = 2；显然，Wr + Wt &gt; 2^n<br>&emsp;&emsp;发送窗口首先连续发送7帧（0～6号帧）<br>&emsp;&emsp;假设这7帧 <strong>全部正确到达</strong>，<code>接收端</code> 收到后返回“确认”，并将接受窗口向前 <code>滑动7个窗口</code>，即<code>当前窗口</code>为7号和0号。<br>&emsp;&emsp;<img src="/images/ex1.png" alt="ex: "><br>&emsp;&emsp;如果“确认”丢失，由于<code>发送端</code>超时收不到“确认”而 <code>误认为</code> 所发送的帧全部丢失，于是 <code>重发</code> 0～6号帧。<br>&emsp;&emsp;重发的0号帧被 <code>重复接受</code>，并被 <code>误认为</code> 下一轮帧的0号帧而递交给主机。</p>
+</blockquote>
+<h3 id="HDLC协议"><a href="#HDLC协议" class="headerlink" title="HDLC协议"></a><strong>HDLC协议</strong></h3><ul>
+<li>一种典型的数据链路层协议，该协议“面向比特”，即以“比特”作为数据帧的基本数据单位（“面向比特”效率高）</li>
+<li>HDLC帧格式：<br>  字节数：1&emsp;&emsp;&emsp;&emsp;1&emsp;&emsp;&emsp;&emsp;1&emsp;&emsp;&emsp;&emsp;任意&emsp;&emsp;&emsp;&emsp;2&emsp;&emsp;&emsp;&emsp;1<br>  &emsp;&emsp;&emsp;&emsp;标志&emsp;|&emsp;地址&emsp;|&emsp;<code>控制</code>&emsp;|&emsp;数据&emsp;|&emsp;帧检验&emsp;|&emsp;标志<ul>
+<li><code>控制</code>字段格式：<br>&emsp;&emsp;信息帧以 “0” 打头<br>&emsp;&emsp;监督帧以 “10” 打头<br>&emsp;&emsp;无编号帧以 “11” 打头<br>&emsp;&emsp;N(S)：表示信息帧的序号（0-7）<br>&emsp;&emsp;N(R)：接收端期望接收的下一帧的<br>&emsp;&emsp;P/F</li>
+</ul>
+</li>
+</ul>
+<h3 id="PPP协议"><a href="#PPP协议" class="headerlink" title="PPP协议"></a><strong>PPP协议</strong></h3><ul>
+<li>（点到点协议  Point to Point Protocol）</li>
+<li><code>ISP</code>: Internet服务提供商，为用户提供<code>接入线路</code>、<code>IP地址</code>和信息增值服务</li>
+<li>具有动态分配<code>IP地址</code>的能力，允许在连接时刻协商<code>IP地址</code></li>
+<li>具有<code>错误检测</code>能力，但不具备<code>纠错</code>能力，所以<code>ppp</code>是<code>不可靠传输协议</code></li>
+<li><code>无重传</code>的机制，网络开销小，速度快。</li>
+<li>具有<code>身份验证功能</code></li>
+<li>既可支持<code>面向字符</code>也可支持<code>面向比特</code>的协议</li>
+<li>帧格式：<br>&emsp;&emsp;标志：01111110，标志一帧的开始和结束<br>&emsp;&emsp;地址：总是固定为 11111111<br>&emsp;&emsp;控制：缺省 000000<code>11</code><br>&emsp;&emsp;数据：静载荷数据，如IP分组。<br>&emsp;&emsp;CRC：CRC码，同HDLC。</li>
+</ul>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80%E4%B8%8E%E7%89%A9%E7%90%86%E5%B1%82/">数据通信基础与物理层</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="通信系统模型"><a href="#通信系统模型" class="headerlink" title="通信系统模型"></a><strong>通信系统模型</strong></h2><p><img src="/images/%E9%80%9A%E4%BF%A1%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B.png" alt="ex: "></p>
+<ul>
+<li>信源：将各种 <code>信息</code> 转换成原始 <code>物理信号</code>（如计算机、手机、电话机等）</li>
+<li>信宿：将 <code>物理信号</code> -&gt; <code>信息</code> (如计算机、手机、电话机等）</li>
+<li>信道：传输 <code>信号</code> 的一条通路</li>
+<li>变换器 / 反变换器：对原始 <code>物理信号</code> 进行变换 / 反变换，适合在给定 <code>信道</code> 上传输（如光 / 电转换器等）</li>
+<li>噪声源：信道自身的噪声以及周围环境对信道的干扰（如热噪声、闪电、电磁场干扰等）</li>
+</ul>
+<h2 id="模拟通信与数字通信"><a href="#模拟通信与数字通信" class="headerlink" title="模拟通信与数字通信"></a><strong>模拟通信与数字通信</strong></h2><ul>
+<li><strong>模拟信号</strong>：信号在传输过程中 <code>连续</code> 变化</li>
+<li><strong>数字信号</strong>：信号在传输过程中 <code>离散</code> 变化<br>&emsp;&emsp;&emsp;<strong>- 优点</strong>：<br>&emsp;&emsp;&emsp;&emsp;1. 抗干扰能力强<br>&emsp;&emsp;&emsp;&emsp;2. 适合远距离传输<br>&emsp;&emsp;&emsp;&emsp;3. 有利于安全性<br>&emsp;&emsp;&emsp;&emsp;4. 适合多媒体信息传输<br><img src="/images/%E4%BF%A1%E5%8F%B7.png" alt="ex: "></li>
+</ul>
+<h2 id="信号带宽-H"><a href="#信号带宽-H" class="headerlink" title="信号带宽 (H)"></a><strong>信号带宽 (H)</strong></h2><p><code>信号能量</code> 所集中的 <code>频率范围</code>，记为H。<br>H = 4000 - 3200 = 800</p>
+<h2 id="信道带宽"><a href="#信道带宽" class="headerlink" title="信道带宽"></a><strong>信道带宽</strong></h2><p><strong>信道允许传输信号的频率范围，单位为Hz。</strong></p>
+<blockquote>
+<p>例：语音信号占用的频谱为300~3400Hz，那么带宽为:<br>H = 3400 - 300 = 3100Hz</p>
+</blockquote>
+<ul>
+<li>信道：传输信号的一条通路。一条物理线路可同时服用 <strong>多个</strong> 信道</li>
+<li>信号率：</li>
+<li>数据率：信道每秒最多传输的二进制位数，单位为bps</li>
+</ul>
+<h3 id="信道带宽与数据率的关系"><a href="#信道带宽与数据率的关系" class="headerlink" title="信道带宽与数据率的关系"></a><strong>信道带宽与数据率的关系</strong></h3><p><strong>奈奎斯特定理 (无噪声信道)</strong></p>
+<blockquote>
+<p>C = 2H log_2L   (bps)</p>
+</blockquote>
+<p>C 为信道的数据率（容量）；H为信道带宽；L为数字信号的离散取值数目</p>
+<p><strong>香农定理 (有噪声信道，L不受限)</strong></p>
+<blockquote>
+<p>C = H log_2(1+S/N)   (bps)</p>
+</blockquote>
+<p>S为信号功率，N为噪音功率，S/N为信噪比</p>
+<blockquote>
+<p>例：H = 4000Hz，S/N = 1023，L = 8；求C<br>    1. 由 <strong>奈奎斯特定理</strong>：<br>    &emsp;&emsp;C = 2H log_2L = 2 * 4000 log_28 = 24000   (bps)<br>    2. 由 <strong>香农定理</strong>：<br>    &emsp;&emsp;C = H log_2(1+S/N) = 4000 log_2(1+1023) = 40000bps<br>    所以信道最大数据率为24000bps</p>
+</blockquote>
+<h3 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a><strong>波特率</strong></h3><p>又称码元速率，是指每秒传输码元的数目，单位为波特(Baud)</p>
+<ul>
+<li>若码元的离散取值数目为L，波特率为B，数据率为C，则：<blockquote>
+<p>C = B log_2L</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="数字信号的编码"><a href="#数字信号的编码" class="headerlink" title="数字信号的编码"></a><strong>数字信号的编码</strong></h2><p>数字信号的编码：用何种物理信号来表示 “0” 和 “1”</p>
+<h3 id="非归零编码-NRZ"><a href="#非归零编码-NRZ" class="headerlink" title="非归零编码(NRZ)"></a><strong>非归零编码(NRZ)</strong></h3><p><img src="/images/NRZ.png" alt="ex: "><br>以 <code>高</code> 电平表示 <code>0</code>，<code>低</code> 电平表示 <code>1</code>，反之亦然。 </p>
+<ul>
+<li>优点：编 / 译码简单</li>
+<li>缺点：内部不含 <code>时钟信号</code>，收 / 发端 <code>同步</code> 困难</li>
+<li>用途：计算机内部或低速数据通信</li>
+</ul>
+<h3 id="曼彻斯特编码"><a href="#曼彻斯特编码" class="headerlink" title="曼彻斯特编码"></a><strong>曼彻斯特编码</strong></h3><p><img src="/images/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81.png" alt="ex: "><br>每一次中间有一次跳变，既表示 <code>数据</code>，又作为 <code>同步信号</code><br><strong>从高电平 -&gt; 低电平表示 <code>0</code>，从低电平 -&gt; 高电平表示 <code>1</code></strong></p>
+<ul>
+<li>优点：<ol>
+<li>内部自含 <code>时钟</code>，收 / 发端 <code>同步</code> 容易</li>
+<li>抗干扰能力强</li>
+</ol>
+</li>
+<li>缺点：<ol>
+<li>编 / 译码较复杂</li>
+<li>占用更多的信道带宽，在同样的波特率的情况下，要比非归零编码多占用一倍<code>信道带宽</code></li>
+</ol>
+</li>
+<li>用途：802.3局域网（以太网）</li>
+</ul>
+<h3 id="差分曼彻斯特编码"><a href="#差分曼彻斯特编码" class="headerlink" title="差分曼彻斯特编码"></a><strong>差分曼彻斯特编码</strong></h3><p>每一位中间有一次跳变，但这种跳变 <code>仅</code> 作为 <code>同步信号</code>，不表示 <code>数据</code><br><code>数据值</code> 通过每位 <code>开始</code> 时 <code>有无跳变</code> 来表示；有跳变表示 <code>0</code>，无跳变表示 <code>1</code> </p>
+<ul>
+<li>优点：<ol>
+<li>内部自含 <code>时钟</code>，收 / 发端 <code>同步</code> 容易</li>
+<li>比曼彻斯特编码的 <code>抗干扰能力</code> 更强</li>
+</ol>
+</li>
+<li>缺点：NRZ<ol>
+<li>编 / 译码较复杂</li>
+<li>同样需要多占用一倍 <code>信道带宽</code></li>
+</ol>
+</li>
+<li>用途：802.5局域网（令牌环网）</li>
+</ul>
+<h2 id="数据同步方式"><a href="#数据同步方式" class="headerlink" title="数据同步方式"></a><strong>数据同步方式</strong></h2><ul>
+<li>同步：<code>接收端</code> 按照 <code>发送端</code> 发送代码的 <code>频率</code> 和 <code>起止时间</code> 来接收数据。</li>
+<li>同步方式主要有两种：</li>
+</ul>
+<ol>
+<li><strong>字符同步（异步通信）</strong><br> 仅针对 <code>一个字符</code> 内所含的二进制位进行同步<ul>
+<li>优点：被限制在一个字符内，不产生太大的积累误差。因此对同步精度要求不高，<code>同步容易</code>。</li>
+<li>缺点：每个字符均有起始 / 停止位，因而 <code>传输效率</code> 较低 </li>
+<li>适用：低速通信</li>
+</ul>
+</li>
+<li><strong>位同步（同步通信）</strong><br> 针对<code>一个数据块</code>内所含的二进制位进行同步<ul>
+<li>优点：每个数据块仅需要2个同步位模式的额外开销，因而<code>传输效率</code>高 </li>
+<li>缺点：由于一个数据块所含位数较多，易产生时钟漂移积累误差而导致数据出错，因此对同步精度求高，<code>同步困难</code>。 <blockquote>
+<p>例：设数据块为1K字节，则每次连续同步位数为1024x8=8192位。 </p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>实现同步的两种方法：<ol>
+<li>外同步：为发送端和接收端提供专门的同步时钟信号</li>
+<li>内同步：不单独发同步时钟信号，而是将同步信号嵌入数据编 码内部， 如曼彻斯特编码或差分曼彻斯特编码。 </li>
+</ol>
+</li>
+</ul>
+<h2 id="多路复用技术"><a href="#多路复用技术" class="headerlink" title="多路复用技术"></a><strong>多路复用技术</strong></h2><ul>
+<li>将多个信道复用在一条物理线路上，使一条物理线路能够同时传输多路数据信号</li>
+<li>分类：<ol>
+<li><strong>频分多路复用 (FDM)</strong><br> &emsp;&nbsp;将一条物理线路的总带宽分割成若干个较小带宽的子信道，每个子信道传输一路信号。 </li>
+<li><strong>时分多路复用 (TDM)</strong><br> &emsp;&nbsp;将一条高速物理线路的传输时间划分成若干<code>相等的</code>时间片，<code>轮流</code>为多路信号使用<br> &emsp;&nbsp;数据不丢失条件：C_H &gt;= sum(C_i) （C_H 为高速线路容量（数据率）C_i 为低速线路容量）<pre><code>缺点：`没有数据`传输的低速线路`仍`分配时间片，可能`出现空闲的时间片`，浪费信道带宽</code></pre></li>
+<li><strong>统计时分多路复用 (统计TDM)</strong><ul>
+<li>采用<code>动态分配</code>时间策略，即<code>有数据要传输</code>的线路<code>才分配</code>时间片</li>
+<li>允许 CH &lt; sum(Ci)</li>
+<li>优点：不会出现空闲的时间片，信道利用率高</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E6%A6%82%E8%BF%B0/">概述</a>
         </h1>
 
@@ -105,7 +329,7 @@
         <span class="post-time">
           2019-10-20
         </span><span class="post-category">
-            <a href="/categories/%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%85%B6%E8%AE%A1%E7%AE%97/">网络及其计算</a>
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
             </span>
         </div>
     </header>
