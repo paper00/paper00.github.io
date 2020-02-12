@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="网络层"/><meta name="keywords" content="keywords" /><link rel="alternate" href="https://github.com/paper00/paper00.github.io/issues" title="Euphoria"><link rel="shortcut icon" type="image/x-icon" href="/cookie128px.ico?v=2.11.0" />
+<link rel="canonical" href="https://paper00.github.io/2019/10/20/计算机网络/网络层/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>网络层 - Euphoria</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Euphoria</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Euphoria</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">网络层
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#网络层功能"><span class="toc-text">网络层功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络层与数据链路层的区别"><span class="toc-text">网络层与数据链路层的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络地址"><span class="toc-text">网络地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络层协议涉及的主要内容"><span class="toc-text">网络层协议涉及的主要内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由选择"><span class="toc-text">路由选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#扩散法（洪泛法）"><span class="toc-text">扩散法（洪泛法）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态路由算法"><span class="toc-text">动态路由算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-热土豆算法"><span class="toc-text">1. 热土豆算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-逆向自学习算法"><span class="toc-text">2. 逆向自学习算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-D-V算法"><span class="toc-text">3. D-V算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-L-S算法"><span class="toc-text">4. L-S算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由协议"><span class="toc-text">路由协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#路由信息协议（RIP）"><span class="toc-text">路由信息协议（RIP）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开放最短路由优先协议（OSPF）"><span class="toc-text">开放最短路由优先协议（OSPF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#边界网关协议（BGP）"><span class="toc-text">边界网关协议（BGP）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP协议"><span class="toc-text">IP协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-text"></span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="网络层功能"><a href="#网络层功能" class="headerlink" title="网络层功能"></a><strong>网络层功能</strong></h2><ul>
+<li>管理数据通信</li>
+<li>在 <code>数据链路层</code> 的支持下，将 <code>报文分组</code> 从 <code>源节点</code> 传输到 <code>目的节点</code><br>&emsp;&emsp;<code>报文(message)</code> 是网络中交换与传输的数据单元<br>&emsp;&emsp;(报文包含了将要发送的完整的数据信息，长度不限且可变)<br>&emsp;&emsp;<code>分组</code> 是在Internet中传送数据的单元</li>
+</ul>
+<h2 id="网络层与数据链路层的区别"><a href="#网络层与数据链路层的区别" class="headerlink" title="网络层与数据链路层的区别"></a><strong>网络层与数据链路层的区别</strong></h2><ul>
+<li>数据链路层：仅完成 <code>相邻节点</code> 之间的 <code>数据传输</code></li>
+<li>网络层：完成 <code>源节点</code> 到 <code>目的节点</code> 之间的 <code>数据传输</code></li>
+</ul>
+<h2 id="网络地址"><a href="#网络地址" class="headerlink" title="网络地址"></a><strong>网络地址</strong></h2><ul>
+<li>是 <code>主机</code> 或 <code>节点</code> 的标示</li>
+<li>是 <code>结构化地址</code>，由 <code>网络号</code> 和 <code>主机号</code> 组成<br>&emsp;&emsp;网络地址 = 网络号 + 主机号</li>
+</ul>
+<h2 id="网络层协议涉及的主要内容"><a href="#网络层协议涉及的主要内容" class="headerlink" title="网络层协议涉及的主要内容"></a><strong>网络层协议涉及的主要内容</strong></h2><ul>
+<li>网络服务方式</li>
+<li>分组格式</li>
+<li>路由选择</li>
+<li>子网划分</li>
+<li>异构网络互联</li>
+</ul>
+<h2 id="路由选择"><a href="#路由选择" class="headerlink" title="路由选择"></a><strong>路由选择</strong></h2><h3 id="扩散法（洪泛法）"><a href="#扩散法（洪泛法）" class="headerlink" title="扩散法（洪泛法）"></a>扩散法（洪泛法）</h3><p><del>路由表一般结构：</del><br><del>目的节点   |   最短距离   |   最佳输出链路   |   …… ~</del></p>
+<h3 id="动态路由算法"><a href="#动态路由算法" class="headerlink" title="动态路由算法"></a><strong>动态路由算法</strong></h3><h4 id="1-热土豆算法"><a href="#1-热土豆算法" class="headerlink" title="1. 热土豆算法"></a>1. <strong>热土豆算法</strong></h4><p>基本思想：</p>
+<ul>
+<li>当节点收到一个分组后，选择一条 <code>输出队列</code> 最短的 <code>链路</code> 尽快地将其 <code>转发</code> 出去，而 <strong>不管</strong> <code>目的节点</code> 位于何方。</li>
+<li>优点：尽量 <strong>提高</strong> <code>链路</code> 的 <code>利用率</code></li>
+<li>缺点：盲目性</li>
+<li>改进：与 <code>固定式路由</code> 算法混合使用<br>  &emsp;&emsp;首先根据固定路由算法选择可能的输出链路，并给这些链路赋上一定权值<br>  &emsp;&emsp;再根据链路队列长度，附上一定权值<br>  &emsp;&emsp;选择这两个权值之和最小的链路</li>
+</ul>
+<h4 id="2-逆向自学习算法"><a href="#2-逆向自学习算法" class="headerlink" title="2. 逆向自学习算法"></a>2. <strong>逆向自学习算法</strong></h4><ul>
+<li>每个节点保存一张转发表(路由表)，该表主要字段包括：</li>
+<li>……&emsp;&emsp;|&emsp;&emsp;目的地址&emsp;&emsp;|&emsp;&emsp;输出端口&emsp;&emsp;|&emsp;&emsp;时间&emsp;&emsp;|&emsp;&emsp;……</li>
+<li>初始时转发表为空</li>
+</ul>
+<ol>
+<li>当 <code>数据包</code> 到达 <code>节点</code> 时<br>将数据包的 <code>源地址</code> 视为 <code>转发表</code> 的 <code>目的地址</code>，输入端口视为转发表的输出端口；如果转发表存在该目的地址，则刷新该记录；如果转发表不存在该目的地址，则增加一条新记录</li>
+<li>根据数据包的目的地址，查询转发表；如果找到，则从指定的输出端口转发；如果找不到，则广播。</li>
+<li>定期扫描转发表，<code>清除</code> 过时的记录。</li>
+</ol>
+<h4 id="3-D-V算法"><a href="#3-D-V算法" class="headerlink" title="3. D-V算法"></a>3. <strong>D-V算法</strong></h4><ul>
+<li>距离向量路由算法</li>
+<li>基本思想：<br>&emsp;&emsp;每个节点都保存一张动态路由表。与固定式路由选择不同的是：<code>相邻节点</code> 之间 <code>定期交换</code>路由信息（如每隔30秒），并根据最新路由信息，刷新路由表。<br><img src="/images/ex2.jpg" alt="路由表"><br>&emsp;&emsp;目的节点 + 最短距离 + 最佳输出链路</li>
+<li>初始化：<br>&emsp;&emsp;当节点加入网络时，获取直接相连</li>
+<li>优点：<br>&emsp;&emsp;仅 <code>相邻节点</code> 交换路由信息，所以 <code>运算量</code> 和交换的 <code>信息量</code> 较 <strong>小</strong></li>
+<li>缺点：<br>&emsp;&emsp;收敛速度 <strong>慢</strong>，对网络变化需经若干周期才能做出反应。特别是对 <code>好消息反应快</code>，对 <code>坏消息反应迟钝</code>。</li>
+</ul>
+<h4 id="4-L-S算法"><a href="#4-L-S算法" class="headerlink" title="4. L-S算法"></a>4. <strong>L-S算法</strong></h4><ul>
+<li>链路状态路由选择算法</li>
+<li>基本思想：<br>&emsp;&emsp;<code>所有</code> 节点 <code>相互</code> 交换路由信息，并根据最新路由信息刷新路由表</li>
+<li>L-S算法描述：<br>&emsp;&emsp;发现邻居节点<br>&emsp;&emsp;&emsp;&emsp;当一个 <code>路由器</code> 启动以后，通过向每个 <code>端口</code> 发送特殊的HELLO分组来 <code>发现</code> 邻居节点；收到HELLO<br>&emsp;&emsp;&emsp;&emsp;分组的路由器应返回一个<br>&emsp;&emsp;???</li>
+</ul>
+<h2 id="路由协议"><a href="#路由协议" class="headerlink" title="路由协议"></a><strong>路由协议</strong></h2><h3 id="路由信息协议（RIP）"><a href="#路由信息协议（RIP）" class="headerlink" title="路由信息协议（RIP）"></a><strong>路由信息协议（RIP）</strong></h3><ul>
+<li>RIP采用D-V算法，用于小规模网络</li>
+<li>技术特点<br>&emsp;&emsp;距离：下跳数，允许对下跳数加权<br>&emsp;&emsp;路由信息交换周期：缺省值为30秒<br>&emsp;&emsp;无穷计数问题：RIP选择16为∞</li>
+</ul>
+<h3 id="开放最短路由优先协议（OSPF）"><a href="#开放最短路由优先协议（OSPF）" class="headerlink" title="开放最短路由优先协议（OSPF）"></a><strong>开放最短路由优先协议（OSPF）</strong></h3><ul>
+<li>OSPF采用 <code>L-S算法</code>，是目前Internet的主要 <code>内部网关协议</code></li>
+<li>自治系统（AS）</li>
+<li>OSPF技术特点<br>&emsp;&emsp;距离：允许网络管理员选择多种“距离”度量，如延迟、数据率、通信费用、下跳数等。<br>&emsp;&emsp;？？？</li>
+</ul>
+<h3 id="边界网关协议（BGP）"><a href="#边界网关协议（BGP）" class="headerlink" title="边界网关协议（BGP）"></a><strong>边界网关协议（BGP）</strong></h3><ul>
+<li>内部网关协议（IGP）与外部网关协议（EGP）的区别：<br>&emsp;&emsp;IGP注重效率<br>&emsp;&emsp;EGP注重策略</li>
+<li>作为Internet外部网关协议，用于不同AS之间的路由选择</li>
+<li>技术特点：<br>&emsp;&emsp;BGP采用 <code>路经向量路由</code> 算法，路由表中记录到达目的地的 <code>确切路由</code>，而不是 <code>最短距离</code>，从而解决“无穷<br>&emsp;&emsp;级数”问题。</li>
+</ul>
+<h3 id="IP协议"><a href="#IP协议" class="headerlink" title="IP协议"></a><strong>IP协议</strong></h3><ul>
+<li>IP协议是Internet体系结构的<code>核心协议</code>，已成为连接<code>异构网络</code>的工业标准。</li>
+<li>IP提供<code>非面向连接</code>的数据报服务，每个IP分组长度 &lt;= 64K字节，<code>传输效率高</code>，但不能保证分组可靠的、按序到达。</li>
+<li>IP协议需要路由协议，ICMP, ARP, RARP 等协议支持。</li>
+<li><strong>服务类型</strong>：<br>&emsp;&emsp;告诉路由器该IP分组想获得何种服务，包括优先级、延迟、吞吐量和可靠性要求。该字段共<code>有8位</code>。  ß<br>&emsp;&emsp;前3位：表示优先权<br>&emsp;&emsp;中3位 (D, T, R)：表示想获得的服务质量（延迟、吞吐量、可靠性）<br>&emsp;&emsp;后2位：保留<br>&emsp;&emsp;注：几乎所有路由器都 <code>忽略</code> “服务类型”字段</li>
+<li><strong>总长度</strong>：表示整个IP分组长度，包括报头和数据部分：该字段16位，所以IP分组最大长度 2^16 - 1 = 65535字节（大概 64KB)</li>
+<li><strong>标识</strong>：16位，用来表示一个分组，统一分组的不同分段具有相同的标识。</li>
+<li><strong>标志</strong>：3位</li>
+</ul>
+<ol>
+<li>第一位：保留</li>
+<li>第二位：DF位 (Don’t Fragment)，若DF = 1，则IP分组在传输中不允许分段，如目的主机从远方引导启动机器的影响文件，目的主机无能力重组分组。若DF = 0, 则允许分段。</li>
+<li>第三位：MF位 (More Fragment)，若MF = 0，则该分段是原分组的最后一个分段。</li>
+</ol>
+<ul>
+<li>特殊的IP地址：<br>&emsp;&emsp;32位全 “0” ：表示本地地址，进党初始启动时使用，以后不再使用<br>&emsp;&emsp;32位全 ”1“ ：本地<br>&emsp;&emsp;？？？</li>
+<li>内部IP地址（私用地址）<br>&emsp;&emsp;A类：10.0.0.0（1个网络）<br>&emsp;&emsp;B类：172.16.0.0 - 172.31.0.0（16个网络）<br>&emsp;&emsp;C类：192.168.0.0 - 192.168.255.0（256个网络）<br>Internet的 <code>路由器</code> 不会<code>转发</code> 目的地址为 <code>上述</code> 地址的IP地址，即私用地址不能穿越内部网络边界<br>路由器IP寻址<br>路由器根据 <code>目的网络号</code> 而不是 <code>目的IP地址</code> 转发IP分组，以减少路由表的信息量。<br>当一个 <code>分组</code> 到达时，<code>路由器</code> 获取它的 <code>网络号</code>。如果是本网，则该IP分组直接发送到指定主机；如果是其他网络，则根据 <code>路由表</code> 转发到下一个 <code>路由器</code>。<br>如果 <code>路由表</code> 找不到目的网络，则将该分组转发到 <code>“缺省链路”</code><br>IP协议用于分组传输，Internet还需要一些控制协议，包括 ICMP, ARP, RARP等<br>ICMP协议<br>用于报告IP协议运行过程中意外事件的发生，也用于 <code>网络测试</code>。<br>ICMP消息主要有12中，这些ICMP消息封装在IP分组中传输。因此，ICMP消息可视为 ”IP控制分组“<br>主要ICMP消息：<br>目的不可达：当目的路由器无法找到目的主机，或者DF为“1”的分组经过MTU较小的网络二无法传输时，返回该消息<br>超时<br>参数出错</li>
+</ul>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+      </div>
+      
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2019/10/20/Docker/Docker/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Docker</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">
+        <span class="next-text nav-default">数据链路层</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:yunduanling@naver.com" target="_blank" rel="noopener" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/paper00" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="https://github.com/paper00/paper00.github.io/issues" target="_blank" rel="noopener" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">paper</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
