@@ -98,6 +98,130 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2020/02/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP:IP%20OSI%E6%A8%A1%E5%9E%8B/">TCP/IP 之 OSI 模型</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-02-11
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="OSI-模型传输数据过程"><a href="#OSI-模型传输数据过程" class="headerlink" title="OSI 模型传输数据过程"></a>OSI 模型传输数据过程</h2><p><img src="/images/OSI2.png" alt="OSI模型"></p>
+<ol>
+<li>应用层<ul>
+<li>OS 上的应用程序</li>
+<li>标准 HTTP 80</li>
+<li>标准 HTTPS 443</li>
+<li>标准 FTP 21</li>
+</ul>
+</li>
+<li>表示层<ul>
+<li>转化格式 (PNG JPEG AVI MP4 等)</li>
+<li>加密</li>
+</ul>
+</li>
+<li>会话层<ul>
+<li>建立 session、管理、维护</li>
+</ul>
+</li>
+<li>传输层<ul>
+<li>方式 -&gt; TCP / UDP 协议</li>
+<li>ssh 服务</li>
+</ul>
+</li>
+<li>网络层<ul>
+<li>路由器（它会二次封包）</li>
+<li>IP 协议</li>
+</ul>
+<ol>
+<li>为每一次计算机分配一个 IP 地址</li>
+<li>确定哪些地址在<code>同一个子网</code>内</li>
+</ol>
+<ul>
+<li>公网 IP</li>
+<li>私网 IP</li>
+</ul>
+<ol>
+<li>A 类地址：10.0.0.0—10.255.255.255；</li>
+<li>B 类地址：172.16.0.0—172.31.255.555；</li>
+<li>C 类地址：192.168.0.0—192.168.255.255；</li>
+</ol>
+<ul>
+<li>👇 IP 地址</li>
+<li>(110.47.189.108)</li>
+</ul>
+</li>
+<li>数据链路层<ul>
+<li>交换机 或者 HUB?</li>
+<li>👇 MAC 地址</li>
+<li>(fa:aa:14:91:3d:be) </li>
+</ul>
+</li>
+<li>物理层<ul>
+<li>(010100010010199)</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>应用层 ~ 会话层 ：数据处理</p>
+</blockquote>
+<blockquote>
+<p>传输层 ~ 物理层 ：网络通信</p>
+</blockquote>
+<h2 id="知识整理"><a href="#知识整理" class="headerlink" title="知识整理"></a>知识整理</h2><ul>
+<li>如果在同一个<code>子网</code>下，采用<code>广播</code>的方式传播</li>
+<li>否则，使用<code>路由</code>的方式</li>
+<li>MAC 地址只与厂商有关系，<code>不能</code>判断哪些 MAC 地址处于同一个<code>子网</code>，所以需要<code>网络层</code>的支持</li>
+<li>网络层出现之后，每台计算机有两个地址，一种是 <code>MAC 地址</code>，另一种是<code>网络地址</code><ol>
+<li><code>网络地址</code>能够确定该计算机所在的<code>子网络</code></li>
+<li><code>MAC 地址</code>是绑定在<code>网卡</code>上, 能够把<code>数据包</code>发送到<code>子网络</code>中的<code>目标网卡</code>上</li>
+</ol>
+</li>
+<li>所以先处理网络地址，再处理 MAC 地址，</li>
+<li>网络层的 IP 协议中 (最广泛ipv4)<br><img src="/images/ip.png" alt="IP"><ol>
+<li>8 + 8 + 8 + 8 = 32位</li>
+<li>255.255.255.0（子网掩码）</li>
+</ol>
+</li>
+<li><code>IP 协议</code>的主要作用<ol>
+<li>为每一次计算机分配一个 IP 地址</li>
+<li>确定哪些地址在<code>同一个子网</code>内</li>
+</ol>
+</li>
+<li>一般情况下，对方的 IP 是已知的，但 MAC 地址是不知道的。</li>
+<li>如果两台计算机不在同一个<code>子网络</code>：因为无法知道对方的 MAC 地址，只能把数据包传送到两个子网络连接的网关取处理</li>
+<li>如果两台计算机在同一个<code>子网络</code>：可以用 <code>ARP 协议</code></li>
+<li><code>ARP 协议</code> 是根据 <code>IP 地址</code> 获取 <code>MAC 地址</code>的一个 TCP/IP 协议<ol>
+<li>以太网的数据包中包含了目标主机的 IP 地址，但不包含 MAC 地址</li>
+<li>广播的方式传递数据包时，在子网下的所有主机都会受到数据包</li>
+<li>每个主机判断数据包中的 IP 地址取出来，和自己的 IP 地址做比较。如果相同，则把自己的 MAC 地址上报上去；如果不相同，则丢弃这个包；</li>
+</ol>
+</li>
+<li>每一个数据包都会发送到主机的特定端口，不同的程序就会去到自己所需要的数据包<br><img src="/images/%E4%BC%A0%E8%BE%93%E5%B1%82&%E7%BD%91%E7%BB%9C%E5%B1%82.png" alt="IP"></li>
+<li>UDP 协议，可靠性差，发送数据包之后不知道对方有没有收到<ol>
+<li>无连接</li>
+<li>不可靠</li>
+<li>实时性强</li>
+<li>一对一，多对一，多对多</li>
+<li>资源消耗较少</li>
+</ol>
+</li>
+<li>TCP 协议，可靠，三次握手<ol>
+<li>面向连接</li>
+<li>可靠</li>
+<li>点对点</li>
+<li>资源消耗高</li>
+</ol>
+</li>
+</ul>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/01/21/Java/Spring%20Boot%20%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/">Spring Boot 基于注解的面向切面编程</a>
         </h1>
 
@@ -269,88 +393,6 @@
 </li>
 </ol>
 <h3 id="举例：MDB"><a href="#举例：MDB" class="headerlink" title="举例：MDB"></a>举例：MDB</h3><p>MDB通过消息方式为调用者提供服务<br>MDB组件实际使用过程中，其客户并不拥有MDB组件的远程引用，而是直接将调用消息发送到特定消息队列，因而客户的调用不强调MDB组件的运行。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></p>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/24/scrap/%E5%90%8D%E8%AF%8D%E8%A7%A3%E6%9E%90/">名词解析</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-24
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="计算机网络名词解析"><a href="#计算机网络名词解析" class="headerlink" title="计算机网络名词解析"></a>计算机网络名词解析</h2><blockquote>
-<p>网关 (Gateway)</p>
-</blockquote>
-<ul>
-<li>又称<code>网间连接器</code>、<code>协议转换器</code></li>
-<li>网关在<code>网络层</code>以上实现<code>网络互连</code>，<strong>是复杂的网络互连<code>设备</code></strong>，仅用于两个高层协议<code>不同的网络</code>互连。</li>
-<li>网关既可以用于<code>广域网</code>互连，也可以用于<code>局域网</code>互连。 </li>
-<li>网关是一种充当转换重任的计算机系统或设备。使用在不同的通信协议、数据格式或语言，甚至体系结构完全不同的两种系统之间，网关是一个翻译器。</li>
-<li>与网桥只是简单地传达信息不同，<code>网关</code>对收到的信息要<code>重新打包</code>，以<code>适应</code>目的系统的需求。同层–应用层。</li>
-</ul>
-<blockquote>
-<p>网卡    </p>
-</blockquote>
-<ul>
-<li>是一块被设计用来<code>允许</code>计算机在<code>计算机网络</code>上进行<code>通讯</code>的<code>计算机硬件</code></li>
-<li>由于其拥有<code>MAC地址</code>，因此属于OSI模型的第 2 层 (数据链路层)</li>
-</ul>
-<blockquote>
-<p>路由器</p>
-</blockquote>
-<ul>
-<li>是连接两个或多个网络的硬件设备，在<code>网络</code>间起<code>网关</code>的作用</li>
-<li>路由器可以分析各种不同类型网络传来的数据包的目的地址，把非TCP/IP网络的地址转换成TCP/IP地址</li>
-<li>再根据选定的路由算法把各数据包按最佳路线传送到指定位置</li>
-<li>所以路由器可以把非TCP/ IP网络连接到因特网上 </li>
-</ul>
-<blockquote>
-<p>Hub (集线器)</p>
-</blockquote>
-<ul>
-<li><code>多端口</code>的<code>转发器</code></li>
-<li>在以HUB为中心设备时，即使网络中某条线路产生了故障，并不影响其它线路的工作</li>
-<li>所以 HUB 在<code>局域网</code>中得到了广泛的应用</li>
-<li>用Hub组建的<code>网络</code>是基于<code>共享</code>的<code>原理</code>的</li>
-<li>Hub是<strong>“中心”</strong>的意思</li>
-</ul>
-<blockquote>
-<p>嗅探</p>
-</blockquote>
-<ul>
-<li>可以<code>窃听</code> <code>网络</code>上流经的<code>数据包</code></li>
-<li>用 Hub 组建的<code>网络</code>是基于<code>共享</code>的<code>原理</code>的，<code>局域网</code>内所有的计算机都<code>接收相同的数据包</code>， 而<code>网卡</code>构造了硬件的“过滤器“ 通过识别<code>MAC地址</code>过滤掉和自己无关的信息， <code>嗅探</code>程序只需<code>关闭</code>这个<code>过滤器</code>， 将网卡设置为<code>“混杂模式”</code>就可以进行嗅探。</li>
-<li>用交换机 switch 组建的网络是基于“交换“原理的 ，交换机<code>不是</code>把<code>数据包</code>发到<code>所有</code>的端口上， 而是发到<code>目的网卡</code>所在的端口。</li>
-</ul>
-<blockquote>
-<p>以太网</p>
-</blockquote>
-<ul>
-<li>目前应用最普遍的<code>局域网技术</code></li>
-<li>它规定了包括物理层的连线、电子信号和介质访问层<code>协议</code>的内容。</li>
-<li>802.3 协议的具体实现</li>
-</ul>
-<blockquote>
-<p>Wifi </p>
-</blockquote>
-<ul>
-<li>无线局域网</li>
-<li>802.11 协议的具体实现</li>
-</ul>
-<blockquote>
-<p>ARP欺骗 (ARP毒化)</p>
-</blockquote>
-<ul>
-<li>是针对<code>以太网地址解析协议</code>的一种<code>攻击技术</code></li>
-<li>通过<code>欺骗</code>局域网内访问者PC的<code>网关MAC地址</code>，使访问者PC错以为攻击者更改后的MAC地址是网关的MAC，<code>导致网络不通</code></li>
-</ul>
 
         </div></article>
       <nav class="pagination"><a class="next" href="/page/2/">
