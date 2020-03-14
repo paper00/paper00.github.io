@@ -98,6 +98,46 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/20/Docker/Docker/">Docker</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/Docker/">Docker</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="Docker-简介"><a href="#Docker-简介" class="headerlink" title="Docker 简介"></a><strong>Docker 简介</strong></h3><ul>
+<li>Docker 是一个开源的 <code>应用容器引擎</code>，基于 Go 语言并遵从Apache2.0协议开源。</li>
+<li>Docker可以让开发者打包他们的 <code>应用</code> 以及 <code>依赖包</code> 到一个轻量级、可移植的 <code>容器</code> 中，然后 <code>发布</code> 到任何流行的 <strong><strong>Linux</strong></strong> 机器上，也可以实现虚拟化。</li>
+<li>Linux容器的封装</li>
+</ul>
+<h3 id="Docker的应用场景"><a href="#Docker的应用场景" class="headerlink" title="Docker的应用场景"></a><strong>Docker的应用场景</strong></h3><ul>
+<li>Web应用的自动化 <code>打包</code> 和 <code>发布</code></li>
+<li>自动化测试和持续集成、发布</li>
+<li>在服务性环境中 <code>部署</code> 和调整数据库或其他的后台应用</li>
+<li>微服务的架构</li>
+</ul>
+<h3 id="Docker-容器和虚拟机的对比"><a href="#Docker-容器和虚拟机的对比" class="headerlink" title="Docker 容器和虚拟机的对比"></a><strong>Docker 容器和虚拟机的对比</strong></h3><ul>
+<li>虚拟化<br>&emsp;&emsp;虚拟机的虚拟化可能需要 <code>硬件</code> 的支持<br>&emsp;&emsp;容器基于 <code>操作系统</code> 的级别进行虚拟化</li>
+<li>Docker 容器</li>
+</ul>
+<ol>
+<li>更少占用</li>
+<li>启动更快</li>
+<li>一致的环境</li>
+<li>可以在任何地方运行</li>
+</ol>
+<ul>
+<li>可以在同一个 <code>操作系统</code> 上运行很多的 <code>容器</code>，轻量化.</li>
+</ul>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%B1%82/">网络层</a>
         </h1>
 
@@ -502,37 +542,13 @@
 </ol>
 
         </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/scrap/json%E4%B8%8Ebson%E7%9A%84%E5%8C%BA%E5%88%AB/">json与bson的区别</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-20
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="bson"><a href="#bson" class="headerlink" title="bson"></a><strong>bson</strong></h2><p><code>bson</code>是由10gen开发的一个<code>数据格式</code>，目前主要用于<code>mongoDB</code>中，是<code>mongoDB</code>的数据存储格式，<code>bson</code>基于<code>json</code>格式</p>
-<h2 id="bson主要会实现以下三点目标："><a href="#bson主要会实现以下三点目标：" class="headerlink" title="bson主要会实现以下三点目标："></a><strong>bson主要会实现以下三点目标：</strong></h2><ol>
-<li>更快的遍历速度<br><code>bson</code>对<code>json</code>的一大改进就是，它会将<code>json</code>的每一个元素的<code>长度</code>放在元素的<code>头部</code>，这样你只需要读取到元素长度就能直接seek到指定的点上进行读取了。</li>
-<li>操作更简易<br>对<code>json</code>来说，数据存储是无类型的，比如你要修改基本一个值，从9到10，由于从一个字符变成了两个，所以可能其后面的所有内容都需要往后移一位才可以。<br>而使用<code>bson</code>，你可以指定这个列为数字列，那么无论数字从9长到10还是100，我们都只是在存储数字的那一位上进行修改，不会导致数据总长变大。<br>当然，在mongoDB中，如果数字从整形增大到长整型，还是会导致数据总长变大的。</li>
-<li>增加了额外的数据类型<br><code>bson</code>在其基础上增加了<code>byte array</code>数据类型。这使得二进制的存储不再需要先<code>base64</code>转换后再存成<code>json</code>，大大减少了计算开销和数据大小。<br>当然，在有的时候，<code>bson</code>相对<code>json</code>来说也并没有<code>空间</code>上的优势，比如对 <strong>{“field”:7}</strong>，在<code>json</code>的存储上7只使用了<strong>1个字节</strong>，而如果用<code>bson</code>，那就是至少<strong>4个字节 (32位)</strong></li>
-</ol>
-<h2 id="综上所述："><a href="#综上所述：" class="headerlink" title="综上所述："></a><strong>综上所述：</strong></h2><ul>
-<li>数据结构：<br>  <code>json</code>是像<code>字符串</code>一样存储的，<code>bson</code>是<code>按结构</code>存储的（像数组 或者说struct）</li>
-<li>存储空间：<br>  bson &gt; json</li>
-<li>操作速度：<br>  bson &gt; json<br>  (比如，遍历查找：json需要扫字符串，而bson可以直接定位)</li>
-<li>修改：<br>  json也要大动大移，bson就不需要。</li>
-</ul>
-
-        </div></article>
       <nav class="pagination"><a class="prev" href="/page/2/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
+      </a>
+    <a class="next" href="/page/4/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
       </a>
     </nav></section></div></div>
       </main>

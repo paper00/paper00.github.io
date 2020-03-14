@@ -98,6 +98,83 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2020/03/14/Java/Java%208%20vs%20Java%2011,%20Java%2011%20%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD/">Java 8 vs Java 11, Java 11 的新功能!</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-03-14
+        </span><span class="post-category">
+            <a href="/categories/Java/">Java</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><ul>
+<li>在目前，比较主流的<code>稳定版</code>是<code>Java 8</code>和<code>Java 11</code>（Java 9，10 非稳定版）</li>
+<li><code>Java 11</code>相比<code>Java 8</code>进化了一部分（有些是 Java 9，10 时已引入）</li>
+</ul>
+<h2 id="Java-11-新特性有哪些？"><a href="#Java-11-新特性有哪些？" class="headerlink" title="Java 11 新特性有哪些？"></a>Java 11 新特性有哪些？</h2><h3 id="1-变量类型-var"><a href="#1-变量类型-var" class="headerlink" title="1. 变量类型 var"></a>1. 变量类型 var</h3><ul>
+<li>引入了 <code>var</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 普通变量</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">"paper"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 集合</span></span><br><span class="line"><span class="keyword">var</span> list1 = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list2 = List.of(<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"><span class="keyword">var</span> list3 = List.of(<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// List&lt;List&lt;T&gt;&gt; 嵌套</span></span><br><span class="line"><span class="keyword">var</span> list = List.of(list1, list2, list3);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>var</code> 不能使用的情况，如下：<ol>
+<li>重新赋值另一种类型    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">"paper"</span>;	<span class="comment">// String 类型</span></span><br><span class="line">name = <span class="number">666</span>;		<span class="comment">// int 类型</span></span><br></pre></td></tr></table></figure></li>
+<li>没有初始化<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age;</span><br><span class="line">age = <span class="number">22</span>;</span><br></pre></td></tr></table></figure></li>
+<li>类的<code>成员变量</code></li>
+<li>方法<code>入参</code>类型</li>
+<li><code>返回值</code>类型</li>
+</ol>
+</li>
+</ul>
+<h3 id="2-HTTP-Client-加持"><a href="#2-HTTP-Client-加持" class="headerlink" title="2. HTTP Client 加持"></a>2. HTTP Client 加持</h3><ul>
+<li>位于 java.net.http 包下</li>
+<li>支持<code>发送同步</code>、<code>异步请求</code>，还可以带上<code>自定义请求头</code>（ex：携带 JWT Token 权限信息去请求）</li>
+</ul>
+<ul>
+<li>发送同步请求<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = HttpRequest.newBuilder()</span><br><span class="line">        .uri(URI.create(<span class="string">"https://paper00.github.io/"</span>))</span><br><span class="line">        .GET()</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> response = httpClient.newHttpClient()</span><br><span class="line">        .send(request, HttpResponse.BodyHandlers.ofString());</span><br><span class="line"></span><br><span class="line">System.out.println(response);</span><br></pre></td></tr></table></figure></li>
+<li>发送异步请求<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture&lt;String&gt; future = HttpClient.newHttpClient()</span><br><span class="line">        .sendAsync(request, HttpResponse.BodyHandlers.ofString())</span><br><span class="line">        .thenApply(HttpResponse::body);</span><br><span class="line">System.out.println(<span class="string">"先做别的事情"</span>);</span><br><span class="line">System.out.println(future.get());</span><br></pre></td></tr></table></figure></li>
+<li>可以带自定义请求头<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = HttpRequest.newBuilder()</span><br><span class="line">        .uri(URI.create(<span class="string">"https://paper00.github.io/"</span>))</span><br><span class="line">        .header(<span class="string">"Authorization"</span>, <span class="string">"Bearer eysdjEqoeiwQWeiowoQoieWruqoweE"</span>)</span><br><span class="line">        .GET()</span><br><span class="line">        .build();</span><br><span class="line">    </span><br><span class="line"><span class="keyword">var</span> response = HttpClient.newHttpClient()</span><br><span class="line">        .send(request, HttpResponse.BodyHandlers.ofString());</span><br><span class="line"></span><br><span class="line">System.out.println(response.body());</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-String-处理增强"><a href="#3-String-处理增强" class="headerlink" title="3. String 处理增强"></a>3. String 处理增强</h3><ul>
+<li><code>isBlank()</code></li>
+<li><code>strip()</code> - 去空格</li>
+<li><code>repeat(7)</code></li>
+</ul>
+<h3 id="4-集合增强"><a href="#4-集合增强" class="headerlink" title="4. 集合增强"></a>4. 集合增强</h3><p><code>of()</code> - 创建集合<br><code>copyOf()</code> - 复制集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list0 = List.copyOf(list);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> set = Set.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> set0 = Set.copyOf(set);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> map = Map.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> map0 = Map.copyOf(map);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-函数上编程增强"><a href="#5-函数上编程增强" class="headerlink" title="5. 函数上编程增强"></a>5. 函数上编程增强</h3><p><code>Stream</code> 流中的</p>
+<ul>
+<li><code>takeWhile()</code></li>
+<li><code>dropWhile()</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list0 = list.stream()</span><br><span class="line">        .dropWhile(item -&gt; item.equals(<span class="number">1</span>))   <span class="comment">// 条件</span></span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line">System.out.println(list0);	<span class="comment">// 2, 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-文件读写增强"><a href="#6-文件读写增强" class="headerlink" title="6. 文件读写增强"></a>6. 文件读写增强</h3><p>Files 类</p>
+<ul>
+<li><code>writeString()</code></li>
+<li><code>readString()</code></li>
+</ul>
+<p>InputStream 类</p>
+<ul>
+<li>transferTo()</li>
+</ul>
+<p>支持直接通过字符串<code>String</code>类读取写入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取</span></span><br><span class="line">Path path = Paths.get(<span class="string">"/Users/paper/test.txt"</span>);</span><br><span class="line">String content = Files.readString(path, StandardCharsets.UTF_8);</span><br><span class="line"><span class="comment">// 写入</span></span><br><span class="line">String str = <span class="string">"abc"</span>;</span><br><span class="line">Files.writeString(path, str, StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-支持-java-源文件直接运行！"><a href="#7-支持-java-源文件直接运行！" class="headerlink" title="7. 支持 .java 源文件直接运行！"></a>7. 支持 .java 源文件直接运行！</h3><ul>
+<li>省去以前 javac 编译源文件过程，可以直接通过<code>java 指令</code>运行 .java 源文件<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java hello.java</span><br></pre></td></tr></table></figure>
+和<code>python</code>源文件的运行有点像</li>
+</ul>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/02/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP:IP%20OSI%E6%A8%A1%E5%9E%8B/">TCP/IP 之 OSI 模型</a>
         </h1>
 
@@ -362,40 +439,6 @@
 <blockquote>
 <p><a href="https://blog.csdn.net/Crazy_xym/article/details/100180398" target="_blank" rel="noopener">参考</a></p>
 </blockquote>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/25/scrap/MQ-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">MQ 消息队列</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-25
-        </span></div>
-    </header>
-
-    <div class="post-content"><p>Message Queue</p>
-<h3 id="应用场景（优点）"><a href="#应用场景（优点）" class="headerlink" title="应用场景（优点）"></a>应用场景（优点）</h3><ol>
-<li>主要解决 <code>异步</code> 消息<br>由于在高并发环境下，由于来不及同步处理，请求往往会发生堵塞，比如说，大量的insert，update之类的请求同时到达 mysql，直接导致无数的行锁表锁，甚至最后请求会堆积过多，从而触发too many connections错误。通过使用 <code>MQ</code>，我们可以 <code>异步</code> 处理请求，从而缓解系统的压力。</li>
-<li>应用解耦</li>
-<li>流量消峰等问题</li>
-<li>日志处理 (kafka)</li>
-</ol>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>系统可用性降低<br>本来其他系统只要运行好好的，那你的系统就是正常的。现在你非要加个消息队列进去，那消息队列挂了，你的系统就挂了。因此，系统可用性降低</li>
-<li>系统复杂性增加<br>要多考虑很多方面的问题，比如一致性问题、如何 <code>保证</code> 消息不被 <code>重复消费</code>，如何保证消息 <code>可靠传输</code>。因此，需要 <code>考虑</code> 的东西更多，系统复杂性增大。</li>
-</ul>
-<ol>
-<li>为什么会造成 <code>重复消费</code>?<br>因为 <code>网络传输</code> 等等 <code>故障</code>，确认信息 <code>没有</code> 传送到 <code>消息队列</code>，导致消息队列 <code>不知道</code> 自己已经消费过该消息了，<code>再次</code> 将该消息分发给其他的消费者。</li>
-<li>解决重复消费的方案：<ol>
-<li>比如，你拿到这个消息做数据库的 <code>insert</code> 操作。那就容易了，给这个消息做一个 <code>唯一主键</code>，那么就算出现重复消费的情况，就会导致主键冲突，避免数据库出现脏数据。</li>
-<li>再比如，你拿到这个消息做 <code>redis</code> 的set的操作，那就容易了，不用解决，因为你无论 <code>set</code> 几次结果都是一样的，<code>set</code> 操作本来就算 <code>幂等</code> 操作。</li>
-<li>如果上面两种情况还不行，上大招。准备一个 <code>第三方介质</code>，来做消费记录。以 <code>redis</code> 为例，给消息分配一个 <code>全局id</code>，只要消费过该消息，将&lt;id,message&gt;以K-V形式写入redis。那消费者开始消费前，先去redis中查询 <code>有没消费记录</code> 即可。</li>
-</ol>
-</li>
-</ol>
-<h3 id="举例：MDB"><a href="#举例：MDB" class="headerlink" title="举例：MDB"></a>举例：MDB</h3><p>MDB通过消息方式为调用者提供服务<br>MDB组件实际使用过程中，其客户并不拥有MDB组件的远程引用，而是直接将调用消息发送到特定消息队列，因而客户的调用不强调MDB组件的运行。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></p>
 
         </div></article>
       <nav class="pagination"><a class="next" href="/page/2/">
