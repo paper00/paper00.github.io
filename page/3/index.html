@@ -98,448 +98,203 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/Docker/Docker/">Docker</a>
+      <h1 class="post-title"><a class="post-link" href="/2019/10/25/scrap/Snowflake-%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/">Snowflake 雪花算法</a>
         </h1>
 
       <div class="post-meta">
         <span class="post-time">
-          2019-10-20
+          2019-10-25
         </span><span class="post-category">
-            <a href="/categories/Docker/">Docker</a>
+            <a href="/categories/scrap/">scrap</a>
             </span>
         </div>
     </header>
 
-    <div class="post-content"><h3 id="Docker-简介"><a href="#Docker-简介" class="headerlink" title="Docker 简介"></a><strong>Docker 简介</strong></h3><ul>
-<li>Docker 是一个开源的 <code>应用容器引擎</code>，基于 Go 语言并遵从Apache2.0协议开源。</li>
-<li>Docker可以让开发者打包他们的 <code>应用</code> 以及 <code>依赖包</code> 到一个轻量级、可移植的 <code>容器</code> 中，然后 <code>发布</code> 到任何流行的 <strong><strong>Linux</strong></strong> 机器上，也可以实现虚拟化。</li>
-<li>Linux容器的封装</li>
-</ul>
-<h3 id="Docker的应用场景"><a href="#Docker的应用场景" class="headerlink" title="Docker的应用场景"></a><strong>Docker的应用场景</strong></h3><ul>
-<li>Web应用的自动化 <code>打包</code> 和 <code>发布</code></li>
-<li>自动化测试和持续集成、发布</li>
-<li>在服务性环境中 <code>部署</code> 和调整数据库或其他的后台应用</li>
-<li>微服务的架构</li>
-</ul>
-<h3 id="Docker-容器和虚拟机的对比"><a href="#Docker-容器和虚拟机的对比" class="headerlink" title="Docker 容器和虚拟机的对比"></a><strong>Docker 容器和虚拟机的对比</strong></h3><ul>
-<li>虚拟化<br>&emsp;&emsp;虚拟机的虚拟化可能需要 <code>硬件</code> 的支持<br>&emsp;&emsp;容器基于 <code>操作系统</code> 的级别进行虚拟化</li>
-<li>Docker 容器</li>
-</ul>
+    <div class="post-content"><h1 id="为什么使用雪花算法？❄️"><a href="#为什么使用雪花算法？❄️" class="headerlink" title="为什么使用雪花算法？❄️"></a>为什么使用雪花算法？❄️</h1><p>&emsp;在复杂的系统中，往往需要对大量的数据如订单，账户进行标识，以一个有意义的有序的序列号来作为全局唯一的ID，即需要一个<code>ID号生成器</code>。</p>
+<p>&emsp;ID号生成器是服务端系统的基础设施，而且<code>ID号</code>这个东西基本搞后端开发的程序员天天都要接触。而关于<code>ID生成的算法</code>现在业界首屈一指的当属<code>Snowflake</code>雪花算法。</p>
+<h1 id="常见企业级使用的方案"><a href="#常见企业级使用的方案" class="headerlink" title="常见企业级使用的方案"></a>常见企业级使用的方案</h1><h4 id="1-UUID"><a href="#1-UUID" class="headerlink" title="1. UUID"></a>1. UUID</h4><p>UUID = 4个连字号(-) + 32个字节长的字符串，总共36个字节长。比如：</p>
+<blockquote>
+<p>550e8400-e29b-41d4-a716-446655440000</p>
+</blockquote>
+<p><strong>优点：</strong></p>
 <ol>
-<li>更少占用</li>
-<li>启动更快</li>
-<li>一致的环境</li>
-<li>可以在任何地方运行</li>
+<li>能够保证 <code>独立性</code>。 <br></li>
+<li>程序可以在不同的 <code>数据库间迁移</code>，效果不受影响。</li>
 </ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>不易于存储 / 性能问题：UUID太长，128位、36长度字符，不利于Mysql索引（在InnoDB引擎下，<code>UUID的无序性</code> 可能会引起数据位置频繁变动，严重影响<code>性能</code>），很多场景不适用。</li>
+<li>采用<code>无意义字符串</code>，数据量增大时造成访问过慢，且<code>不宜排序</code>。</li>
+<li>信息不安全：基于MAC地址生成UUID的算法可能会造成MAC地址泄露，这个漏洞曾被用于寻找梅丽莎病毒的制作者位置。</li>
+</ol>
+<h4 id="2-基于数据库方案"><a href="#2-基于数据库方案" class="headerlink" title="2. 基于数据库方案"></a>2. 基于数据库方案</h4><p>自增ID：对于数据敏感场景不宜使用，且不适合于<code>分布式场景</code>。</p>
+<p><strong>优点：</strong></p>
+<ol>
+<li>简单，成本小</li>
+<li>ID号单调自增，可以实现一些对ID有特殊要求的业务。</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>不同<code>数据库</code>语法和实现不同，数据库<code>迁移</code>的时候或<code>多数据库版本</code>支持的时候需要处理。</li>
+<li>如果涉及多个系统需要合并或者数据迁移会比较麻烦。</li>
+</ol>
+<h4 id="3-雪花算法"><a href="#3-雪花算法" class="headerlink" title="3. 雪花算法"></a>3. 雪花算法</h4><p><img src="http://www.dubby.cn/upload/1508161671799snowflake-64bit.jpg" alt="snowflake-64bit"><br>算法描述：</p>
 <ul>
-<li>可以在同一个 <code>操作系统</code> 上运行很多的 <code>容器</code>，轻量化.</li>
+<li>最高位是符号位，始终为0，不可用。</li>
+<li>41位的时间序列，精确到毫秒级，41位的长度可以使用69年。时间位还有一个很重要的作用是可以根据<code>时间</code>进行<code>排序</code>。</li>
+<li>10位的<code>机器</code> 标识，10位的长度最多支持<code>部署</code>1024个节点。</li>
+<li>12位的计数序列号，序列号即一系列的<code>自增id</code>，可以支持<code>同一节点</code>同一毫秒<code>生成多个ID</code>序号，<code>12位</code>的计数序列号支持每个节点每毫秒产生<code>4096个</code>ID序号。</li>
 </ul>
+<p><code>UidGenerator</code>是百度开源的一款基于<code>Snowflake</code>雪花算法实现的高性能唯一ID生成器。以下是再进行封装的一套更利于Spring Boot项目使用的ID号生成组件，命名为id-spring-boot-starter。</p>
+<blockquote>
+<p><a href="https://www.codesheep.cn/2019/09/04/id-springbt-starter/" target="_blank" rel="noopener">参考</a></p>
+</blockquote>
+<h3 id="在-Spring-Boot-项目中的用法"><a href="#在-Spring-Boot-项目中的用法" class="headerlink" title="在 Spring Boot 项目中的用法"></a>在 Spring Boot 项目中的用法</h3><ul>
+<li>导入SQL脚本</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> WORKER_NODE;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> WORKER_NODE</span><br><span class="line">(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'auto increment id'</span>,</span><br><span class="line">HOST_NAME <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'host name'</span>,</span><br><span class="line">PORT <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'port'</span>,</span><br><span class="line"><span class="keyword">TYPE</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'node type: ACTUAL or CONTAINER'</span>,</span><br><span class="line">LAUNCH_DATE <span class="built_in">DATE</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'launch date'</span>,</span><br><span class="line">MODIFIED <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'modified time'</span>,</span><br><span class="line">CREATED <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'created time'</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span>(<span class="keyword">ID</span>)</span><br><span class="line">)</span><br><span class="line"> <span class="keyword">COMMENT</span>=<span class="string">'DB WorkerID Assigner for UID Generator'</span>,<span class="keyword">ENGINE</span> = <span class="keyword">INNODB</span>;</span><br></pre></td></tr></table></figure>
+
+<p>UidGenerator需要数据库支持</p>
+<ul>
+<li>pom中加入依赖</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.codesheep<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>id-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置数据库连接</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="attr">jdbc:mysql://xxx.xxx.xxx.xxx:3306/demo?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;useOldAliasMetadataBehavior=true&amp;connectionCollation=utf8mb4_unicode_ci&amp;rewriteBatchedStatements=true&amp;allowMultiQueries=true</span></span><br><span class="line"><span class="attr">username:</span> <span class="string">xxxxxx</span></span><br><span class="line"><span class="attr">password:</span> <span class="string">xxxxxx</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 Spring Boot 主类  </li>
+</ul>
+<p>Spring Boot应用主类上加上mybatis注解即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> UidGenService uidGenService;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/uid"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">genUid</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> String.valueOf(<span class="string">"本次生成的唯一ID号为："</span>+uidGenService.getUid());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>首先用 Autowired的方式引入UidGenService类；</li>
+<li>直接调用UidGenService类的getUid()方法即可获得一个Long型的ID号</li>
+</ol>
+<p>&emsp;为什么叫<code>雪花算法</code>呢？私以为众所周知世界上没有一对相同的雪花，而雪花形成的过程中复杂的环境条件则对应了雪花算法中的机器ID,时间戳在现实层面上能够精确到普朗克时间10^-43s，这样时间戳的长度也得以保证。</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/Crazy_xym/article/details/100180398" target="_blank" rel="noopener">参考</a></p>
+</blockquote>
 
         </div></article>
       <article class="post">
     <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%B1%82/">网络层</a>
+      <h1 class="post-title"><a class="post-link" href="/2019/10/25/scrap/MQ-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">MQ 消息队列</a>
         </h1>
 
       <div class="post-meta">
         <span class="post-time">
-          2019-10-20
-        </span><span class="post-category">
-            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            </span>
-        </div>
+          2019-10-25
+        </span></div>
     </header>
 
-    <div class="post-content"><h2 id="网络层功能"><a href="#网络层功能" class="headerlink" title="网络层功能"></a><strong>网络层功能</strong></h2><ul>
-<li>管理数据通信</li>
-<li>在 <code>数据链路层</code> 的支持下，将 <code>报文分组</code> 从 <code>源节点</code> 传输到 <code>目的节点</code><br>&emsp;&emsp;<code>报文(message)</code> 是网络中交换与传输的数据单元<br>&emsp;&emsp;(报文包含了将要发送的完整的数据信息，长度不限且可变)<br>&emsp;&emsp;<code>分组</code> 是在Internet中传送数据的单元</li>
-</ul>
-<h2 id="网络层与数据链路层的区别"><a href="#网络层与数据链路层的区别" class="headerlink" title="网络层与数据链路层的区别"></a><strong>网络层与数据链路层的区别</strong></h2><ul>
-<li>数据链路层：仅完成 <code>相邻节点</code> 之间的 <code>数据传输</code></li>
-<li>网络层：完成 <code>源节点</code> 到 <code>目的节点</code> 之间的 <code>数据传输</code></li>
-</ul>
-<h2 id="网络地址"><a href="#网络地址" class="headerlink" title="网络地址"></a><strong>网络地址</strong></h2><ul>
-<li>是 <code>主机</code> 或 <code>节点</code> 的标示</li>
-<li>是 <code>结构化地址</code>，由 <code>网络号</code> 和 <code>主机号</code> 组成<br>&emsp;&emsp;网络地址 = 网络号 + 主机号</li>
-</ul>
-<h2 id="网络层协议涉及的主要内容"><a href="#网络层协议涉及的主要内容" class="headerlink" title="网络层协议涉及的主要内容"></a><strong>网络层协议涉及的主要内容</strong></h2><ul>
-<li>网络服务方式</li>
-<li>分组格式</li>
-<li>路由选择</li>
-<li>子网划分</li>
-<li>异构网络互联</li>
-</ul>
-<h2 id="路由选择"><a href="#路由选择" class="headerlink" title="路由选择"></a><strong>路由选择</strong></h2><h3 id="扩散法（洪泛法）"><a href="#扩散法（洪泛法）" class="headerlink" title="扩散法（洪泛法）"></a>扩散法（洪泛法）</h3><p><del>路由表一般结构：</del><br><del>目的节点   |   最短距离   |   最佳输出链路   |   …… ~</del></p>
-<h3 id="动态路由算法"><a href="#动态路由算法" class="headerlink" title="动态路由算法"></a><strong>动态路由算法</strong></h3><h4 id="1-热土豆算法"><a href="#1-热土豆算法" class="headerlink" title="1. 热土豆算法"></a>1. <strong>热土豆算法</strong></h4><p>基本思想：</p>
-<ul>
-<li>当节点收到一个分组后，选择一条 <code>输出队列</code> 最短的 <code>链路</code> 尽快地将其 <code>转发</code> 出去，而 <strong>不管</strong> <code>目的节点</code> 位于何方。</li>
-<li>优点：尽量 <strong>提高</strong> <code>链路</code> 的 <code>利用率</code></li>
-<li>缺点：盲目性</li>
-<li>改进：与 <code>固定式路由</code> 算法混合使用<br>  &emsp;&emsp;首先根据固定路由算法选择可能的输出链路，并给这些链路赋上一定权值<br>  &emsp;&emsp;再根据链路队列长度，附上一定权值<br>  &emsp;&emsp;选择这两个权值之和最小的链路</li>
-</ul>
-<h4 id="2-逆向自学习算法"><a href="#2-逆向自学习算法" class="headerlink" title="2. 逆向自学习算法"></a>2. <strong>逆向自学习算法</strong></h4><ul>
-<li>每个节点保存一张转发表(路由表)，该表主要字段包括：</li>
-<li>……&emsp;&emsp;|&emsp;&emsp;目的地址&emsp;&emsp;|&emsp;&emsp;输出端口&emsp;&emsp;|&emsp;&emsp;时间&emsp;&emsp;|&emsp;&emsp;……</li>
-<li>初始时转发表为空</li>
+    <div class="post-content"><p>Message Queue</p>
+<h3 id="应用场景（优点）"><a href="#应用场景（优点）" class="headerlink" title="应用场景（优点）"></a>应用场景（优点）</h3><ol>
+<li>主要解决 <code>异步</code> 消息<br>由于在高并发环境下，由于来不及同步处理，请求往往会发生堵塞，比如说，大量的insert，update之类的请求同时到达 mysql，直接导致无数的行锁表锁，甚至最后请求会堆积过多，从而触发too many connections错误。通过使用 <code>MQ</code>，我们可以 <code>异步</code> 处理请求，从而缓解系统的压力。</li>
+<li>应用解耦</li>
+<li>流量消峰等问题</li>
+<li>日志处理 (kafka)</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>系统可用性降低<br>本来其他系统只要运行好好的，那你的系统就是正常的。现在你非要加个消息队列进去，那消息队列挂了，你的系统就挂了。因此，系统可用性降低</li>
+<li>系统复杂性增加<br>要多考虑很多方面的问题，比如一致性问题、如何 <code>保证</code> 消息不被 <code>重复消费</code>，如何保证消息 <code>可靠传输</code>。因此，需要 <code>考虑</code> 的东西更多，系统复杂性增大。</li>
 </ul>
 <ol>
-<li>当 <code>数据包</code> 到达 <code>节点</code> 时<br>将数据包的 <code>源地址</code> 视为 <code>转发表</code> 的 <code>目的地址</code>，输入端口视为转发表的输出端口；如果转发表存在该目的地址，则刷新该记录；如果转发表不存在该目的地址，则增加一条新记录</li>
-<li>根据数据包的目的地址，查询转发表；如果找到，则从指定的输出端口转发；如果找不到，则广播。</li>
-<li>定期扫描转发表，<code>清除</code> 过时的记录。</li>
-</ol>
-<h4 id="3-D-V算法"><a href="#3-D-V算法" class="headerlink" title="3. D-V算法"></a>3. <strong>D-V算法</strong></h4><ul>
-<li>距离向量路由算法</li>
-<li>基本思想：<br>&emsp;&emsp;每个节点都保存一张动态路由表。与固定式路由选择不同的是：<code>相邻节点</code> 之间 <code>定期交换</code>路由信息（如每隔30秒），并根据最新路由信息，刷新路由表。<br><img src="/images/ex2.jpg" alt="路由表"><br>&emsp;&emsp;目的节点 + 最短距离 + 最佳输出链路</li>
-<li>初始化：<br>&emsp;&emsp;当节点加入网络时，获取直接相连</li>
-<li>优点：<br>&emsp;&emsp;仅 <code>相邻节点</code> 交换路由信息，所以 <code>运算量</code> 和交换的 <code>信息量</code> 较 <strong>小</strong></li>
-<li>缺点：<br>&emsp;&emsp;收敛速度 <strong>慢</strong>，对网络变化需经若干周期才能做出反应。特别是对 <code>好消息反应快</code>，对 <code>坏消息反应迟钝</code>。</li>
-</ul>
-<h4 id="4-L-S算法"><a href="#4-L-S算法" class="headerlink" title="4. L-S算法"></a>4. <strong>L-S算法</strong></h4><ul>
-<li>链路状态路由选择算法</li>
-<li>基本思想：<br>&emsp;&emsp;<code>所有</code> 节点 <code>相互</code> 交换路由信息，并根据最新路由信息刷新路由表</li>
-<li>L-S算法描述：<br>&emsp;&emsp;发现邻居节点<br>&emsp;&emsp;&emsp;&emsp;当一个 <code>路由器</code> 启动以后，通过向每个 <code>端口</code> 发送特殊的HELLO分组来 <code>发现</code> 邻居节点；收到HELLO<br>&emsp;&emsp;&emsp;&emsp;分组的路由器应返回一个<br>&emsp;&emsp;???</li>
-</ul>
-<h2 id="路由协议"><a href="#路由协议" class="headerlink" title="路由协议"></a><strong>路由协议</strong></h2><h3 id="路由信息协议（RIP）"><a href="#路由信息协议（RIP）" class="headerlink" title="路由信息协议（RIP）"></a><strong>路由信息协议（RIP）</strong></h3><ul>
-<li>RIP采用D-V算法，用于小规模网络</li>
-<li>技术特点<br>&emsp;&emsp;距离：下跳数，允许对下跳数加权<br>&emsp;&emsp;路由信息交换周期：缺省值为30秒<br>&emsp;&emsp;无穷计数问题：RIP选择16为∞</li>
-</ul>
-<h3 id="开放最短路由优先协议（OSPF）"><a href="#开放最短路由优先协议（OSPF）" class="headerlink" title="开放最短路由优先协议（OSPF）"></a><strong>开放最短路由优先协议（OSPF）</strong></h3><ul>
-<li>OSPF采用 <code>L-S算法</code>，是目前Internet的主要 <code>内部网关协议</code></li>
-<li>自治系统（AS）</li>
-<li>OSPF技术特点<br>&emsp;&emsp;距离：允许网络管理员选择多种“距离”度量，如延迟、数据率、通信费用、下跳数等。<br>&emsp;&emsp;？？？</li>
-</ul>
-<h3 id="边界网关协议（BGP）"><a href="#边界网关协议（BGP）" class="headerlink" title="边界网关协议（BGP）"></a><strong>边界网关协议（BGP）</strong></h3><ul>
-<li>内部网关协议（IGP）与外部网关协议（EGP）的区别：<br>&emsp;&emsp;IGP注重效率<br>&emsp;&emsp;EGP注重策略</li>
-<li>作为Internet外部网关协议，用于不同AS之间的路由选择</li>
-<li>技术特点：<br>&emsp;&emsp;BGP采用 <code>路经向量路由</code> 算法，路由表中记录到达目的地的 <code>确切路由</code>，而不是 <code>最短距离</code>，从而解决“无穷<br>&emsp;&emsp;级数”问题。</li>
-</ul>
-<h3 id="IP协议"><a href="#IP协议" class="headerlink" title="IP协议"></a><strong>IP协议</strong></h3><ul>
-<li>IP协议是Internet体系结构的<code>核心协议</code>，已成为连接<code>异构网络</code>的工业标准。</li>
-<li>IP提供<code>非面向连接</code>的数据报服务，每个IP分组长度 &lt;= 64K字节，<code>传输效率高</code>，但不能保证分组可靠的、按序到达。</li>
-<li>IP协议需要路由协议，ICMP, ARP, RARP 等协议支持。</li>
-<li><strong>服务类型</strong>：<br>&emsp;&emsp;告诉路由器该IP分组想获得何种服务，包括优先级、延迟、吞吐量和可靠性要求。该字段共<code>有8位</code>。  ß<br>&emsp;&emsp;前3位：表示优先权<br>&emsp;&emsp;中3位 (D, T, R)：表示想获得的服务质量（延迟、吞吐量、可靠性）<br>&emsp;&emsp;后2位：保留<br>&emsp;&emsp;注：几乎所有路由器都 <code>忽略</code> “服务类型”字段</li>
-<li><strong>总长度</strong>：表示整个IP分组长度，包括报头和数据部分：该字段16位，所以IP分组最大长度 2^16 - 1 = 65535字节（大概 64KB)</li>
-<li><strong>标识</strong>：16位，用来表示一个分组，统一分组的不同分段具有相同的标识。</li>
-<li><strong>标志</strong>：3位</li>
-</ul>
-<ol>
-<li>第一位：保留</li>
-<li>第二位：DF位 (Don’t Fragment)，若DF = 1，则IP分组在传输中不允许分段，如目的主机从远方引导启动机器的影响文件，目的主机无能力重组分组。若DF = 0, 则允许分段。</li>
-<li>第三位：MF位 (More Fragment)，若MF = 0，则该分段是原分组的最后一个分段。</li>
-</ol>
-<ul>
-<li>特殊的IP地址：<br>&emsp;&emsp;32位全 “0” ：表示本地地址，进党初始启动时使用，以后不再使用<br>&emsp;&emsp;32位全 ”1“ ：本地<br>&emsp;&emsp;？？？</li>
-<li>内部IP地址（私用地址）<br>&emsp;&emsp;A类：10.0.0.0（1个网络）<br>&emsp;&emsp;B类：172.16.0.0 - 172.31.0.0（16个网络）<br>&emsp;&emsp;C类：192.168.0.0 - 192.168.255.0（256个网络）<br>Internet的 <code>路由器</code> 不会<code>转发</code> 目的地址为 <code>上述</code> 地址的IP地址，即私用地址不能穿越内部网络边界<br>路由器IP寻址<br>路由器根据 <code>目的网络号</code> 而不是 <code>目的IP地址</code> 转发IP分组，以减少路由表的信息量。<br>当一个 <code>分组</code> 到达时，<code>路由器</code> 获取它的 <code>网络号</code>。如果是本网，则该IP分组直接发送到指定主机；如果是其他网络，则根据 <code>路由表</code> 转发到下一个 <code>路由器</code>。<br>如果 <code>路由表</code> 找不到目的网络，则将该分组转发到 <code>“缺省链路”</code><br>IP协议用于分组传输，Internet还需要一些控制协议，包括 ICMP, ARP, RARP等<br>ICMP协议<br>用于报告IP协议运行过程中意外事件的发生，也用于 <code>网络测试</code>。<br>ICMP消息主要有12中，这些ICMP消息封装在IP分组中传输。因此，ICMP消息可视为 ”IP控制分组“<br>主要ICMP消息：<br>目的不可达：当目的路由器无法找到目的主机，或者DF为“1”的分组经过MTU较小的网络二无法传输时，返回该消息<br>超时<br>参数出错</li>
-</ul>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">数据链路层</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-20
-        </span><span class="post-category">
-            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a><strong>主要功能</strong></h2><ol>
-<li>流量控制</li>
-<li>差错控制</li>
-</ol>
-<h2 id="数据帧（Data-frame）"><a href="#数据帧（Data-frame）" class="headerlink" title="数据帧（Data frame）"></a><strong>数据帧（Data frame）</strong></h2><ul>
-<li><code>数据链路层</code> 的最小数据 <code>传输单位</code> ，即<code>DPDU</code></li>
-<li><strong>一般格式：</strong><br>  &emsp;&emsp;帧同步 | 目的地址 | 源地址 | 控制 | 数据 | 帧校验</li>
-</ul>
-<h2 id="数据链路层协议主要内容"><a href="#数据链路层协议主要内容" class="headerlink" title="数据链路层协议主要内容"></a><strong>数据链路层协议主要内容</strong></h2><ol>
-<li><p>数据链路的建立与拆除</p>
-</li>
-<li><p>帧同步</p>
-</li>
-<li><p>差错控制</p>
-<ul>
-<li><strong>差错产生的主要原因</strong>：<ol>
-<li>热噪声：传输介质内的分子热运动</li>
-<li>冲击噪声：外界干扰</li>
+<li>为什么会造成 <code>重复消费</code>?<br>因为 <code>网络传输</code> 等等 <code>故障</code>，确认信息 <code>没有</code> 传送到 <code>消息队列</code>，导致消息队列 <code>不知道</code> 自己已经消费过该消息了，<code>再次</code> 将该消息分发给其他的消费者。</li>
+<li>解决重复消费的方案：<ol>
+<li>比如，你拿到这个消息做数据库的 <code>insert</code> 操作。那就容易了，给这个消息做一个 <code>唯一主键</code>，那么就算出现重复消费的情况，就会导致主键冲突，避免数据库出现脏数据。</li>
+<li>再比如，你拿到这个消息做 <code>redis</code> 的set的操作，那就容易了，不用解决，因为你无论 <code>set</code> 几次结果都是一样的，<code>set</code> 操作本来就算 <code>幂等</code> 操作。</li>
+<li>如果上面两种情况还不行，上大招。准备一个 <code>第三方介质</code>，来做消费记录。以 <code>redis</code> 为例，给消息分配一个 <code>全局id</code>，只要消费过该消息，将&lt;id,message&gt;以K-V形式写入redis。那消费者开始消费前，先去redis中查询 <code>有没消费记录</code> 即可。</li>
 </ol>
 </li>
-<li><strong>特征</strong>：<ol>
-<li>热噪声：干扰幅度<code>小</code>、持续性、对<code>模拟通信</code>影响大</li>
-<li>冲击噪声：干扰幅度<code>大</code>、突发性、对<code>数字通信</code>影响大</li>
 </ol>
-</li>
-<li>计算机网络中，<code>差错控制</code>主要针对<code>冲击噪声</code></li>
-<li><strong>差错控制方法</strong><br>  &emsp;&emsp;通过特殊的编码 (差错控制码)，使<code>接收端</code>能够<code>发现</code>甚至<code>自动纠正</code>错误<br>  &emsp;&emsp;差错控制编码：<ol>
-<li><strong>较错码</strong>：能够发现差错，但无法自动纠正差错，通过发送方重来获得正确的数据</li>
-<li><strong>纠错码</strong>：不但能够发现差错，而且知道哪些位出错，从而能够自动纠正差错<br>&emsp; <strong>码距</strong>：两个码字的距离<blockquote>
-<p>如：10<strong>001</strong>001<br>&emsp;&emsp;&nbsp;10<strong>110</strong>001 （码距为 3）</p>
-</blockquote>
-</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><p>流量控制</p>
-<h3 id="停一等协议"><a href="#停一等协议" class="headerlink" title="停一等协议"></a><strong>停一等协议</strong></h3><p> <code>发送窗口</code> 尺寸 Wt = 1，<code>接受窗口</code>尺寸 Wr = 1</p>
-<h3 id="顺序接受管道协议"><a href="#顺序接受管道协议" class="headerlink" title="顺序接受管道协议"></a><strong>顺序接受管道协议</strong></h3><ul>
-<li>（回退n协议）</li>
-<li><code>发送窗口</code> 尺寸 Wt &gt; 1，<code>接受窗口</code>尺寸 Wr = 1</li>
-<li><code>发送方</code> 连续发生 n 帧而 <code>无需对方应答</code>，但需要将 <code>已发出</code> 但 <code>尚未得到确认</code> 的帧 <code>保存</code> 在发送窗口中，以备 <code>重发</code>。</li>
-<li>优点：仅需一个 <code>接收缓冲区</code></li>
-<li>缺点：当信道误码率较高时，会产生大量 <code>重发帧</code>。<h3 id="选择重传协议"><a href="#选择重传协议" class="headerlink" title="选择重传协议"></a><strong>选择重传协议</strong></h3></li>
-<li><code>发送窗口</code>尺寸 Wt &gt; 1，<code>接受窗口</code>尺寸Wr &gt; 1</li>
-<li>若某一帧出错，后面正确到达的帧虽然不能立即送网络层，但可将其保存在接受窗口。因此，仅需重传出错帧。</li>
-<li>优点：仅重传出错帧，不会产生大量<code>重发帧</code>。</li>
-<li>缺点：需要多个<code>接受缓冲区</code></li>
-</ul>
-</li>
-</ol>
-<blockquote>
-<p>设帧序号的位数为n，则：<br>&emsp;&nbsp;Wt &gt;= Wr<br>&emsp;&nbsp;Wt + Wr &lt;= 2^n</p>
-</blockquote>
-<blockquote>
-<p>例：设 n=3，Wt = 7，Wr = 2；显然，Wr + Wt &gt; 2^n<br>&emsp;&emsp;发送窗口首先连续发送7帧（0～6号帧）<br>&emsp;&emsp;假设这7帧 <strong>全部正确到达</strong>，<code>接收端</code> 收到后返回“确认”，并将接受窗口向前 <code>滑动7个窗口</code>，即<code>当前窗口</code>为7号和0号。<br>&emsp;&emsp;<img src="/images/ex1.png" alt="ex: "><br>&emsp;&emsp;如果“确认”丢失，由于<code>发送端</code>超时收不到“确认”而 <code>误认为</code> 所发送的帧全部丢失，于是 <code>重发</code> 0～6号帧。<br>&emsp;&emsp;重发的0号帧被 <code>重复接受</code>，并被 <code>误认为</code> 下一轮帧的0号帧而递交给主机。</p>
-</blockquote>
-<h3 id="HDLC协议"><a href="#HDLC协议" class="headerlink" title="HDLC协议"></a><strong>HDLC协议</strong></h3><ul>
-<li>一种典型的数据链路层协议，该协议“面向比特”，即以“比特”作为数据帧的基本数据单位（“面向比特”效率高）</li>
-<li>HDLC帧格式：<br>  字节数：1&emsp;&emsp;&emsp;&emsp;1&emsp;&emsp;&emsp;&emsp;1&emsp;&emsp;&emsp;&emsp;任意&emsp;&emsp;&emsp;&emsp;2&emsp;&emsp;&emsp;&emsp;1<br>  &emsp;&emsp;&emsp;&emsp;标志&emsp;|&emsp;地址&emsp;|&emsp;<code>控制</code>&emsp;|&emsp;数据&emsp;|&emsp;帧检验&emsp;|&emsp;标志<ul>
-<li><code>控制</code>字段格式：<br>&emsp;&emsp;信息帧以 “0” 打头<br>&emsp;&emsp;监督帧以 “10” 打头<br>&emsp;&emsp;无编号帧以 “11” 打头<br>&emsp;&emsp;N(S)：表示信息帧的序号（0-7）<br>&emsp;&emsp;N(R)：接收端期望接收的下一帧的<br>&emsp;&emsp;P/F</li>
-</ul>
-</li>
-</ul>
-<h3 id="PPP协议"><a href="#PPP协议" class="headerlink" title="PPP协议"></a><strong>PPP协议</strong></h3><ul>
-<li>（点到点协议  Point to Point Protocol）</li>
-<li><code>ISP</code>: Internet服务提供商，为用户提供<code>接入线路</code>、<code>IP地址</code>和信息增值服务</li>
-<li>具有动态分配<code>IP地址</code>的能力，允许在连接时刻协商<code>IP地址</code></li>
-<li>具有<code>错误检测</code>能力，但不具备<code>纠错</code>能力，所以<code>ppp</code>是<code>不可靠传输协议</code></li>
-<li><code>无重传</code>的机制，网络开销小，速度快。</li>
-<li>具有<code>身份验证功能</code></li>
-<li>既可支持<code>面向字符</code>也可支持<code>面向比特</code>的协议</li>
-<li>帧格式：<br>&emsp;&emsp;标志：01111110，标志一帧的开始和结束<br>&emsp;&emsp;地址：总是固定为 11111111<br>&emsp;&emsp;控制：缺省 000000<code>11</code><br>&emsp;&emsp;数据：静载荷数据，如IP分组。<br>&emsp;&emsp;CRC：CRC码，同HDLC。</li>
-</ul>
+<h3 id="举例：MDB"><a href="#举例：MDB" class="headerlink" title="举例：MDB"></a>举例：MDB</h3><p>MDB通过消息方式为调用者提供服务<br>MDB组件实际使用过程中，其客户并不拥有MDB组件的远程引用，而是直接将调用消息发送到特定消息队列，因而客户的调用不强调MDB组件的运行。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></p>
 
         </div></article>
       <article class="post">
     <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80%E4%B8%8E%E7%89%A9%E7%90%86%E5%B1%82/">数据通信基础与物理层</a>
+      <h1 class="post-title"><a class="post-link" href="/2019/10/24/scrap/%E5%90%8D%E8%AF%8D%E8%A7%A3%E6%9E%90/">名词解析</a>
         </h1>
 
       <div class="post-meta">
         <span class="post-time">
-          2019-10-20
+          2019-10-24
         </span><span class="post-category">
-            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            <a href="/categories/scrap/">scrap</a>
             </span>
         </div>
     </header>
 
-    <div class="post-content"><h2 id="通信系统模型"><a href="#通信系统模型" class="headerlink" title="通信系统模型"></a><strong>通信系统模型</strong></h2><p><img src="/images/%E9%80%9A%E4%BF%A1%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B.png" alt="ex: "></p>
+    <div class="post-content"><h2 id="计算机网络名词解析"><a href="#计算机网络名词解析" class="headerlink" title="计算机网络名词解析"></a>计算机网络名词解析</h2><blockquote>
+<p>网关 (Gateway)</p>
+</blockquote>
 <ul>
-<li>信源：将各种 <code>信息</code> 转换成原始 <code>物理信号</code>（如计算机、手机、电话机等）</li>
-<li>信宿：将 <code>物理信号</code> -&gt; <code>信息</code> (如计算机、手机、电话机等）</li>
-<li>信道：传输 <code>信号</code> 的一条通路</li>
-<li>变换器 / 反变换器：对原始 <code>物理信号</code> 进行变换 / 反变换，适合在给定 <code>信道</code> 上传输（如光 / 电转换器等）</li>
-<li>噪声源：信道自身的噪声以及周围环境对信道的干扰（如热噪声、闪电、电磁场干扰等）</li>
+<li>又称<code>网间连接器</code>、<code>协议转换器</code></li>
+<li>网关在<code>网络层</code>以上实现<code>网络互连</code>，<strong>是复杂的网络互连<code>设备</code></strong>，仅用于两个高层协议<code>不同的网络</code>互连。</li>
+<li>网关既可以用于<code>广域网</code>互连，也可以用于<code>局域网</code>互连。 </li>
+<li>网关是一种充当转换重任的计算机系统或设备。使用在不同的通信协议、数据格式或语言，甚至体系结构完全不同的两种系统之间，网关是一个翻译器。</li>
+<li>与网桥只是简单地传达信息不同，<code>网关</code>对收到的信息要<code>重新打包</code>，以<code>适应</code>目的系统的需求。同层–应用层。</li>
 </ul>
-<h2 id="模拟通信与数字通信"><a href="#模拟通信与数字通信" class="headerlink" title="模拟通信与数字通信"></a><strong>模拟通信与数字通信</strong></h2><ul>
-<li><strong>模拟信号</strong>：信号在传输过程中 <code>连续</code> 变化</li>
-<li><strong>数字信号</strong>：信号在传输过程中 <code>离散</code> 变化<br>&emsp;&emsp;&emsp;<strong>- 优点</strong>：<br>&emsp;&emsp;&emsp;&emsp;1. 抗干扰能力强<br>&emsp;&emsp;&emsp;&emsp;2. 适合远距离传输<br>&emsp;&emsp;&emsp;&emsp;3. 有利于安全性<br>&emsp;&emsp;&emsp;&emsp;4. 适合多媒体信息传输<br><img src="/images/%E4%BF%A1%E5%8F%B7.png" alt="ex: "></li>
-</ul>
-<h2 id="信号带宽-H"><a href="#信号带宽-H" class="headerlink" title="信号带宽 (H)"></a><strong>信号带宽 (H)</strong></h2><p><code>信号能量</code> 所集中的 <code>频率范围</code>，记为H。<br>H = 4000 - 3200 = 800</p>
-<h2 id="信道带宽"><a href="#信道带宽" class="headerlink" title="信道带宽"></a><strong>信道带宽</strong></h2><p><strong>信道允许传输信号的频率范围，单位为Hz。</strong></p>
 <blockquote>
-<p>例：语音信号占用的频谱为300~3400Hz，那么带宽为:<br>H = 3400 - 300 = 3100Hz</p>
+<p>网卡    </p>
 </blockquote>
 <ul>
-<li>信道：传输信号的一条通路。一条物理线路可同时服用 <strong>多个</strong> 信道</li>
-<li>信号率：</li>
-<li>数据率：信道每秒最多传输的二进制位数，单位为bps</li>
+<li>是一块被设计用来<code>允许</code>计算机在<code>计算机网络</code>上进行<code>通讯</code>的<code>计算机硬件</code></li>
+<li>由于其拥有<code>MAC地址</code>，因此属于OSI模型的第 2 层 (数据链路层)</li>
 </ul>
-<h3 id="信道带宽与数据率的关系"><a href="#信道带宽与数据率的关系" class="headerlink" title="信道带宽与数据率的关系"></a><strong>信道带宽与数据率的关系</strong></h3><p><strong>奈奎斯特定理 (无噪声信道)</strong></p>
 <blockquote>
-<p>C = 2H log_2L   (bps)</p>
+<p>路由器</p>
 </blockquote>
-<p>C 为信道的数据率（容量）；H为信道带宽；L为数字信号的离散取值数目</p>
-<p><strong>香农定理 (有噪声信道，L不受限)</strong></p>
+<ul>
+<li>是连接两个或多个网络的硬件设备，在<code>网络</code>间起<code>网关</code>的作用</li>
+<li>路由器可以分析各种不同类型网络传来的数据包的目的地址，把非TCP/IP网络的地址转换成TCP/IP地址</li>
+<li>再根据选定的路由算法把各数据包按最佳路线传送到指定位置</li>
+<li>所以路由器可以把非TCP/ IP网络连接到因特网上 </li>
+</ul>
 <blockquote>
-<p>C = H log_2(1+S/N)   (bps)</p>
+<p>Hub (集线器)</p>
 </blockquote>
-<p>S为信号功率，N为噪音功率，S/N为信噪比</p>
+<ul>
+<li><code>多端口</code>的<code>转发器</code></li>
+<li>在以HUB为中心设备时，即使网络中某条线路产生了故障，并不影响其它线路的工作</li>
+<li>所以 HUB 在<code>局域网</code>中得到了广泛的应用</li>
+<li>用Hub组建的<code>网络</code>是基于<code>共享</code>的<code>原理</code>的</li>
+<li>Hub是<strong>“中心”</strong>的意思</li>
+</ul>
 <blockquote>
-<p>例：H = 4000Hz，S/N = 1023，L = 8；求C<br>    1. 由 <strong>奈奎斯特定理</strong>：<br>    &emsp;&emsp;C = 2H log_2L = 2 * 4000 log_28 = 24000   (bps)<br>    2. 由 <strong>香农定理</strong>：<br>    &emsp;&emsp;C = H log_2(1+S/N) = 4000 log_2(1+1023) = 40000bps<br>    所以信道最大数据率为24000bps</p>
+<p>嗅探</p>
 </blockquote>
-<h3 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a><strong>波特率</strong></h3><p>又称码元速率，是指每秒传输码元的数目，单位为波特(Baud)</p>
 <ul>
-<li>若码元的离散取值数目为L，波特率为B，数据率为C，则：<blockquote>
-<p>C = B log_2L</p>
+<li>可以<code>窃听</code> <code>网络</code>上流经的<code>数据包</code></li>
+<li>用 Hub 组建的<code>网络</code>是基于<code>共享</code>的<code>原理</code>的，<code>局域网</code>内所有的计算机都<code>接收相同的数据包</code>， 而<code>网卡</code>构造了硬件的“过滤器“ 通过识别<code>MAC地址</code>过滤掉和自己无关的信息， <code>嗅探</code>程序只需<code>关闭</code>这个<code>过滤器</code>， 将网卡设置为<code>“混杂模式”</code>就可以进行嗅探。</li>
+<li>用交换机 switch 组建的网络是基于“交换“原理的 ，交换机<code>不是</code>把<code>数据包</code>发到<code>所有</code>的端口上， 而是发到<code>目的网卡</code>所在的端口。</li>
+</ul>
+<blockquote>
+<p>以太网</p>
 </blockquote>
-</li>
-</ul>
-<h2 id="数字信号的编码"><a href="#数字信号的编码" class="headerlink" title="数字信号的编码"></a><strong>数字信号的编码</strong></h2><p>数字信号的编码：用何种物理信号来表示 “0” 和 “1”</p>
-<h3 id="非归零编码-NRZ"><a href="#非归零编码-NRZ" class="headerlink" title="非归零编码(NRZ)"></a><strong>非归零编码(NRZ)</strong></h3><p><img src="/images/NRZ.png" alt="ex: "><br>以 <code>高</code> 电平表示 <code>0</code>，<code>低</code> 电平表示 <code>1</code>，反之亦然。 </p>
 <ul>
-<li>优点：编 / 译码简单</li>
-<li>缺点：内部不含 <code>时钟信号</code>，收 / 发端 <code>同步</code> 困难</li>
-<li>用途：计算机内部或低速数据通信</li>
+<li>目前应用最普遍的<code>局域网技术</code></li>
+<li>它规定了包括物理层的连线、电子信号和介质访问层<code>协议</code>的内容。</li>
+<li>802.3 协议的具体实现</li>
 </ul>
-<h3 id="曼彻斯特编码"><a href="#曼彻斯特编码" class="headerlink" title="曼彻斯特编码"></a><strong>曼彻斯特编码</strong></h3><p><img src="/images/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81.png" alt="ex: "><br>每一次中间有一次跳变，既表示 <code>数据</code>，又作为 <code>同步信号</code><br><strong>从高电平 -&gt; 低电平表示 <code>0</code>，从低电平 -&gt; 高电平表示 <code>1</code></strong></p>
-<ul>
-<li>优点：<ol>
-<li>内部自含 <code>时钟</code>，收 / 发端 <code>同步</code> 容易</li>
-<li>抗干扰能力强</li>
-</ol>
-</li>
-<li>缺点：<ol>
-<li>编 / 译码较复杂</li>
-<li>占用更多的信道带宽，在同样的波特率的情况下，要比非归零编码多占用一倍<code>信道带宽</code></li>
-</ol>
-</li>
-<li>用途：802.3局域网（以太网）</li>
-</ul>
-<h3 id="差分曼彻斯特编码"><a href="#差分曼彻斯特编码" class="headerlink" title="差分曼彻斯特编码"></a><strong>差分曼彻斯特编码</strong></h3><p>每一位中间有一次跳变，但这种跳变 <code>仅</code> 作为 <code>同步信号</code>，不表示 <code>数据</code><br><code>数据值</code> 通过每位 <code>开始</code> 时 <code>有无跳变</code> 来表示；有跳变表示 <code>0</code>，无跳变表示 <code>1</code> </p>
-<ul>
-<li>优点：<ol>
-<li>内部自含 <code>时钟</code>，收 / 发端 <code>同步</code> 容易</li>
-<li>比曼彻斯特编码的 <code>抗干扰能力</code> 更强</li>
-</ol>
-</li>
-<li>缺点：NRZ<ol>
-<li>编 / 译码较复杂</li>
-<li>同样需要多占用一倍 <code>信道带宽</code></li>
-</ol>
-</li>
-<li>用途：802.5局域网（令牌环网）</li>
-</ul>
-<h2 id="数据同步方式"><a href="#数据同步方式" class="headerlink" title="数据同步方式"></a><strong>数据同步方式</strong></h2><ul>
-<li>同步：<code>接收端</code> 按照 <code>发送端</code> 发送代码的 <code>频率</code> 和 <code>起止时间</code> 来接收数据。</li>
-<li>同步方式主要有两种：</li>
-</ul>
-<ol>
-<li><strong>字符同步（异步通信）</strong><br> 仅针对 <code>一个字符</code> 内所含的二进制位进行同步<ul>
-<li>优点：被限制在一个字符内，不产生太大的积累误差。因此对同步精度要求不高，<code>同步容易</code>。</li>
-<li>缺点：每个字符均有起始 / 停止位，因而 <code>传输效率</code> 较低 </li>
-<li>适用：低速通信</li>
-</ul>
-</li>
-<li><strong>位同步（同步通信）</strong><br> 针对<code>一个数据块</code>内所含的二进制位进行同步<ul>
-<li>优点：每个数据块仅需要2个同步位模式的额外开销，因而<code>传输效率</code>高 </li>
-<li>缺点：由于一个数据块所含位数较多，易产生时钟漂移积累误差而导致数据出错，因此对同步精度求高，<code>同步困难</code>。 <blockquote>
-<p>例：设数据块为1K字节，则每次连续同步位数为1024x8=8192位。 </p>
+<blockquote>
+<p>Wifi </p>
 </blockquote>
-</li>
-</ul>
-</li>
-</ol>
 <ul>
-<li>实现同步的两种方法：<ol>
-<li>外同步：为发送端和接收端提供专门的同步时钟信号</li>
-<li>内同步：不单独发同步时钟信号，而是将同步信号嵌入数据编 码内部， 如曼彻斯特编码或差分曼彻斯特编码。 </li>
-</ol>
-</li>
+<li>无线局域网</li>
+<li>802.11 协议的具体实现</li>
 </ul>
-<h2 id="多路复用技术"><a href="#多路复用技术" class="headerlink" title="多路复用技术"></a><strong>多路复用技术</strong></h2><ul>
-<li>将多个信道复用在一条物理线路上，使一条物理线路能够同时传输多路数据信号</li>
-<li>分类：<ol>
-<li><strong>频分多路复用 (FDM)</strong><br> &emsp;&nbsp;将一条物理线路的总带宽分割成若干个较小带宽的子信道，每个子信道传输一路信号。 </li>
-<li><strong>时分多路复用 (TDM)</strong><br> &emsp;&nbsp;将一条高速物理线路的传输时间划分成若干<code>相等的</code>时间片，<code>轮流</code>为多路信号使用<br> &emsp;&nbsp;数据不丢失条件：C_H &gt;= sum(C_i) （C_H 为高速线路容量（数据率）C_i 为低速线路容量）<pre><code>缺点：`没有数据`传输的低速线路`仍`分配时间片，可能`出现空闲的时间片`，浪费信道带宽</code></pre></li>
-<li><strong>统计时分多路复用 (统计TDM)</strong><ul>
-<li>采用<code>动态分配</code>时间策略，即<code>有数据要传输</code>的线路<code>才分配</code>时间片</li>
-<li>允许 CH &lt; sum(Ci)</li>
-<li>优点：不会出现空闲的时间片，信道利用率高</li>
+<blockquote>
+<p>ARP欺骗 (ARP毒化)</p>
+</blockquote>
+<ul>
+<li>是针对<code>以太网地址解析协议</code>的一种<code>攻击技术</code></li>
+<li>通过<code>欺骗</code>局域网内访问者PC的<code>网关MAC地址</code>，使访问者PC错以为攻击者更改后的MAC地址是网关的MAC，<code>导致网络不通</code></li>
 </ul>
-</li>
-</ol>
-</li>
-</ul>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%A6%82%E8%BF%B0/">概述</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-20
-        </span><span class="post-category">
-            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a><strong>网络协议</strong></h2><p>各独立的计算机系统必须严格遵循事先约定好的一整套<code>通信规程</code>，包括规定要交换的数据格式、 控制信息的格式和控制功能、通信过程中事件执行的次序 等。这些<code>通信规程</code>称之为<strong><code>网络协议</code></strong>。 </p>
-<h2 id="网络体系结构"><a href="#网络体系结构" class="headerlink" title="网络体系结构"></a><strong>网络体系结构</strong></h2><ul>
-<li><code>网络分层结构</code>及其<code>协议</code>的集合<ol>
-<li>会晤层</li>
-<li>语言层</li>
-<li>物理层</li>
-</ol>
-</li>
-<li>真正的物理通信总是发生在物理层。除<code>物理层</code>外，其余各<code>对等层</code>实体间都是<strong><code>虚拟通信</code></strong></li>
-<li>通信必须在对等层进行，不允许交差通信</li>
-<li>对等层通信通过<code>协议</code>实现, 相邻层之间交互通过<code>服务</code>实现。 </li>
-</ul>
-<h2 id="OSI-参考模型-Open-System-Interconnection"><a href="#OSI-参考模型-Open-System-Interconnection" class="headerlink" title="OSI 参考模型 (Open System Interconnection)"></a><strong>OSI 参考模型 (Open System Interconnection)</strong></h2><p><img src="/images/OSI.png" alt="7层模型"></p>
-<ol>
-<li><strong>应用层(A)</strong>：为用户提供各种<code>网络服务</code>，包括文件服务file、电子邮件服务email，数据库服务db，WWW，DNS等</li>
-<li><strong>表示层 (P)</strong>：数据 <code>格式</code> 转化、数据加密/解密、数据压缩/解压</li>
-<li><strong>会话层 (S)</strong>：进行<code>会话</code>管理，包括通信方向控制，谁是发送者？接收者？谁付费？故障点恢复等</li>
-<li><strong>传输层 (T)</strong>：完成报文段在源/目的<code>主机进程</code>之间的 <strong><strong>传输</strong></strong></li>
-<li><strong>网络层 (N)</strong>：完成报文分组在源/目的<code>节点</code>之间 <strong><strong>传输</strong></strong></li>
-<li><strong>数据链路层 (DL)</strong>：完成<code>数据帧</code>在相邻节点间<code>“透明”</code> <strong><strong>传输</strong></strong>，<code>“透明”</code>的含义是：无差错，无丢失，无重复，无顺序错误</li>
-<li><strong>物理层 (PH)</strong>：完成原始<code>数据位流</code>在<code>物理介质</code>上 <strong><strong>传输</strong></strong>，而不管位流的信息含义<br>1-3层完成<code>数据处理</code><br>4-7层完成<code>网络通信</code></li>
-</ol>
-<h2 id="Internet参考模型-TCP-IP协议"><a href="#Internet参考模型-TCP-IP协议" class="headerlink" title="Internet参考模型 (TCP/IP协议)"></a><strong>Internet参考模型 (TCP/IP协议)</strong></h2><p>两个核心协议：<code>TCP</code>和<code>IP</code>协议<br><img src="https://www.zhezuo.com/wp-content/uploads/bbs_files/editor/screenshot/image/20190919/1568883648213581.png" alt="Internet参考模型"></p>
-<ol>
-<li><h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a><strong>应用层</strong></h3><ul>
-<li>对应OSI应用层、表示层和会话层</li>
-<li>该层协议主要包括</li>
-</ul>
-<ol>
-<li>FTP （文件传输协议）</li>
-<li>SMTP（简单邮件传输协议）</li>
-<li>TELNET（远程网络登录协议）</li>
-<li>DSN（域名服务）</li>
-<li>HTTP（超文本传输协议）</li>
-<li>SNMP（简单网络管理协议）</li>
-</ol>
-</li>
-<li><h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a><strong>传输层</strong></h3><ul>
-<li>对应OSI传输层</li>
-<li>该层协议：</li>
-</ul>
-<ol>
-<li>TCP（传输控制协议）<br>可靠的、面向<code>连接</code>的传输协议<br>将报文以<code>文字流形式</code>从 <strong><strong>源主机进程</strong></strong> 发送到 <strong><strong>目的主机进程</strong></strong></li>
-<li>UDP（用户数据报协议）<br>不可靠的、非面向<code>连接</code>的传输协议</li>
-</ol>
-</li>
-<li><h3 id="互联网层"><a href="#互联网层" class="headerlink" title="互联网层"></a><strong>互联网层</strong></h3><ul>
-<li>对应OSI网络层</li>
-<li>该层协议：</li>
-</ul>
-<ol>
-<li>IP (Internet Protocol）<br>IP是Internet参考模型的核心协议<br>将IP分组以<code>数据报方式</code>从 <strong><strong>源主机</strong></strong> 放松到 <strong><strong>目的主机</strong></strong></li>
-</ol>
-</li>
-<li><h3 id="子网层"><a href="#子网层" class="headerlink" title="子网层"></a><strong>子网层</strong></h3><ul>
-<li>对应OSI物理层和数据链层</li>
-<li>该层协议：</li>
-</ul>
-<ol>
-<li>以太网协议(802.3)</li>
-<li>FDDI</li>
-<li>PPP</li>
-<li>SLIP</li>
-<li>Token Bus(802.4)</li>
-<li>Token Ring(802.5)</li>
-<li>百兆、千兆、万兆以太网</li>
-</ol>
-</li>
-</ol>
 
         </div></article>
       <nav class="pagination"><a class="prev" href="/page/2/">
