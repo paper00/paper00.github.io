@@ -98,6 +98,39 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/11/11/Java/Spring%20Boot%20%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%A7%A3%E5%AF%86/">Spring Boot 接口参数自动加解密</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-11-11
+        </span><span class="post-category">
+            <a href="/categories/Java/">Java</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><ul>
+<li>Maven，pom.xml中添加依赖<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.shuibo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>rsa-encrypt-body-spring-boot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<br></li>
+<li>启动类Application中添加@EnableSecurity注解<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br></li>
+<li>在application.yml或者application.properties中添加RSA公钥及私钥<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">rsa:</span></span><br><span class="line"><span class="attr">  encrypt:</span></span><br><span class="line"><span class="attr">    debug:</span> <span class="literal">false</span> <span class="comment"># true表示开启调试，不加密。（方便开发时测试）</span></span><br><span class="line"><span class="attr">    publicKey:</span> <span class="number">123456</span></span><br><span class="line"><span class="attr">    privateKey:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
+<br></li>
+<li>对返回值进行加密<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Encrypt</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/encryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> TestBean <span class="title">encryption</span><span class="params">()</span></span>&#123;</span><br><span class="line">    TestBean testBean = <span class="keyword">new</span> TestBean();</span><br><span class="line">    testBean.setName(<span class="string">"shuibo.cn"</span>);</span><br><span class="line">    testBean.setAge(<span class="number">18</span>);</span><br><span class="line">    <span class="keyword">return</span> testBean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br></li>
+<li>对传过来的加密参数解密<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Decrypt</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/decryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Decryption</span><span class="params">(@RequestBody TestBean testBean)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> testBean.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br>
+
+</li>
+</ul>
+<blockquote>
+<p><a href="https://www.shuibo.cn/" target="_blank" rel="noopener">参考</a></p>
+</blockquote>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/25/scrap/Snowflake-%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/">Snowflake 雪花算法</a>
         </h1>
 
@@ -213,88 +246,6 @@
 </li>
 </ol>
 <h3 id="举例：MDB"><a href="#举例：MDB" class="headerlink" title="举例：MDB"></a>举例：MDB</h3><p>MDB通过消息方式为调用者提供服务<br>MDB组件实际使用过程中，其客户并不拥有MDB组件的远程引用，而是直接将调用消息发送到特定消息队列，因而客户的调用不强调MDB组件的运行。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></p>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/24/scrap/%E5%90%8D%E8%AF%8D%E8%A7%A3%E6%9E%90/">名词解析</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-24
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="计算机网络名词解析"><a href="#计算机网络名词解析" class="headerlink" title="计算机网络名词解析"></a>计算机网络名词解析</h2><blockquote>
-<p>网关 (Gateway)</p>
-</blockquote>
-<ul>
-<li>又称<code>网间连接器</code>、<code>协议转换器</code></li>
-<li>网关在<code>网络层</code>以上实现<code>网络互连</code>，<strong>是复杂的网络互连<code>设备</code></strong>，仅用于两个高层协议<code>不同的网络</code>互连。</li>
-<li>网关既可以用于<code>广域网</code>互连，也可以用于<code>局域网</code>互连。 </li>
-<li>网关是一种充当转换重任的计算机系统或设备。使用在不同的通信协议、数据格式或语言，甚至体系结构完全不同的两种系统之间，网关是一个翻译器。</li>
-<li>与网桥只是简单地传达信息不同，<code>网关</code>对收到的信息要<code>重新打包</code>，以<code>适应</code>目的系统的需求。同层–应用层。</li>
-</ul>
-<blockquote>
-<p>网卡    </p>
-</blockquote>
-<ul>
-<li>是一块被设计用来<code>允许</code>计算机在<code>计算机网络</code>上进行<code>通讯</code>的<code>计算机硬件</code></li>
-<li>由于其拥有<code>MAC地址</code>，因此属于OSI模型的第 2 层 (数据链路层)</li>
-</ul>
-<blockquote>
-<p>路由器</p>
-</blockquote>
-<ul>
-<li>是连接两个或多个网络的硬件设备，在<code>网络</code>间起<code>网关</code>的作用</li>
-<li>路由器可以分析各种不同类型网络传来的数据包的目的地址，把非TCP/IP网络的地址转换成TCP/IP地址</li>
-<li>再根据选定的路由算法把各数据包按最佳路线传送到指定位置</li>
-<li>所以路由器可以把非TCP/ IP网络连接到因特网上 </li>
-</ul>
-<blockquote>
-<p>Hub (集线器)</p>
-</blockquote>
-<ul>
-<li><code>多端口</code>的<code>转发器</code></li>
-<li>在以HUB为中心设备时，即使网络中某条线路产生了故障，并不影响其它线路的工作</li>
-<li>所以 HUB 在<code>局域网</code>中得到了广泛的应用</li>
-<li>用Hub组建的<code>网络</code>是基于<code>共享</code>的<code>原理</code>的</li>
-<li>Hub是<strong>“中心”</strong>的意思</li>
-</ul>
-<blockquote>
-<p>嗅探</p>
-</blockquote>
-<ul>
-<li>可以<code>窃听</code> <code>网络</code>上流经的<code>数据包</code></li>
-<li>用 Hub 组建的<code>网络</code>是基于<code>共享</code>的<code>原理</code>的，<code>局域网</code>内所有的计算机都<code>接收相同的数据包</code>， 而<code>网卡</code>构造了硬件的“过滤器“ 通过识别<code>MAC地址</code>过滤掉和自己无关的信息， <code>嗅探</code>程序只需<code>关闭</code>这个<code>过滤器</code>， 将网卡设置为<code>“混杂模式”</code>就可以进行嗅探。</li>
-<li>用交换机 switch 组建的网络是基于“交换“原理的 ，交换机<code>不是</code>把<code>数据包</code>发到<code>所有</code>的端口上， 而是发到<code>目的网卡</code>所在的端口。</li>
-</ul>
-<blockquote>
-<p>以太网</p>
-</blockquote>
-<ul>
-<li>目前应用最普遍的<code>局域网技术</code></li>
-<li>它规定了包括物理层的连线、电子信号和介质访问层<code>协议</code>的内容。</li>
-<li>802.3 协议的具体实现</li>
-</ul>
-<blockquote>
-<p>Wifi </p>
-</blockquote>
-<ul>
-<li>无线局域网</li>
-<li>802.11 协议的具体实现</li>
-</ul>
-<blockquote>
-<p>ARP欺骗 (ARP毒化)</p>
-</blockquote>
-<ul>
-<li>是针对<code>以太网地址解析协议</code>的一种<code>攻击技术</code></li>
-<li>通过<code>欺骗</code>局域网内访问者PC的<code>网关MAC地址</code>，使访问者PC错以为攻击者更改后的MAC地址是网关的MAC，<code>导致网络不通</code></li>
-</ul>
 
         </div></article>
       <nav class="pagination"><a class="prev" href="/page/2/">

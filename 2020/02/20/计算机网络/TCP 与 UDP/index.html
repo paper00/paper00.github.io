@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="TCP 与 UDP"/><meta name="keywords" content="keywords" /><link rel="alternate" href="https://github.com/paper00/paper00.github.io/issues" title="Euphoria"><link rel="shortcut icon" type="image/x-icon" href="/cookie128px.ico?v=2.11.0" />
+<link rel="canonical" href="https://paper00.github.io/2020/02/20/计算机网络/TCP 与 UDP/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>TCP 与 UDP - Euphoria</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Euphoria</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Euphoria</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">TCP 与 UDP
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-02-20
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-数据段格式"><span class="toc-text">TCP 数据段格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-与-UDP-区别"><span class="toc-text">TCP 与 UDP 区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-为什么是可靠连接？"><span class="toc-text">TCP 为什么是可靠连接？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UDP-为什么是不可靠的？"><span class="toc-text">UDP 为什么是不可靠的？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP-三次握手"><span class="toc-text">TCP 三次握手</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP-四次挥手"><span class="toc-text">TCP 四次挥手</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么建立连接是三次握手，而关闭连接是四次挥手？"><span class="toc-text">为什么建立连接是三次握手，而关闭连接是四次挥手？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么不能用两次握手进行连接？"><span class="toc-text">为什么不能用两次握手进行连接？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么-TIME-WAIT-状态需要经过-2MSL-才能进入-CLOSED-状态？"><span class="toc-text">为什么 TIME_WAIT 状态需要经过 2MSL 才能进入 CLOSED 状态？</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="TCP-数据段格式"><a href="#TCP-数据段格式" class="headerlink" title="TCP 数据段格式"></a>TCP 数据段格式</h2><p>传输层建立【端口 -&gt; 端口】之间的通信，网络层建立【主机 -&gt; 主机】之间的通信。<br><img src="/images/TCP%E6%95%B0%E6%8D%AE%E6%AE%B5.png" alt="TCP 数据段"></p>
+<ul>
+<li><strong>序列号</strong>：<code>TCP</code>把连接中发送到所有数据，按字节进行编号。当 <strong>SYN=1</strong> 时，序列号<code>seq</code>就是报文段中第一个字节的数据编号。</li>
+<li><strong>确认号</strong>：是当前报文段的最后一个字节编号+1，也就是下一个报文段的序列号。确认号表示，已接受小于该确认号的所有数据。</li>
+<li><strong>窗口</strong>: 窗口大小是<code>TCP</code>接受缓冲区的剩余大小，用来进行<code>流量控制</code>。发送方不能够发送超过对方窗口大小的数据，否则会被丢掉。</li>
+</ul>
+<h2 id="TCP-与-UDP-区别"><a href="#TCP-与-UDP-区别" class="headerlink" title="TCP 与 UDP 区别"></a>TCP 与 UDP 区别</h2><ul>
+<li><code>TCP</code>是面向连接的；而<code>UDP</code>是不需要建立连接，即发送数据之前不需要建立连接。</li>
+</ul>
+<ul>
+<li><code>TCP</code>是可靠的，它保证数据的正确性；而<code>UDP</code>是不可靠的，可能会丢包。</li>
+</ul>
+<ul>
+<li><code>UDP</code>的实时性强，工作效率比<code>TCP</code>高，适用于高速传输和实时性要求比较高的通信或者广播通信。</li>
+</ul>
+<ul>
+<li><code>TCP</code>是点对点连接；<code>UDP</code>支持多对多的交互通信。</li>
+</ul>
+<ul>
+<li><code>TCP</code>对系统资源要求较高；<code>UDP</code>对系统资源要求较少。</li>
+</ul>
+<h3 id="TCP-为什么是可靠连接？"><a href="#TCP-为什么是可靠连接？" class="headerlink" title="TCP 为什么是可靠连接？"></a>TCP 为什么是可靠连接？</h3><p><em><code>TCP</code>都有一个发送缓冲区和一个接受缓冲区。</em></p>
+<ul>
+<li><code>TCP</code>数据段里的序列号 <strong>Seq</strong> 能使<code>TCP</code>保证<code>按序到达</code>。</li>
+<li><code>TCP</code>数据段里的确认号 <strong>Ack</strong> 能使<code>TCP</code>保证<code>不丢包</code>，超时了会重传。</li>
+<li><code>TCP</code>拥有 <strong>流量控制</strong> 机制，<code>TCP</code>数据段里还有一个2个字节的<code>窗口</code>字段，它表示 <strong>接受缓冲区</strong> 里的剩余空间，<strong>发送方</strong> 根据这个窗口里的大小，发送比窗口小的数据量，否则发送的数据会被丢掉。这几点让<code>TCP</code>能够保证可靠连接。</li>
+</ul>
+<ul>
+<li><code>TCP</code>拥有 <strong>拥塞控制</strong> 机制。</li>
+</ul>
+<h3 id="UDP-为什么是不可靠的？"><a href="#UDP-为什么是不可靠的？" class="headerlink" title="UDP 为什么是不可靠的？"></a>UDP 为什么是不可靠的？</h3><p><code>UDP</code>没有发送缓冲区，只有一个接受缓冲区。所以只要有数据就会发送，不管对方能不能接受。当对方的接受缓冲区满了之后，新来的数据就会被丢掉，<code>UDP</code>是没有流量控制的，也没有确认号，所以<code>UDP</code>是不可靠的。</p>
+<h1 id="TCP-三次握手"><a href="#TCP-三次握手" class="headerlink" title="TCP 三次握手"></a>TCP 三次握手</h1><p><img src="/images/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png" alt="TCP 三次握手"></p>
+<ul>
+<li><strong>第一次握手</strong>：客户端将标识位 <strong>SYN</strong> 设置为 1，并且随机产生一个值 x，令<code>seq = x</code>，把报文段发送给服务端。</li>
+</ul>
+<ul>
+<li><strong>第二次握手</strong>：服务端看到 <strong>SYN = 1</strong> 就知道它是要请求建立连接，服务端把 <strong>SYN</strong> 和 <strong>ACK</strong> 都设置为 1，并且令<code>ack = x + 1</code>，随机生成一个值 y，令<code>seq = y</code>，告诉对方它的序列号。</li>
+</ul>
+<ul>
+<li><strong>第三次握手</strong>：客服端收到数据段后检查 <strong>ACK</strong> 是否为 1，<code>ack == x + 1</code>？如果是，就把标志位 <strong>ACK</strong> 设置为 1，令<code>ack = y + 1</code>，并且发送给服务端，服务端也做同样的判断后，如果正确，就说明连接建立成功。客户端与服务端之间可以开始传输数据了。</li>
+</ul>
+<h1 id="TCP-四次挥手"><a href="#TCP-四次挥手" class="headerlink" title="TCP 四次挥手"></a>TCP 四次挥手</h1><p><img src="/images/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png" alt="TCP 四次挥手"></p>
+<ul>
+<li><strong>第一次挥手</strong>：客户端将标志位 <strong>FIN</strong> 设置为 1，用来断开与服务端的数据传输。</li>
+</ul>
+<ul>
+<li><strong>第二次挥手</strong>：服务端收到对方的关闭连接请求之后，发送一个确认号，确认号 <strong>ack</strong> 等于对方的序列号 <strong>seq + 1</strong>.</li>
+</ul>
+<ul>
+<li><strong>第三次挥手</strong>：同上。</li>
+<li><strong>第四次挥手</strong>：同上。</li>
+</ul>
+<h2 id="为什么建立连接是三次握手，而关闭连接是四次挥手？"><a href="#为什么建立连接是三次握手，而关闭连接是四次挥手？" class="headerlink" title="为什么建立连接是三次握手，而关闭连接是四次挥手？"></a>为什么建立连接是三次握手，而关闭连接是四次挥手？</h2><p>因为<code>三次握手</code>时，可以把标志位 <strong>SYN</strong> 和 <strong>ACK</strong> 放在<code>同一个报文段</code>发送。<br>但关闭连接时，当收到对方的 <strong>FIN</strong> 通知时，它仅仅表示着对方已经没有数据发送了，但可能，我还有没把全部数据发送给对方。所以不能立马把 socket 连接关闭掉，等我把数据全部发送完之后，再发送 <strong>FIN</strong> 通知，如果收到对方的确认号了，就说明双方的连接都关闭了。所以在大多数情况下，<strong>FIN</strong> 和 <strong>ACK</strong> 报文段是分开发送的。</p>
+<h2 id="为什么不能用两次握手进行连接？"><a href="#为什么不能用两次握手进行连接？" class="headerlink" title="为什么不能用两次握手进行连接？"></a>为什么不能用两次握手进行连接？</h2><p>因为 <strong>两次握手</strong> 只能得到一方的确认，而<code>TCP连接</code>就是为了，让双方彼此知道对方可以正确地接受数据了，并且协商双方的初始序列号。所以<code>TCP连接</code>一定需要 <strong>三次握手</strong>，不能 <strong>两次握手</strong>。</p>
+<h2 id="为什么-TIME-WAIT-状态需要经过-2MSL-才能进入-CLOSED-状态？"><a href="#为什么-TIME-WAIT-状态需要经过-2MSL-才能进入-CLOSED-状态？" class="headerlink" title="为什么 TIME_WAIT 状态需要经过 2MSL 才能进入 CLOSED 状态？"></a>为什么 TIME_WAIT 状态需要经过 2MSL 才能进入 CLOSED 状态？</h2><p>因为在<code>第四次挥手</code>时发送的 <strong>ACK</strong> 报文段可能在传输过程中丢失，如果服务端没有收到 <strong>ACK</strong> 就会重新发送 <strong>FIN</strong> 报文段。所以客户端至少要等一次发送和一次回复所需要的最大时间，也就是 2MSL.</p>
+<blockquote>
+<p>MSL (Maximum Segment Lifetime)：报文段在网络中的最长生存时间。</p>
+</blockquote>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/TCP/">TCP</a>
+            <a href="/tags/UDP/">UDP</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2020/03/14/Java/Java%208%20vs%20Java%2011,%20Java%2011%20%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Java 8 vs Java 11, Java 11 的新功能!</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2020/02/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP:IP%20OSI%E6%A8%A1%E5%9E%8B/">
+        <span class="next-text nav-default">TCP/IP 之 OSI 模型</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:yunduanling@naver.com" target="_blank" rel="noopener" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/paper00" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="https://github.com/paper00/paper00.github.io/issues" target="_blank" rel="noopener" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">paper</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

@@ -98,6 +98,40 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/21/scrap/Dart/">Dart</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-21
+        </span><span class="post-category">
+            <a href="/categories/scrap/">scrap</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a><strong>匿名函数</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span>(Function calback) &#123;</span><br><span class="line">    calback(<span class="string">"hello"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">test</span>((param) &#123;</span><br><span class="line">       // Print hello</span><br><span class="line">       <span class="built_in">print</span>(param);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数作为变量"><a href="#函数作为变量" class="headerlink" title="函数作为变量"></a><strong>函数作为变量</strong></h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var say = (str) &#123;</span><br><span class="line">    <span class="built_in">print</span>(str);</span><br><span class="line">&#125;;</span><br><span class="line">say(<span class="string">"Hello, World!"</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a><strong>异步</strong></h3><ul>
+<li><code>Future</code> 表示一个异步操作的最终完成（或失败）及其结果值的表示</li>
+</ul>
+<p>&emsp;&emsp;<code>Future.delayed</code>： 创建一个延时任务<br>&emsp;&emsp;<code>Future.then</code>：接受异步结果</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Futrue.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"Hello, World!"</span>;</span><br><span class="line">&#125;).<span class="keyword">then</span>(data) &#123;</span><br><span class="line">    <span class="built_in">print</span>(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;<code>Future.wait</code> 只有数组中 <code>所有Future</code> 都执行成功后，才会触发 <code>then</code> 的成功回调，只要有一个<br>&emsp;&emsp;<code>Future</code> 执行失败，就会触发错误回调</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Future.wait([</span><br><span class="line">    // 2秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"Hello, "</span>;</span><br><span class="line">    &#125;),</span><br><span class="line">    // 4秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 4), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"World!"</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]).<span class="keyword">then</span>((results) &#123;</span><br><span class="line">      <span class="built_in">print</span>(results[0] + results[1]);</span><br><span class="line">  &#125;).catchError((e) &#123;</span><br><span class="line">      <span class="built_in">print</span>(e);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Dart提供了类似ES7中的 <code>async</code>, <code>await</code> 等异步操作</li>
+<li><code>async</code> 和 <code>await</code> 往往是成对出现的，如果一个方法中有耗时的操作，你需要将这个方法设置成 <code>async</code>，并给其中的耗时操作加上 <code>await</code>关键字，如果这个方法有返回值，你需要将返回值塞到 <code>Future</code> 中并返回</li>
+</ul>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'dart.async'</span>;</span><br><span class="line">import <span class="string">'package:http/http.dart'</span> as http;</span><br><span class="line"></span><br><span class="line">Future&lt;String&gt; getNetData() async &#123;</span><br><span class="line">    http.Response res = await.get(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">    <span class="built_in">return</span> res.body;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    getNetData().<span class="keyword">then</span>((str) &#123;</span><br><span class="line">        <span class="built_in">print</span>(str);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/20/Docker/Docker/">Docker</a>
         </h1>
 
@@ -232,96 +266,6 @@
 <li>内部IP地址（私用地址）<br>&emsp;&emsp;A类：10.0.0.0（1个网络）<br>&emsp;&emsp;B类：172.16.0.0 - 172.31.0.0（16个网络）<br>&emsp;&emsp;C类：192.168.0.0 - 192.168.255.0（256个网络）<br>Internet的 <code>路由器</code> 不会<code>转发</code> 目的地址为 <code>上述</code> 地址的IP地址，即私用地址不能穿越内部网络边界<br>路由器IP寻址<br>路由器根据 <code>目的网络号</code> 而不是 <code>目的IP地址</code> 转发IP分组，以减少路由表的信息量。<br>当一个 <code>分组</code> 到达时，<code>路由器</code> 获取它的 <code>网络号</code>。如果是本网，则该IP分组直接发送到指定主机；如果是其他网络，则根据 <code>路由表</code> 转发到下一个 <code>路由器</code>。<br>如果 <code>路由表</code> 找不到目的网络，则将该分组转发到 <code>“缺省链路”</code><br>IP协议用于分组传输，Internet还需要一些控制协议，包括 ICMP, ARP, RARP等<br>ICMP协议<br>用于报告IP协议运行过程中意外事件的发生，也用于 <code>网络测试</code>。<br>ICMP消息主要有12中，这些ICMP消息封装在IP分组中传输。因此，ICMP消息可视为 ”IP控制分组“<br>主要ICMP消息：<br>目的不可达：当目的路由器无法找到目的主机，或者DF为“1”的分组经过MTU较小的网络二无法传输时，返回该消息<br>超时<br>参数出错</li>
 </ul>
 <h3 id=""><a href="#" class="headerlink" title=""></a></h3>
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">数据链路层</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-20
-        </span><span class="post-category">
-            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a><strong>主要功能</strong></h2><ol>
-<li>流量控制</li>
-<li>差错控制</li>
-</ol>
-<h2 id="数据帧（Data-frame）"><a href="#数据帧（Data-frame）" class="headerlink" title="数据帧（Data frame）"></a><strong>数据帧（Data frame）</strong></h2><ul>
-<li><code>数据链路层</code> 的最小数据 <code>传输单位</code> ，即<code>DPDU</code></li>
-<li><strong>一般格式：</strong><br>  &emsp;&emsp;帧同步 | 目的地址 | 源地址 | 控制 | 数据 | 帧校验</li>
-</ul>
-<h2 id="数据链路层协议主要内容"><a href="#数据链路层协议主要内容" class="headerlink" title="数据链路层协议主要内容"></a><strong>数据链路层协议主要内容</strong></h2><ol>
-<li><p>数据链路的建立与拆除</p>
-</li>
-<li><p>帧同步</p>
-</li>
-<li><p>差错控制</p>
-<ul>
-<li><strong>差错产生的主要原因</strong>：<ol>
-<li>热噪声：传输介质内的分子热运动</li>
-<li>冲击噪声：外界干扰</li>
-</ol>
-</li>
-<li><strong>特征</strong>：<ol>
-<li>热噪声：干扰幅度<code>小</code>、持续性、对<code>模拟通信</code>影响大</li>
-<li>冲击噪声：干扰幅度<code>大</code>、突发性、对<code>数字通信</code>影响大</li>
-</ol>
-</li>
-<li>计算机网络中，<code>差错控制</code>主要针对<code>冲击噪声</code></li>
-<li><strong>差错控制方法</strong><br>  &emsp;&emsp;通过特殊的编码 (差错控制码)，使<code>接收端</code>能够<code>发现</code>甚至<code>自动纠正</code>错误<br>  &emsp;&emsp;差错控制编码：<ol>
-<li><strong>较错码</strong>：能够发现差错，但无法自动纠正差错，通过发送方重来获得正确的数据</li>
-<li><strong>纠错码</strong>：不但能够发现差错，而且知道哪些位出错，从而能够自动纠正差错<br>&emsp; <strong>码距</strong>：两个码字的距离<blockquote>
-<p>如：10<strong>001</strong>001<br>&emsp;&emsp;&nbsp;10<strong>110</strong>001 （码距为 3）</p>
-</blockquote>
-</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><p>流量控制</p>
-<h3 id="停一等协议"><a href="#停一等协议" class="headerlink" title="停一等协议"></a><strong>停一等协议</strong></h3><p> <code>发送窗口</code> 尺寸 Wt = 1，<code>接受窗口</code>尺寸 Wr = 1</p>
-<h3 id="顺序接受管道协议"><a href="#顺序接受管道协议" class="headerlink" title="顺序接受管道协议"></a><strong>顺序接受管道协议</strong></h3><ul>
-<li>（回退n协议）</li>
-<li><code>发送窗口</code> 尺寸 Wt &gt; 1，<code>接受窗口</code>尺寸 Wr = 1</li>
-<li><code>发送方</code> 连续发生 n 帧而 <code>无需对方应答</code>，但需要将 <code>已发出</code> 但 <code>尚未得到确认</code> 的帧 <code>保存</code> 在发送窗口中，以备 <code>重发</code>。</li>
-<li>优点：仅需一个 <code>接收缓冲区</code></li>
-<li>缺点：当信道误码率较高时，会产生大量 <code>重发帧</code>。<h3 id="选择重传协议"><a href="#选择重传协议" class="headerlink" title="选择重传协议"></a><strong>选择重传协议</strong></h3></li>
-<li><code>发送窗口</code>尺寸 Wt &gt; 1，<code>接受窗口</code>尺寸Wr &gt; 1</li>
-<li>若某一帧出错，后面正确到达的帧虽然不能立即送网络层，但可将其保存在接受窗口。因此，仅需重传出错帧。</li>
-<li>优点：仅重传出错帧，不会产生大量<code>重发帧</code>。</li>
-<li>缺点：需要多个<code>接受缓冲区</code></li>
-</ul>
-</li>
-</ol>
-<blockquote>
-<p>设帧序号的位数为n，则：<br>&emsp;&nbsp;Wt &gt;= Wr<br>&emsp;&nbsp;Wt + Wr &lt;= 2^n</p>
-</blockquote>
-<blockquote>
-<p>例：设 n=3，Wt = 7，Wr = 2；显然，Wr + Wt &gt; 2^n<br>&emsp;&emsp;发送窗口首先连续发送7帧（0～6号帧）<br>&emsp;&emsp;假设这7帧 <strong>全部正确到达</strong>，<code>接收端</code> 收到后返回“确认”，并将接受窗口向前 <code>滑动7个窗口</code>，即<code>当前窗口</code>为7号和0号。<br>&emsp;&emsp;<img src="/images/ex1.png" alt="ex: "><br>&emsp;&emsp;如果“确认”丢失，由于<code>发送端</code>超时收不到“确认”而 <code>误认为</code> 所发送的帧全部丢失，于是 <code>重发</code> 0～6号帧。<br>&emsp;&emsp;重发的0号帧被 <code>重复接受</code>，并被 <code>误认为</code> 下一轮帧的0号帧而递交给主机。</p>
-</blockquote>
-<h3 id="HDLC协议"><a href="#HDLC协议" class="headerlink" title="HDLC协议"></a><strong>HDLC协议</strong></h3><ul>
-<li>一种典型的数据链路层协议，该协议“面向比特”，即以“比特”作为数据帧的基本数据单位（“面向比特”效率高）</li>
-<li>HDLC帧格式：<br>  字节数：1&emsp;&emsp;&emsp;&emsp;1&emsp;&emsp;&emsp;&emsp;1&emsp;&emsp;&emsp;&emsp;任意&emsp;&emsp;&emsp;&emsp;2&emsp;&emsp;&emsp;&emsp;1<br>  &emsp;&emsp;&emsp;&emsp;标志&emsp;|&emsp;地址&emsp;|&emsp;<code>控制</code>&emsp;|&emsp;数据&emsp;|&emsp;帧检验&emsp;|&emsp;标志<ul>
-<li><code>控制</code>字段格式：<br>&emsp;&emsp;信息帧以 “0” 打头<br>&emsp;&emsp;监督帧以 “10” 打头<br>&emsp;&emsp;无编号帧以 “11” 打头<br>&emsp;&emsp;N(S)：表示信息帧的序号（0-7）<br>&emsp;&emsp;N(R)：接收端期望接收的下一帧的<br>&emsp;&emsp;P/F</li>
-</ul>
-</li>
-</ul>
-<h3 id="PPP协议"><a href="#PPP协议" class="headerlink" title="PPP协议"></a><strong>PPP协议</strong></h3><ul>
-<li>（点到点协议  Point to Point Protocol）</li>
-<li><code>ISP</code>: Internet服务提供商，为用户提供<code>接入线路</code>、<code>IP地址</code>和信息增值服务</li>
-<li>具有动态分配<code>IP地址</code>的能力，允许在连接时刻协商<code>IP地址</code></li>
-<li>具有<code>错误检测</code>能力，但不具备<code>纠错</code>能力，所以<code>ppp</code>是<code>不可靠传输协议</code></li>
-<li><code>无重传</code>的机制，网络开销小，速度快。</li>
-<li>具有<code>身份验证功能</code></li>
-<li>既可支持<code>面向字符</code>也可支持<code>面向比特</code>的协议</li>
-<li>帧格式：<br>&emsp;&emsp;标志：01111110，标志一帧的开始和结束<br>&emsp;&emsp;地址：总是固定为 11111111<br>&emsp;&emsp;控制：缺省 000000<code>11</code><br>&emsp;&emsp;数据：静载荷数据，如IP分组。<br>&emsp;&emsp;CRC：CRC码，同HDLC。</li>
-</ul>
-
         </div></article>
       <nav class="pagination"><a class="prev" href="/page/4/">
         <i class="iconfont icon-left"></i>
