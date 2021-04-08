@@ -98,6 +98,35 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2021/04/08/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AIC%20%E6%A0%87%E5%87%86%E4%B8%8E%20BIC%20%E5%87%86%E5%88%99/">AIC 准则与 BIC 准则</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-04-08
+        </span><span class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="AIC-标准"><a href="#AIC-标准" class="headerlink" title="AIC 标准"></a>AIC 标准</h2><h4 id="拟合"><a href="#拟合" class="headerlink" title="拟合"></a>拟合</h4><p><code>拟合</code>就是把平面上 <strong><em>一系列的点</em></strong>，用一条<code>光滑的曲线</code>连接起来。因为这条曲线有无数种可能，从而有各种拟合方法。<code>拟合的曲线</code>一般可以用 <strong><em>函数</em></strong> 表示，根据这个函数的不同有不同的拟合名字。</p>
+<h4 id="AIC-准则"><a href="#AIC-准则" class="headerlink" title="AIC 准则"></a>AIC 准则</h4><p><code>AIC</code>是衡量<code>统计模型</code> <strong>拟合优良性</strong> 的一种标准，提供了权衡<code>估计模型</code> <strong><em>复杂度</em></strong> 和 <strong><em>拟合数据优良性</em></strong> 的标准。通常情况下，AIC定义为：</p>
+<blockquote>
+<p>AIC = 2<strong>k</strong> - 2<strong>ln</strong>(L)</p>
+</blockquote>
+<p>其中，<strong><em>k</em></strong> 为<code>参数个数</code>，<strong><em>L</em></strong> 为<code>似然函数</code>。<br><br>从一组可供选择的模型中选择最佳模型时，通常选择AIC最小的模型。<br><br>一般而言，当模型复杂度提高（k增大）时，似然函数L也会增大，从而使AIC变小；但是k过大时，似然函数增速减缓，导致AIC增大，模型过于复杂容易造成 <strong><em>过拟合现象</em></strong>。引入了惩罚项，使模型参数尽可能少，有助于降低过拟合的可能性。</p>
+<h4 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h4><p>一个假设在<code>训练数据</code>上能够获得比其他假设更好的拟合， 但是在<code>训练数据外</code>的数据集上却不能很好地拟合数据，此时认为这个假设出现了<code>过拟合</code>的现象。出现这种现象的 <strong><em>主要原因</em></strong> 是训练数据中存在 <strong><em>噪音</em></strong> 或者 <strong><em>训练数据太少</em></strong>。</p>
+<h2 id="BIC-准则"><a href="#BIC-准则" class="headerlink" title="BIC 准则"></a>BIC 准则</h2><h4 id="BIC准则"><a href="#BIC准则" class="headerlink" title="BIC准则"></a>BIC准则</h4><p><code>BIC</code>的惩罚项比<code>AIC</code>的大，考虑了样本数量，样本数量过多时，可有效防止模型精度过高造成的模型复杂度过高。</p>
+<blockquote>
+<p>BIC = k<strong>ln</strong>(n) - 2<strong>ln</strong>(L)</p>
+</blockquote>
+<p>其中，<strong><em>k</em></strong> 为<code>参数个数</code>，<strong><em>n</em></strong> 为<code>样本数量</code>，<strong><em>L</em></strong> 为<code>似然函数</code>。<br><br><strong><em>kln(n)</em></strong> 惩罚项在维数过大且训练样本数据相对较少的情况下，可以有效避免出现维度灾难现象。</p>
+<h2 id="AIC-与-BIC-比较"><a href="#AIC-与-BIC-比较" class="headerlink" title="AIC 与 BIC 比较"></a>AIC 与 BIC 比较</h2><p><code>BIC</code>相比<code>AIC</code>在大数据量时对模型参数惩罚得更多，导致<code>BIC</code>更倾向于选择 <strong><em>参数少</em></strong> 的简单模型。</p>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B/ThreadLocal/">ThreadLocal 原理、使用场景</a>
         </h1>
 
@@ -163,83 +192,6 @@
 </ol>
 
         </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2020/03/14/Java/Java%208%20vs%20Java%2011,%20Java%2011%20%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD/">Java 8 vs Java 11, Java 11 的新功能!</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2020-03-14
-        </span><span class="post-category">
-            <a href="/categories/Java/">Java</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><ul>
-<li>在目前，比较主流的<code>稳定版</code>是<code>Java 8</code>和<code>Java 11</code>（Java 9，10 非稳定版）</li>
-<li><code>Java 11</code>相比<code>Java 8</code>进化了一部分（有些是 Java 9，10 时已引入）</li>
-</ul>
-<h2 id="Java-11-新特性有哪些？"><a href="#Java-11-新特性有哪些？" class="headerlink" title="Java 11 新特性有哪些？"></a>Java 11 新特性有哪些？</h2><h3 id="1-变量类型-var"><a href="#1-变量类型-var" class="headerlink" title="1. 变量类型 var"></a>1. 变量类型 var</h3><ul>
-<li>引入了 <code>var</code></li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 普通变量</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">"paper"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 集合</span></span><br><span class="line"><span class="keyword">var</span> list1 = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list2 = List.of(<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"><span class="keyword">var</span> list3 = List.of(<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// List&lt;List&lt;T&gt;&gt; 嵌套</span></span><br><span class="line"><span class="keyword">var</span> list = List.of(list1, list2, list3);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>var</code> 不能使用的情况，如下：<ol>
-<li>重新赋值另一种类型    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">"paper"</span>;	<span class="comment">// String 类型</span></span><br><span class="line">name = <span class="number">666</span>;		<span class="comment">// int 类型</span></span><br></pre></td></tr></table></figure></li>
-<li>没有初始化<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age;</span><br><span class="line">age = <span class="number">22</span>;</span><br></pre></td></tr></table></figure></li>
-<li>类的<code>成员变量</code></li>
-<li>方法<code>入参</code>类型</li>
-<li><code>返回值</code>类型</li>
-</ol>
-</li>
-</ul>
-<h3 id="2-HTTP-Client-加持"><a href="#2-HTTP-Client-加持" class="headerlink" title="2. HTTP Client 加持"></a>2. HTTP Client 加持</h3><ul>
-<li>位于 java.net.http 包下</li>
-<li>支持<code>发送同步</code>、<code>异步请求</code>，还可以带上<code>自定义请求头</code>（ex：携带 JWT Token 权限信息去请求）</li>
-</ul>
-<ul>
-<li>发送同步请求<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = HttpRequest.newBuilder()</span><br><span class="line">        .uri(URI.create(<span class="string">"https://paper00.github.io/"</span>))</span><br><span class="line">        .GET()</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> response = httpClient.newHttpClient()</span><br><span class="line">        .send(request, HttpResponse.BodyHandlers.ofString());</span><br><span class="line"></span><br><span class="line">System.out.println(response);</span><br></pre></td></tr></table></figure></li>
-<li>发送异步请求<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture&lt;String&gt; future = HttpClient.newHttpClient()</span><br><span class="line">        .sendAsync(request, HttpResponse.BodyHandlers.ofString())</span><br><span class="line">        .thenApply(HttpResponse::body);</span><br><span class="line">System.out.println(<span class="string">"先做别的事情"</span>);</span><br><span class="line">System.out.println(future.get());</span><br></pre></td></tr></table></figure></li>
-<li>可以带自定义请求头<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = HttpRequest.newBuilder()</span><br><span class="line">        .uri(URI.create(<span class="string">"https://paper00.github.io/"</span>))</span><br><span class="line">        .header(<span class="string">"Authorization"</span>, <span class="string">"Bearer eysdjEqoeiwQWeiowoQoieWruqoweE"</span>)</span><br><span class="line">        .GET()</span><br><span class="line">        .build();</span><br><span class="line">    </span><br><span class="line"><span class="keyword">var</span> response = HttpClient.newHttpClient()</span><br><span class="line">        .send(request, HttpResponse.BodyHandlers.ofString());</span><br><span class="line"></span><br><span class="line">System.out.println(response.body());</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="3-String-处理增强"><a href="#3-String-处理增强" class="headerlink" title="3. String 处理增强"></a>3. String 处理增强</h3><ul>
-<li><code>isBlank()</code></li>
-<li><code>strip()</code> - 去空格</li>
-<li><code>repeat(7)</code></li>
-</ul>
-<h3 id="4-集合增强"><a href="#4-集合增强" class="headerlink" title="4. 集合增强"></a>4. 集合增强</h3><p><code>of()</code> - 创建集合<br><code>copyOf()</code> - 复制集合</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list0 = List.copyOf(list);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> set = Set.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> set0 = Set.copyOf(set);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> map = Map.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> map0 = Map.copyOf(map);</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-函数上编程增强"><a href="#5-函数上编程增强" class="headerlink" title="5. 函数上编程增强"></a>5. 函数上编程增强</h3><p><code>Stream</code> 流中的</p>
-<ul>
-<li><code>takeWhile()</code></li>
-<li><code>dropWhile()</code></li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list0 = list.stream()</span><br><span class="line">        .dropWhile(item -&gt; item.equals(<span class="number">1</span>))   <span class="comment">// 条件</span></span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line">System.out.println(list0);	<span class="comment">// 2, 3</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="6-文件读写增强"><a href="#6-文件读写增强" class="headerlink" title="6. 文件读写增强"></a>6. 文件读写增强</h3><p>Files 类</p>
-<ul>
-<li><code>writeString()</code></li>
-<li><code>readString()</code></li>
-</ul>
-<p>InputStream 类</p>
-<ul>
-<li>transferTo()</li>
-</ul>
-<p>支持直接通过字符串<code>String</code>类读取写入</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取</span></span><br><span class="line">Path path = Paths.get(<span class="string">"/Users/paper/test.txt"</span>);</span><br><span class="line">String content = Files.readString(path, StandardCharsets.UTF_8);</span><br><span class="line"><span class="comment">// 写入</span></span><br><span class="line">String str = <span class="string">"abc"</span>;</span><br><span class="line">Files.writeString(path, str, StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-支持-java-源文件直接运行！"><a href="#7-支持-java-源文件直接运行！" class="headerlink" title="7. 支持 .java 源文件直接运行！"></a>7. 支持 .java 源文件直接运行！</h3><ul>
-<li>省去以前 javac 编译源文件过程，可以直接通过<code>java 指令</code>运行 .java 源文件<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java hello.java</span><br></pre></td></tr></table></figure>
-和<code>python</code>源文件的运行有点像</li>
-</ul>
-
-        </div></article>
       <nav class="pagination"><a class="next" href="/page/2/">
         <span class="next-text">Next</span>
         <i class="iconfont icon-right"></i>
@@ -260,7 +212,7 @@
     <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
   </span>
 
-  <span class="copyright-year">&copy;2018 - 2020<span class="heart">
+  <span class="copyright-year">&copy;2018 - 2021<span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
     <span class="author">paper</span>

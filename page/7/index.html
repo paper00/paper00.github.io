@@ -98,6 +98,91 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%A6%82%E8%BF%B0/">概述</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a><strong>网络协议</strong></h2><p>各独立的计算机系统必须严格遵循事先约定好的一整套<code>通信规程</code>，包括规定要交换的数据格式、 控制信息的格式和控制功能、通信过程中事件执行的次序 等。这些<code>通信规程</code>称之为<strong><code>网络协议</code></strong>。 </p>
+<h2 id="网络体系结构"><a href="#网络体系结构" class="headerlink" title="网络体系结构"></a><strong>网络体系结构</strong></h2><ul>
+<li><code>网络分层结构</code>及其<code>协议</code>的集合<ol>
+<li>会晤层</li>
+<li>语言层</li>
+<li>物理层</li>
+</ol>
+</li>
+<li>真正的物理通信总是发生在物理层。除<code>物理层</code>外，其余各<code>对等层</code>实体间都是<strong><code>虚拟通信</code></strong></li>
+<li>通信必须在对等层进行，不允许交差通信</li>
+<li>对等层通信通过<code>协议</code>实现, 相邻层之间交互通过<code>服务</code>实现。 </li>
+</ul>
+<h2 id="OSI-参考模型-Open-System-Interconnection"><a href="#OSI-参考模型-Open-System-Interconnection" class="headerlink" title="OSI 参考模型 (Open System Interconnection)"></a><strong>OSI 参考模型 (Open System Interconnection)</strong></h2><p><img src="/images/OSI.png" alt="7层模型"></p>
+<ol>
+<li><strong>应用层(A)</strong>：为用户提供各种<code>网络服务</code>，包括文件服务file、电子邮件服务email，数据库服务db，WWW，DNS等</li>
+<li><strong>表示层 (P)</strong>：数据 <code>格式</code> 转化、数据加密/解密、数据压缩/解压</li>
+<li><strong>会话层 (S)</strong>：进行<code>会话</code>管理，包括通信方向控制，谁是发送者？接收者？谁付费？故障点恢复等</li>
+<li><strong>传输层 (T)</strong>：完成报文段在源/目的<code>主机进程</code>之间的 <strong><strong>传输</strong></strong></li>
+<li><strong>网络层 (N)</strong>：完成报文分组在源/目的<code>节点</code>之间 <strong><strong>传输</strong></strong></li>
+<li><strong>数据链路层 (DL)</strong>：完成<code>数据帧</code>在相邻节点间<code>“透明”</code> <strong><strong>传输</strong></strong>，<code>“透明”</code>的含义是：无差错，无丢失，无重复，无顺序错误</li>
+<li><strong>物理层 (PH)</strong>：完成原始<code>数据位流</code>在<code>物理介质</code>上 <strong><strong>传输</strong></strong>，而不管位流的信息含义<br>1-3层完成<code>数据处理</code><br>4-7层完成<code>网络通信</code></li>
+</ol>
+<h2 id="Internet参考模型-TCP-IP协议"><a href="#Internet参考模型-TCP-IP协议" class="headerlink" title="Internet参考模型 (TCP/IP协议)"></a><strong>Internet参考模型 (TCP/IP协议)</strong></h2><p>两个核心协议：<code>TCP</code>和<code>IP</code>协议<br><img src="https://www.zhezuo.com/wp-content/uploads/bbs_files/editor/screenshot/image/20190919/1568883648213581.png" alt="Internet参考模型"></p>
+<ol>
+<li><h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a><strong>应用层</strong></h3><ul>
+<li>对应OSI应用层、表示层和会话层</li>
+<li>该层协议主要包括</li>
+</ul>
+<ol>
+<li>FTP （文件传输协议）</li>
+<li>SMTP（简单邮件传输协议）</li>
+<li>TELNET（远程网络登录协议）</li>
+<li>DSN（域名服务）</li>
+<li>HTTP（超文本传输协议）</li>
+<li>SNMP（简单网络管理协议）</li>
+</ol>
+</li>
+<li><h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a><strong>传输层</strong></h3><ul>
+<li>对应OSI传输层</li>
+<li>该层协议：</li>
+</ul>
+<ol>
+<li>TCP（传输控制协议）<br>可靠的、面向<code>连接</code>的传输协议<br>将报文以<code>文字流形式</code>从 <strong><strong>源主机进程</strong></strong> 发送到 <strong><strong>目的主机进程</strong></strong></li>
+<li>UDP（用户数据报协议）<br>不可靠的、非面向<code>连接</code>的传输协议</li>
+</ol>
+</li>
+<li><h3 id="互联网层"><a href="#互联网层" class="headerlink" title="互联网层"></a><strong>互联网层</strong></h3><ul>
+<li>对应OSI网络层</li>
+<li>该层协议：</li>
+</ul>
+<ol>
+<li>IP (Internet Protocol）<br>IP是Internet参考模型的核心协议<br>将IP分组以<code>数据报方式</code>从 <strong><strong>源主机</strong></strong> 放松到 <strong><strong>目的主机</strong></strong></li>
+</ol>
+</li>
+<li><h3 id="子网层"><a href="#子网层" class="headerlink" title="子网层"></a><strong>子网层</strong></h3><ul>
+<li>对应OSI物理层和数据链层</li>
+<li>该层协议：</li>
+</ul>
+<ol>
+<li>以太网协议(802.3)</li>
+<li>FDDI</li>
+<li>PPP</li>
+<li>SLIP</li>
+<li>Token Bus(802.4)</li>
+<li>Token Ring(802.5)</li>
+<li>百兆、千兆、万兆以太网</li>
+</ol>
+</li>
+</ol>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/20/scrap/json%E4%B8%8Ebson%E7%9A%84%E5%8C%BA%E5%88%AB/">json与bson的区别</a>
         </h1>
 
@@ -144,7 +229,7 @@
     <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
   </span>
 
-  <span class="copyright-year">&copy;2018 - 2020<span class="heart">
+  <span class="copyright-year">&copy;2018 - 2021<span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
     <span class="author">paper</span>

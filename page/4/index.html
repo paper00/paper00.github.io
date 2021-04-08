@@ -98,6 +98,40 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/25/scrap/MQ-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">MQ 消息队列</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-25
+        </span></div>
+    </header>
+
+    <div class="post-content"><p>Message Queue</p>
+<h3 id="应用场景（优点）"><a href="#应用场景（优点）" class="headerlink" title="应用场景（优点）"></a>应用场景（优点）</h3><ol>
+<li>主要解决 <code>异步</code> 消息<br>由于在高并发环境下，由于来不及同步处理，请求往往会发生堵塞，比如说，大量的insert，update之类的请求同时到达 mysql，直接导致无数的行锁表锁，甚至最后请求会堆积过多，从而触发too many connections错误。通过使用 <code>MQ</code>，我们可以 <code>异步</code> 处理请求，从而缓解系统的压力。</li>
+<li>应用解耦</li>
+<li>流量消峰等问题</li>
+<li>日志处理 (kafka)</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>系统可用性降低<br>本来其他系统只要运行好好的，那你的系统就是正常的。现在你非要加个消息队列进去，那消息队列挂了，你的系统就挂了。因此，系统可用性降低</li>
+<li>系统复杂性增加<br>要多考虑很多方面的问题，比如一致性问题、如何 <code>保证</code> 消息不被 <code>重复消费</code>，如何保证消息 <code>可靠传输</code>。因此，需要 <code>考虑</code> 的东西更多，系统复杂性增大。</li>
+</ul>
+<ol>
+<li>为什么会造成 <code>重复消费</code>?<br>因为 <code>网络传输</code> 等等 <code>故障</code>，确认信息 <code>没有</code> 传送到 <code>消息队列</code>，导致消息队列 <code>不知道</code> 自己已经消费过该消息了，<code>再次</code> 将该消息分发给其他的消费者。</li>
+<li>解决重复消费的方案：<ol>
+<li>比如，你拿到这个消息做数据库的 <code>insert</code> 操作。那就容易了，给这个消息做一个 <code>唯一主键</code>，那么就算出现重复消费的情况，就会导致主键冲突，避免数据库出现脏数据。</li>
+<li>再比如，你拿到这个消息做 <code>redis</code> 的set的操作，那就容易了，不用解决，因为你无论 <code>set</code> 几次结果都是一样的，<code>set</code> 操作本来就算 <code>幂等</code> 操作。</li>
+<li>如果上面两种情况还不行，上大招。准备一个 <code>第三方介质</code>，来做消费记录。以 <code>redis</code> 为例，给消息分配一个 <code>全局id</code>，只要消费过该消息，将&lt;id,message&gt;以K-V形式写入redis。那消费者开始消费前，先去redis中查询 <code>有没消费记录</code> 即可。</li>
+</ol>
+</li>
+</ol>
+<h3 id="举例：MDB"><a href="#举例：MDB" class="headerlink" title="举例：MDB"></a>举例：MDB</h3><p>MDB通过消息方式为调用者提供服务<br>MDB组件实际使用过程中，其客户并不拥有MDB组件的远程引用，而是直接将调用消息发送到特定消息队列，因而客户的调用不强调MDB组件的运行。<br><a href="https://www.cnblogs.com/williamjie/p/9481780.html" target="_blank" rel="noopener">参考</a></p>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2019/10/24/scrap/%E5%90%8D%E8%AF%8D%E8%A7%A3%E6%9E%90/">名词解析</a>
         </h1>
 
@@ -249,58 +283,6 @@
 <p>&emsp;等等。这些功能都与某些核心业务无关，但又随处可见，如果都是复制粘贴就很麻烦，而且难以维护。把它们抽离出来，用<code>动态</code>插入的方式嵌到各业务逻辑中。</p>
 
         </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/10/21/scrap/JWT/">JWT</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-10-21
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h3 id="为什么使用JWT"><a href="#为什么使用JWT" class="headerlink" title="为什么使用JWT?"></a><strong>为什么使用JWT?</strong></h3><p>通过 <code>session</code> 管理用户登录状态成本越来越高，因此慢慢发展成为 <code>token</code> 的方式做登录身份校验，然后通过 <code>token</code> 去取 <code>redis</code>中的缓存的用户信息，随着之后jwt的出现，校验方式更加简单化，<code>无需</code> 通过 <code>redis</code> 缓存，而是 <code>直接</code> 根据 <code>token</code> 取出保存的用户信息，以及对 <code>token</code> 可用性校验，单点登录更为简单。</p>
-<h3 id="公钥和私钥"><a href="#公钥和私钥" class="headerlink" title="公钥和私钥"></a><strong>公钥和私钥</strong></h3><p>是通过一种 <code>算法</code> 得到的一个 <code>密钥对</code> = <code>公钥</code> + <code>私钥</code></p>
-<ul>
-<li><code>公钥</code>：向外界公开</li>
-<li><code>私钥</code>：自己保留</li>
-<li>通过算法得到的 <code>密钥对</code> 能保证在世界范围内是唯一的。使用这个密钥对的时候，如果用 <strong>其中一个密钥</strong> <code>加密</code> 一段数据，必须用 <strong>另一个密钥</strong><code>解密</code>。<blockquote>
-<p>比如用<code>公钥</code>加密数据就必须用<code>私钥</code>解密，用<code>私钥</code>加密必须用<code>公钥</code>解密，否则解密将不会成功。</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="JWT-数据格式"><a href="#JWT-数据格式" class="headerlink" title="JWT 数据格式"></a><strong>JWT 数据格式</strong></h3><ol>
-<li><code>Header</code>：对头部进行<code>Base64Url</code>编码(可解码)，头部包含两部分信息：<br>声明类型（JWT）：<code>&quot;typ&quot;: &quot;JWT&quot;,</code><br>加密算法（自定义）：<code>&quot;alg&quot;: &quot;HS256&quot;</code></li>
-<li><code>Payload</code>：对载荷(有效数据)进行<code>Base64Url</code>编码(可解码)，载荷(有效数据)的7个示例信息<br>（JSON形式）：<ol>
-<li>iss (issuer)：表示签发人 （举例如下）：<code>&quot;iss&quot;: &quot;Oline JWT Builder&quot;</code></li>
-<li>exp (expiration time)：表示token过期时间</li>
-<li>sub (subject)：主题</li>
-<li>aud (audience)：受众</li>
-<li>nbf (Not Before)：生效时间</li>
-<li>iat (Issued At)：签发时间</li>
-<li>jti (JWT ID)：编号</li>
-</ol>
-</li>
-<li><code>Signature</code>：签名，是整个数据的认证信息。一般根据前两步的数据，再加上服务的的密钥 <code>secret</code> （密钥仅仅为保存在服务器中，并且不能向用户公开，即 <code>私钥</code>），通过 <code>Header</code> 中配置的加密算法 <code>alg</code> 生成。用于验证整个数据完整和可靠性。<br>  <code>HMACSHA256( base64UrlEncode(header) + &quot;.&quot; + base64UrlEncode(payload),secret )</code></li>
-</ol>
-<h4 id="最终生成的JWT数据格式如下图："><a href="#最终生成的JWT数据格式如下图：" class="headerlink" title="最终生成的JWT数据格式如下图："></a>最终生成的<strong>JWT数据格式</strong>如下图：</h4><p><img src="/images/jwt1.png" alt="ex1: "></p>
-<p><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=563276735,1576219691&fm=173&app=25&f=JPEG?w=640&h=237&s=D8243D7287E04D011E54B1CF0000A0B3" alt="ex2:"></p>
-<p><strong>注意</strong>：这里的数据通过 . 隔开成了三部分；另外，这里数据是不换行的，图片换行只是为了展示方便而已。</p>
-<h3 id="JWT交互流程"><a href="#JWT交互流程" class="headerlink" title="JWT交互流程"></a><strong>JWT交互流程</strong></h3><p>流程图：</p>
-<p><img src="/images/jwt2.png" alt="ex: "></p>
-<p>因为JWT签发的 <code>token</code> 中已经包含了用户的身份信息，并且每次请求都会携带，这样服务的就无需保存用户信息，甚至无需去数据库查询，这样就完全符合了RESTful的无状态规范。</p>
-<h3 id="JWT-存在的问题"><a href="#JWT-存在的问题" class="headerlink" title="JWT 存在的问题"></a><strong>JWT 存在的问题</strong></h3><ol>
-<li><strong><strong>续签问题</strong></strong>，传统的cookie+session的方案天然的支持续签，但是jwt由于<code>服务端</code>不保存用户状态，因此很难完美解决续签问题，如果引入redis，虽然可以解决问题，但是jwt也变得不伦不类了。</li>
-<li><strong><strong>注销问题</strong></strong>，由于<code>服务端</code>不再保存用户信息，所以一般可以通过修改secret来实现注销，服务端secret修改后，已经颁发的未过期的token就会认证失败，进而实现注销，不过毕竟没有传统的注销方便。</li>
-<li><strong><strong>密码重置</strong></strong>，密码重置后，原本的token依然可以访问系统，这时候也需要强制修改secret。</li>
-<li>基于第2点和第3点，建议不同用户取不同secret。</li>
-</ol>
-
-        </div></article>
       <nav class="pagination"><a class="prev" href="/page/3/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
@@ -325,7 +307,7 @@
     <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
   </span>
 
-  <span class="copyright-year">&copy;2018 - 2020<span class="heart">
+  <span class="copyright-year">&copy;2018 - 2021<span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
     <span class="author">paper</span>
