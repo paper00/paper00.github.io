@@ -98,7 +98,40 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2021/04/08/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AIC%20%E6%A0%87%E5%87%86%E4%B8%8E%20BIC%20%E5%87%86%E5%88%99/">AIC 准则与 BIC 准则</a>
+      <h1 class="post-title"><a class="post-link" href="/2021/04/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Fourier%E5%88%86%E6%9E%90%EF%BC%9AFourier%E7%BA%A7%E6%95%B0%20+%20Fourier%E5%8F%98%E6%8D%A2/">Fourier分析：Fourier级数 + Fourier变换</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-04-16
+        </span><span class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="傅里叶分析"><a href="#傅里叶分析" class="headerlink" title="傅里叶分析"></a>傅里叶分析</h2><p><code>傅立叶分析</code>的作用是把 <strong><em>一个函数</em></strong> 分解为 <strong><em>许多三角函数的和</em></strong> 的形式。</p>
+<p>这些三角函数的频率都是某个基频的整数倍。如果这个基频无限趋近于0，那么在极限的情况下这函数的频率就连续了，将连续 <strong><em>时域</em></strong> 函数映射到连续的 <strong><em>频域</em></strong> 函数的变换就是标准的<code>傅立叶变换</code>。</p>
+<p><img src="/images/%E6%97%B6%E5%9F%9F%E4%B8%8E%E9%A2%91%E5%9F%9F.png" alt="时域与频域"></p>
+<p>由于工程采集的信号大多都是离散的，把时域离散化以后不可能在得到连续的频域函数，所以在频域上也不连续了，这种离散时域序列到离散频域序列的变换称之为<code>离散傅立叶变换(DFT)</code>。</p>
+<p><code>Fourier分析</code>的主要内容：<strong><em>Fourier级数</em></strong> + <strong><em>Fourier变换</em></strong> 两个方面。</p>
+<h2 id="傅里叶级数"><a href="#傅里叶级数" class="headerlink" title="傅里叶级数"></a>傅里叶级数</h2><p>下面是<code>傅里叶级数</code>最基本的形式👇</p>
+<p><img src="/images/%E5%82%85%E9%87%8C%E5%8F%B6%E7%BA%A7%E6%95%B0(%E6%9C%80%E5%9F%BA%E6%9C%AC%E5%BD%A2%E5%BC%8F).gif" alt="傅里叶级数(最基本形式)"></p>
+<p><code>L²(0, 2π)</code>表示在实数集 <em>R</em> 上以 <em>2π</em> 为周期且在 <em>(0, 2π)</em> 上 <strong><em>平方可积函数</em></strong> 的全体。</p>
+<p><code>L¹(0, 2π)</code>表示在实数集 <em>R</em> 上以 <em>2π</em> 为周期且在 <em>(0, 2π)</em> 上 <strong><em>绝对可积函数</em></strong> 的全体。</p>
+<p>在<code>L²(0, 2π)</code>中定义内积为</p>
+<p><img src="/images/%E5%9C%A8L%C2%B2%E4%B8%AD%E7%9A%84%E5%86%85%E7%A7%AF.png" alt="在L²(0, 2π)中的内积"></p>
+<p>如果 <em>&lt;f, g&gt; = 0</em>, 则 <em>f, g</em> 是正交的。(可过滤)</p>
+<p>令 <code>g =&gt; e^ikt</code>, 函数集<code>{e^ikt}(k∈Z)</code>是<code>L²(0, 2π)</code>的标准正交基，使<code>L²(0, 2π)</code>中的任意 <strong><em>函数</em></strong> 都能展成<code>Fourier级数</code>。（基函数<code>e^ikt</code>是一个“正弦波”，<em>k</em> 越大，频率越高。）</p>
+<h2 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h2><p>设 <em>f(t)</em> 是定义在 <em>R</em> 上的函数，<em>f(t)</em> 的 <em>Fourier</em> 变换定义为👇</p>
+<p><img src="/images/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%AE%9A%E4%B9%89.png" alt="傅里叶变换定义"></p>
+<p><code>Fourier变换</code>能够较好地刻画信号的 <strong><em>频率(ω)</em></strong> 特性，但不能提供信号在时频(t)上的任何 <strong><em>局部信息</em></strong>。以上面定义可见，<code>Fourier变换</code>使用信号在时域中的全部信息。但许多情况下，我们感兴趣的信号往往是局部的，然后使用<code>Fourier变换</code>，信号的 <strong><em>时域信息</em></strong> 相当于丢失了，很难知道时间发生的确切时间。</p>
+<p>而<code>小波变换</code>解决了<code>Fourier变换</code>的这些不足。</p>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2021/04/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/AIC%20%E6%A0%87%E5%87%86%E4%B8%8E%20BIC%20%E5%87%86%E5%88%99/">AIC 准则与 BIC 准则</a>
         </h1>
 
       <div class="post-meta">
@@ -154,42 +187,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal&lt;Integer&gt; localNumber = <span class="keyword">new</span> ThreadLocal();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    localNumber.set(<span class="number">1</span>);</span><br><span class="line">    <span class="comment">// code</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    localNumber.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>为了避免内存泄漏，使用完<code>ThreadLocal</code>之后，记得要调用<code>remove</code>方法。</p>
 <h2 id="ThreadLocal-使用场景"><a href="#ThreadLocal-使用场景" class="headerlink" title="ThreadLocal 使用场景"></a>ThreadLocal 使用场景</h2><p><code>ThreadLocal</code>可以用来解决 <strong>数据库连接</strong>、还有 <strong>session</strong> 管理等。</p>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E9%94%81%E7%9A%844%E4%B8%AA%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6%E3%80%81%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81%E3%80%81%E8%A7%A3%E9%99%A4%E6%AD%BB%E9%94%81/">死锁的4个必要条件、避免死锁、解除死锁</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2020-08-08
-        </span><span class="post-category">
-            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="什么是死锁？"><a href="#什么是死锁？" class="headerlink" title="什么是死锁？"></a>什么是死锁？</h2><p><code>死锁</code>是指多个进程在执行过程中，由于<code>竞争资源</code>造成 <strong>阻塞</strong> 的现象，如果没有 <strong>外力</strong> 的作用，永远无法推进下去。</p>
-<h2 id="死锁产生的4个必要条件"><a href="#死锁产生的4个必要条件" class="headerlink" title="死锁产生的4个必要条件"></a>死锁产生的4个必要条件</h2><ol>
-<li><code>互斥条件</code></li>
-<li><code>请求和保持条件</code></li>
-<li><code>不剥夺条件</code></li>
-<li><code>环路等待条件</code></li>
-</ol>
-<p>这4个条件是死锁的必要条件，只要系统发生了死锁，这些条件是必然成立的。所以想要<code>预防死锁</code>，我们可以 <strong>破坏</strong> 这4个条件来防止死锁。</p>
-<ol>
-<li><code>互斥条件</code>是指，在一段时间内，如果某资源已经被一个进程占用了，其他线程是只能等待，直到占有资源的进程释放资源为止。但一般情况下，有些资源是的确不能够同时访问的，这种互斥性还是需要保留的。</li>
-<li><code>请求和保持条件</code>，当进程对其他资源的请求阻塞时，对自己已经获得的资源保持不放。如果通过一次性分配所有资源，就不会有新的请求了。</li>
-<li><code>不剥夺条件</code>，是对于进程已获取的资源，在没有使用完之前，不能被剥夺，只能使用完后自己释放。这种不剥夺条件可以改为，如果进程没法获取全部的资源，就要释放自己已占有的资源。</li>
-<li><code>环路等待条件</code>，是指进程发生死锁后，若干进程之间形成 <strong>环路</strong> 的 <strong>循环等待</strong> 关系。为了破坏环路等待条件，可以采用<code>顺序资源分配法</code>。系统给每个资源指定编号，并且规定每个进程必须按编号递增的顺序来请求资源，这样可以破坏<code>环路等待条件</code>，但这种算法必定会带来额外的开销。</li>
-</ol>
-<h3 id="避免死锁的方法（银行家算法）"><a href="#避免死锁的方法（银行家算法）" class="headerlink" title="避免死锁的方法（银行家算法）"></a>避免死锁的方法（银行家算法）</h3><p><img src="/images/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95.png" alt="银行家算法"></p>
-<p>避免死锁的方法有<code>银行家算法</code>，每个进程都要声明，在运行过程中所需要的每种资源类型的最大数目，这些数目一定不能超过系统里每种资源的最大总量，每当进程请求资源时，系统需要判断分配资源后，系统会不会处于安全状态(有至少一个安全序列，一定不会发生死锁)，如果不处于安全状态，就要等待。</p>
-<h3 id="解除死锁"><a href="#解除死锁" class="headerlink" title="解除死锁"></a>解除死锁</h3><ol>
-<li>从死锁进程剥夺资源</li>
-<li>终止部分或者全部进程</li>
-</ol>
 
         </div></article>
       <nav class="pagination"><a class="next" href="/page/2/">
