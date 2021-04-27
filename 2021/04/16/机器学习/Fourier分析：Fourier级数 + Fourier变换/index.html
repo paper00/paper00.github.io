@@ -127,7 +127,10 @@
 <p>在<code>L²(0, 2π)</code>中定义内积为</p>
 <p><img src="/images/%E5%9C%A8L%C2%B2%E4%B8%AD%E7%9A%84%E5%86%85%E7%A7%AF.png" alt="在L²(0, 2π)中的内积"></p>
 <p>如果 <em>&lt;f, g&gt; = 0</em>, 则 <em>f, g</em> 是正交的。(可过滤)</p>
-<p>令 <code>g =&gt; e^ikt</code>, 函数集<code>{e^ikt}(k∈Z)</code>是<code>L²(0, 2π)</code>的标准正交基，使<code>L²(0, 2π)</code>中的任意 <strong><em>函数</em></strong> 都能展成<code>Fourier级数</code>。（基函数<code>e^ikt</code>是一个“正弦波”，<em>k</em> 越大，频率越高。）</p>
+<p>令 <code>g =&gt; e^ikt</code>, 函数集<code>{e^ikt}(k∈Z)</code>是<code>L²(0, 2π)</code>的标准正交基，使<code>L²(0, 2π)</code>中的任意 <strong><em>函数</em></strong> 都能展成<code>Fourier级数</code>。</p>
+<blockquote>
+<p>通过<code>泰勒展开公式</code>可得，<em>sin(wt) + cos(wt) = e^iwt</em>）</p>
+</blockquote>
 <h2 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h2><p>设 <em>f(t)</em> 是定义在 <em>R</em> 上的函数，<em>f(t)</em> 的 <em>Fourier</em> 变换定义为👇</p>
 <p><img src="/images/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%AE%9A%E4%B9%89.png" alt="傅里叶变换定义"></p>
 <p><code>Fourier变换</code>能够较好地刻画信号的 <strong><em>频率(ω)</em></strong> 特性，但不能提供信号在时频(t)上的任何 <strong><em>局部信息</em></strong>。以上面定义可见，<code>Fourier变换</code>使用信号在时域中的全部信息。但许多情况下，我们感兴趣的信号往往是局部的，然后使用<code>Fourier变换</code>，信号的 <strong><em>时域信息</em></strong> 相当于丢失了，很难知道时间发生的确切时间。</p>
@@ -141,7 +144,12 @@
             <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/">傅里叶变换</a>
             </div>
         
-        <nav class="post-nav"><a class="next" href="/2021/04/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/AIC%20%E6%A0%87%E5%87%86%E4%B8%8E%20BIC%20%E5%87%86%E5%88%99/">
+        <nav class="post-nav"><a class="prev" href="/2021/04/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%B0%8F%E6%B3%A2%E5%88%86%E6%9E%90%E5%85%B7%E4%BD%93%E7%90%86%E8%A7%A3/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">小波分析具体理解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2021/04/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/AIC%20%E6%A0%87%E5%87%86%E4%B8%8E%20BIC%20%E5%87%86%E5%88%99/">
         <span class="next-text nav-default">AIC 准则与 BIC 准则</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>

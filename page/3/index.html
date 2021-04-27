@@ -98,6 +98,80 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2020/02/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP%20%E4%B8%8E%20UDP/">TCP 与 UDP</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-02-20
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="TCP-数据段格式"><a href="#TCP-数据段格式" class="headerlink" title="TCP 数据段格式"></a>TCP 数据段格式</h2><p>传输层建立【端口 -&gt; 端口】之间的通信，网络层建立【主机 -&gt; 主机】之间的通信。<br><img src="/images/TCP%E6%95%B0%E6%8D%AE%E6%AE%B5.png" alt="TCP 数据段"></p>
+<ul>
+<li><strong>序列号</strong>：<code>TCP</code>把连接中发送到所有数据，按字节进行编号。当 <strong>SYN=1</strong> 时，序列号<code>seq</code>就是报文段中第一个字节的数据编号。</li>
+<li><strong>确认号</strong>：是当前报文段的最后一个字节编号+1，也就是下一个报文段的序列号。确认号表示，已接受小于该确认号的所有数据。</li>
+<li><strong>窗口</strong>: 窗口大小是<code>TCP</code>接受缓冲区的剩余大小，用来进行<code>流量控制</code>。发送方不能够发送超过对方窗口大小的数据，否则会被丢掉。</li>
+</ul>
+<h2 id="TCP-与-UDP-区别"><a href="#TCP-与-UDP-区别" class="headerlink" title="TCP 与 UDP 区别"></a>TCP 与 UDP 区别</h2><ul>
+<li><code>TCP</code>是面向连接的；而<code>UDP</code>是不需要建立连接，即发送数据之前不需要建立连接。</li>
+</ul>
+<ul>
+<li><code>TCP</code>是可靠的，它保证数据的正确性；而<code>UDP</code>是不可靠的，可能会丢包。</li>
+</ul>
+<ul>
+<li><code>UDP</code>的实时性强，工作效率比<code>TCP</code>高，适用于高速传输和实时性要求比较高的通信或者广播通信。</li>
+</ul>
+<ul>
+<li><code>TCP</code>是点对点连接；<code>UDP</code>支持多对多的交互通信。</li>
+</ul>
+<ul>
+<li><code>TCP</code>对系统资源要求较高；<code>UDP</code>对系统资源要求较少。</li>
+</ul>
+<h3 id="TCP-为什么是可靠连接？"><a href="#TCP-为什么是可靠连接？" class="headerlink" title="TCP 为什么是可靠连接？"></a>TCP 为什么是可靠连接？</h3><p><em><code>TCP</code>都有一个发送缓冲区和一个接受缓冲区。</em></p>
+<ul>
+<li><code>TCP</code>数据段里的序列号 <strong>Seq</strong> 能使<code>TCP</code>保证<code>按序到达</code>。</li>
+<li><code>TCP</code>数据段里的确认号 <strong>Ack</strong> 能使<code>TCP</code>保证<code>不丢包</code>，超时了会重传。</li>
+<li><code>TCP</code>拥有 <strong>流量控制</strong> 机制，<code>TCP</code>数据段里还有一个2个字节的<code>窗口</code>字段，它表示 <strong>接受缓冲区</strong> 里的剩余空间，<strong>发送方</strong> 根据这个窗口里的大小，发送比窗口小的数据量，否则发送的数据会被丢掉。这几点让<code>TCP</code>能够保证可靠连接。</li>
+</ul>
+<ul>
+<li><code>TCP</code>拥有 <strong>拥塞控制</strong> 机制。</li>
+</ul>
+<h3 id="UDP-为什么是不可靠的？"><a href="#UDP-为什么是不可靠的？" class="headerlink" title="UDP 为什么是不可靠的？"></a>UDP 为什么是不可靠的？</h3><p><code>UDP</code>没有发送缓冲区，只有一个接受缓冲区。所以只要有数据就会发送，不管对方能不能接受。当对方的接受缓冲区满了之后，新来的数据就会被丢掉，<code>UDP</code>是没有流量控制的，也没有确认号，所以<code>UDP</code>是不可靠的。</p>
+<h1 id="TCP-三次握手"><a href="#TCP-三次握手" class="headerlink" title="TCP 三次握手"></a>TCP 三次握手</h1><p><img src="/images/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png" alt="TCP 三次握手"></p>
+<ul>
+<li><strong>第一次握手</strong>：客户端将标识位 <strong>SYN</strong> 设置为 1，并且随机产生一个值 x，令<code>seq = x</code>，把报文段发送给服务端。</li>
+</ul>
+<ul>
+<li><strong>第二次握手</strong>：服务端看到 <strong>SYN = 1</strong> 就知道它是要请求建立连接，服务端把 <strong>SYN</strong> 和 <strong>ACK</strong> 都设置为 1，并且令<code>ack = x + 1</code>，随机生成一个值 y，令<code>seq = y</code>，告诉对方它的序列号。</li>
+</ul>
+<ul>
+<li><strong>第三次握手</strong>：客服端收到数据段后检查 <strong>ACK</strong> 是否为 1，<code>ack == x + 1</code>？如果是，就把标志位 <strong>ACK</strong> 设置为 1，令<code>ack = y + 1</code>，并且发送给服务端，服务端也做同样的判断后，如果正确，就说明连接建立成功。客户端与服务端之间可以开始传输数据了。</li>
+</ul>
+<h1 id="TCP-四次挥手"><a href="#TCP-四次挥手" class="headerlink" title="TCP 四次挥手"></a>TCP 四次挥手</h1><p><img src="/images/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png" alt="TCP 四次挥手"></p>
+<ul>
+<li><strong>第一次挥手</strong>：客户端将标志位 <strong>FIN</strong> 设置为 1，用来断开与服务端的数据传输。</li>
+</ul>
+<ul>
+<li><strong>第二次挥手</strong>：服务端收到对方的关闭连接请求之后，发送一个确认号，确认号 <strong>ack</strong> 等于对方的序列号 <strong>seq + 1</strong>.</li>
+</ul>
+<ul>
+<li><strong>第三次挥手</strong>：同上。</li>
+<li><strong>第四次挥手</strong>：同上。</li>
+</ul>
+<h2 id="为什么建立连接是三次握手，而关闭连接是四次挥手？"><a href="#为什么建立连接是三次握手，而关闭连接是四次挥手？" class="headerlink" title="为什么建立连接是三次握手，而关闭连接是四次挥手？"></a>为什么建立连接是三次握手，而关闭连接是四次挥手？</h2><p>因为<code>三次握手</code>时，可以把标志位 <strong>SYN</strong> 和 <strong>ACK</strong> 放在<code>同一个报文段</code>发送。<br>但关闭连接时，当收到对方的 <strong>FIN</strong> 通知时，它仅仅表示着对方已经没有数据发送了，但可能，我还有没把全部数据发送给对方。所以不能立马把 socket 连接关闭掉，等我把数据全部发送完之后，再发送 <strong>FIN</strong> 通知，如果收到对方的确认号了，就说明双方的连接都关闭了。所以在大多数情况下，<strong>FIN</strong> 和 <strong>ACK</strong> 报文段是分开发送的。</p>
+<h2 id="为什么不能用两次握手进行连接？"><a href="#为什么不能用两次握手进行连接？" class="headerlink" title="为什么不能用两次握手进行连接？"></a>为什么不能用两次握手进行连接？</h2><p>因为 <strong>两次握手</strong> 只能得到一方的确认，而<code>TCP连接</code>就是为了，让双方彼此知道对方可以正确地接受数据了，并且协商双方的初始序列号。所以<code>TCP连接</code>一定需要 <strong>三次握手</strong>，不能 <strong>两次握手</strong>。</p>
+<h2 id="为什么-TIME-WAIT-状态需要经过-2MSL-才能进入-CLOSED-状态？"><a href="#为什么-TIME-WAIT-状态需要经过-2MSL-才能进入-CLOSED-状态？" class="headerlink" title="为什么 TIME_WAIT 状态需要经过 2MSL 才能进入 CLOSED 状态？"></a>为什么 TIME_WAIT 状态需要经过 2MSL 才能进入 CLOSED 状态？</h2><p>因为在<code>第四次挥手</code>时发送的 <strong>ACK</strong> 报文段可能在传输过程中丢失，如果服务端没有收到 <strong>ACK</strong> 就会重新发送 <strong>FIN</strong> 报文段。所以客户端至少要等一次发送和一次回复所需要的最大时间，也就是 2MSL.</p>
+<blockquote>
+<p>MSL (Maximum Segment Lifetime)：报文段在网络中的最长生存时间。</p>
+</blockquote>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/02/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP:IP%20OSI%E6%A8%A1%E5%9E%8B/">TCP/IP 之 OSI 模型</a>
         </h1>
 
@@ -244,39 +318,6 @@
 <br></li>
 <li>AOP 切面权限控制<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yzyx.repomanage.aop;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PermissionAspect</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    RoleUserService roleUserService;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    RoleAuthorityService roleAuthorityService;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    AuthorityService authorityService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"execution(public * com.yzyx.repomanage.controller.*.*(..))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">aspectTarget</span><span class="params">()</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">"进行权限验证"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"aspectTarget()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">executeAround</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="comment">// 获取请求信息</span></span><br><span class="line">        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">        HttpServletRequest request = requestAttributes.getRequest();</span><br><span class="line">        HttpServletResponse response = requestAttributes.getResponse();</span><br><span class="line">        <span class="comment">// 如果具有权限，继续执行方法</span></span><br><span class="line">        Object object = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (hasPermission(joinPoint, request)) &#123;</span><br><span class="line">            object = joinPoint.proceed();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.setHeader(<span class="string">"Content-type"</span>,<span class="string">"application/json; charset=UTF-8"</span>);</span><br><span class="line">            OutputStream outputStream = response.getOutputStream();</span><br><span class="line">            Result result = Result.UserError().appendInfo(<span class="string">"权限不足"</span>);</span><br><span class="line">            outputStream.write(<span class="keyword">new</span> ObjectMapper().writeValueAsString(result).getBytes(<span class="string">"UTF-8"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">hasPermission</span><span class="params">(JoinPoint joinPoint, HttpServletRequest request)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Class targetClass = joinPoint.getTarget().getClass();</span><br><span class="line">        String methodName = joinPoint.getSignature().getName();</span><br><span class="line">        <span class="comment">// 获取执行方法的权限</span></span><br><span class="line">        String value = ParsePermission.parse(targetClass, methodName, joinPoint);</span><br><span class="line">        log.info(<span class="string">"[Required permission] &#123;&#125;"</span>, value);</span><br><span class="line">        <span class="keyword">if</span> (value.equals(<span class="string">""</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 从请求头中获取token</span></span><br><span class="line">        String token = request.getHeader(JwtTokenUtil.AUTH_HEADER_KEY);</span><br><span class="line">        <span class="keyword">if</span> (token != <span class="keyword">null</span>) &#123;</span><br><span class="line">            log.info(token);</span><br><span class="line">            Claims claims = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                claims = JwtTokenUtil.parseJWT(token);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (UserException e) &#123;</span><br><span class="line">                log.error(e.getMessage());</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 判断该用户是否具有权限</span></span><br><span class="line">            String username = claims.getSubject();</span><br><span class="line">            <span class="keyword">return</span> checkDatabase(value, username);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">checkDatabase</span><span class="params">(String value, String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> checked = <span class="keyword">false</span>;</span><br><span class="line">        <span class="comment">// 获取用户具有的角色</span></span><br><span class="line">        List&lt;RoleUser&gt; roleUserList = roleUserService.getRoleUsers(username);</span><br><span class="line">        <span class="comment">// 获取角色具有的权限</span></span><br><span class="line">        List&lt;RoleAuthority&gt; roleAuthorityList = roleAuthorityService.getRoleAuthorities(roleUserList);</span><br><span class="line">        <span class="comment">// 获取权限名称</span></span><br><span class="line">        List&lt;Authority&gt; authorityList = authorityService.getAuthorities(roleAuthorityList);</span><br><span class="line">        <span class="keyword">for</span>(Authority authority : authorityList) &#123;</span><br><span class="line">            <span class="keyword">if</span> (authority.getName().equals(value)) &#123;</span><br><span class="line">                checked = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> checked;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterReturning</span>(returning = <span class="string">"response"</span>, pointcut = <span class="string">"aspectTarget()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doAfterReturning</span><span class="params">(Object response)</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">"[Response] "</span> + response);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2019/11/11/Java/Spring%20Boot%20%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%A7%A3%E5%AF%86/">Spring Boot 接口参数自动加解密</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-11-11
-        </span><span class="post-category">
-            <a href="/categories/Java/">Java</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><ul>
-<li>Maven，pom.xml中添加依赖<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.shuibo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>rsa-encrypt-body-spring-boot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<br></li>
-<li>启动类Application中添加@EnableSecurity注解<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<br></li>
-<li>在application.yml或者application.properties中添加RSA公钥及私钥<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">rsa:</span></span><br><span class="line"><span class="attr">  encrypt:</span></span><br><span class="line"><span class="attr">    debug:</span> <span class="literal">false</span> <span class="comment"># true表示开启调试，不加密。（方便开发时测试）</span></span><br><span class="line"><span class="attr">    publicKey:</span> <span class="number">123456</span></span><br><span class="line"><span class="attr">    privateKey:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
-<br></li>
-<li>对返回值进行加密<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Encrypt</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/encryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> TestBean <span class="title">encryption</span><span class="params">()</span></span>&#123;</span><br><span class="line">    TestBean testBean = <span class="keyword">new</span> TestBean();</span><br><span class="line">    testBean.setName(<span class="string">"shuibo.cn"</span>);</span><br><span class="line">    testBean.setAge(<span class="number">18</span>);</span><br><span class="line">    <span class="keyword">return</span> testBean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<br></li>
-<li>对传过来的加密参数解密<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Decrypt</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/decryption"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Decryption</span><span class="params">(@RequestBody TestBean testBean)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> testBean.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<br>
-
-</li>
-</ul>
-<blockquote>
-<p><a href="https://www.shuibo.cn/" target="_blank" rel="noopener">参考</a></p>
-</blockquote>
 
         </div></article>
       <nav class="pagination"><a class="prev" href="/page/2/">
