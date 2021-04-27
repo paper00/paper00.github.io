@@ -123,9 +123,6 @@
 <p><strong><em>ft</em></strong> 的每一个值都在 <em>0-1</em> 之间，比如为0时，就是要忘记，为1时，就是全部通过。所以遗忘门 <strong><em>f</em></strong> 可以有选择地让传输带 <strong><em>C</em></strong> 的值通过。即<code>C * f = output</code></p>
 <h3 id="输入门"><a href="#输入门" class="headerlink" title="输入门"></a>输入门</h3><p><img src="/images/%E8%BE%93%E5%85%A5%E9%97%A8.png" alt="输入门"><br>求<code>输入门</code><strong><em>ft</em></strong> 的方法 ：和<code>遗忘门</code>类似，把上一时刻的 <strong><em>h_t-1</em></strong> 与当前输入 <strong><em>xt</em></strong> 连接，然后与输入权重矩阵 <strong><em>Wi</em></strong> 相乘，再通过 <em>sigmoid</em> 函数得到 i_t.</p>
 <h3 id="new-value"><a href="#new-value" class="headerlink" title="new value"></a>new value</h3><p>![new value](/Users/paper/Documents/paper/hexo-blog/source/images/new value.png)<br>求<code>new value</code><strong><em>_Ct</em></strong> 的方法 ：与<code>遗忘门</code>和<code>输入门</code>类似，但是使用的激励函数不一样，一般使用<code>tanh</code>函数，所以向量的每一个值都在 <em>-1~1</em> 之间。计算 <strong><em>_Ct</em></strong> 也需要一个权重矩阵 <strong><em>Wc</em></strong>.</p>
-<blockquote>
-<p>_Ct 念 ：C tuda t</p>
-</blockquote>
 <h3 id="更新传输带Ct"><a href="#更新传输带Ct" class="headerlink" title="更新传输带Ct"></a>更新传输带<em>Ct</em></h3><p><img src="/images/%E6%9B%B4%E6%96%B0%E4%BC%A0%E8%BE%93%E5%B8%A6Ct%E7%9A%84%E5%80%BC.png" alt="更新传输带Ct的值"><br>我们已经求出<code>遗忘门</code><strong><em>ft</em></strong>，<code>输入门</code><strong><em>ft</em></strong>，还有<code>new value</code><strong><em>_Ct</em></strong>，我们还知道传输带旧的值 <strong><em>C_t-1</em></strong>，现在可以更新传输带 <strong><em>Ct</em></strong> 了。</p>
 <p>更新<code>传输带 Ct</code>的方法（如上图）：</p>
 <ol>
