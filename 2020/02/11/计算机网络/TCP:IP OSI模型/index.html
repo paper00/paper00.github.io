@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="TCP/IP 之 OSI 模型"/><meta name="keywords" content="keywords" /><link rel="alternate" href="https://github.com/paper00/paper00.github.io/issues" title="Euphoria"><link rel="shortcut icon" type="image/x-icon" href="/cookie128px.ico?v=2.11.0" />
+<link rel="canonical" href="https://paper00.github.io/2020/02/11/计算机网络/TCP:IP OSI模型/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>TCP/IP 之 OSI 模型 - Euphoria</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Euphoria</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Euphoria</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">TCP/IP 之 OSI 模型
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-02-11
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OSI-模型传输数据过程"><span class="toc-text">OSI 模型传输数据过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识整理"><span class="toc-text">知识整理</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="OSI-模型传输数据过程"><a href="#OSI-模型传输数据过程" class="headerlink" title="OSI 模型传输数据过程"></a>OSI 模型传输数据过程</h2><p><img src="/images/OSI2.png" alt="OSI模型"></p>
+<ol>
+<li>应用层<ul>
+<li>OS 上的应用程序</li>
+<li>标准 HTTP 80</li>
+<li>标准 HTTPS 443</li>
+<li>标准 FTP 21</li>
+</ul>
+</li>
+<li>表示层<ul>
+<li>转化格式 (PNG JPEG AVI MP4 等)</li>
+<li>加密</li>
+</ul>
+</li>
+<li>会话层<ul>
+<li>建立 session、管理、维护</li>
+</ul>
+</li>
+<li>传输层<ul>
+<li>方式 -&gt; TCP / UDP 协议</li>
+<li>ssh 服务</li>
+</ul>
+</li>
+<li>网络层<ul>
+<li>路由器（它会二次封包）</li>
+<li>IP 协议</li>
+</ul>
+<ol>
+<li>为每一台计算机分配一个 IP 地址</li>
+<li>确定哪些地址在<code>同一个子网</code>内</li>
+</ol>
+<ul>
+<li>公网 IP</li>
+<li>私网 IP</li>
+</ul>
+<ol>
+<li>A 类地址：10.0.0.0—10.255.255.255；</li>
+<li>B 类地址：172.16.0.0—172.31.255.255；</li>
+<li>C 类地址：192.168.0.0—192.168.255.255；</li>
+</ol>
+<ul>
+<li>👇 IP 地址</li>
+<li>(110.47.189.108)</li>
+</ul>
+</li>
+<li>数据链路层<ul>
+<li>交换机 或者 HUB?</li>
+<li>👇 MAC 地址</li>
+<li>(fa:aa:14:91:3d:be) </li>
+</ul>
+</li>
+<li>物理层<ul>
+<li>(010100010010199)</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>应用层 ~ 会话层 ：数据处理</p>
+</blockquote>
+<blockquote>
+<p>传输层 ~ 物理层 ：网络通信</p>
+</blockquote>
+<h2 id="知识整理"><a href="#知识整理" class="headerlink" title="知识整理"></a>知识整理</h2><ul>
+<li>如果在同一个<code>子网</code>下，采用<code>广播</code>的方式传播</li>
+<li>否则，使用<code>路由</code>的方式</li>
+<li>MAC 地址只与厂商有关系，<code>不能</code>判断哪些 MAC 地址处于同一个<code>子网</code>，所以需要<code>网络层</code>的支持</li>
+<li>网络层出现之后，每台计算机有两个地址，一种是 <code>MAC 地址</code>，另一种是<code>网络地址</code><ol>
+<li><code>网络地址</code>能够确定该计算机所在的<code>子网络</code></li>
+<li><code>MAC 地址</code>是绑定在<code>网卡</code>上, 能够把<code>数据包</code>发送到<code>子网络</code>中的<code>目标网卡</code>上</li>
+</ol>
+</li>
+<li>所以先处理网络地址，再处理 MAC 地址，</li>
+<li>网络层的 IP 协议中 (最广泛ipv4)<br><img src="/images/ip.png" alt="IP"><ol>
+<li>8 + 8 + 8 + 8 = 32位</li>
+<li>255.255.255.0（子网掩码）</li>
+</ol>
+</li>
+<li><code>IP 协议</code>的主要作用<ol>
+<li>为每一次计算机分配一个 IP 地址</li>
+<li>确定哪些地址在<code>同一个子网</code>内</li>
+</ol>
+</li>
+<li>一般情况下，对方的 IP 是已知的，但 MAC 地址是不知道的。</li>
+<li>如果两台计算机不在同一个<code>子网络</code>：因为无法知道对方的 MAC 地址，只能把数据包传送到两个子网络连接的网关取处理</li>
+<li>如果两台计算机在同一个<code>子网络</code>：可以用 <code>ARP 协议</code></li>
+<li><code>ARP 协议</code> 是根据 <code>IP 地址</code> 获取 <code>MAC 地址</code>的一个 TCP/IP 协议<ol>
+<li>以太网的数据包中包含了目标主机的 IP 地址，但不包含 MAC 地址</li>
+<li>广播的方式传递数据包时，在子网下的所有主机都会受到数据包</li>
+<li>每个主机判断数据包中的 IP 地址取出来，和自己的 IP 地址做比较。如果相同，则把自己的 MAC 地址上报上去；如果不相同，则丢弃这个包；</li>
+</ol>
+</li>
+<li>每一个数据包都会发送到主机的特定端口，不同的程序就会去到自己所需要的数据包<br><img src="/images/%E4%BC%A0%E8%BE%93%E5%B1%82&%E7%BD%91%E7%BB%9C%E5%B1%82.png" alt="IP"></li>
+<li>UDP 协议，可靠性差，发送数据包之后不知道对方有没有收到<ol>
+<li>无连接</li>
+<li>不可靠</li>
+<li>实时性强</li>
+<li>一对一，多对一，多对多</li>
+<li>资源消耗较少</li>
+</ol>
+</li>
+<li>TCP 协议，可靠，三次握手<ol>
+<li>面向连接</li>
+<li>可靠</li>
+<li>点对点</li>
+<li>资源消耗高<br><img src="/images/%E7%BD%91%E5%85%B3.png" alt="(网关"><br><img src="/images/%E6%95%B0%E6%8D%AE%E5%8C%85%E7%9B%AE%E6%A0%87%E5%9C%B0%E5%9D%80.png" alt="(数据包目标地址"></li>
+</ol>
+</li>
+<li>TCP 数据包需要设置一个<code>端口</code></li>
+<li>IP 数据包需要跑置一个双方的<code>IP 地址</code>，发送方是本机</li>
+<li>以太网数据包需要设置双方的<code>MAC 地址</code>，发送方是本机的网卡 MAC 地址，接收方网关的 MAC 地址</li>
+</ul>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/TCP-IP/">TCP/IP</a>
+            <a href="/tags/OSI/">OSI</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2020/02/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP%20%E4%B8%8E%20UDP/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">TCP 与 UDP</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2020/01/21/Java/Spring%20Boot%20%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/">
+        <span class="next-text nav-default">Spring Boot 基于注解的面向切面编程</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:yunduanling@naver.com" target="_blank" rel="noopener" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/paper00" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="https://github.com/paper00/paper00.github.io/issues" target="_blank" rel="noopener" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">paper</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

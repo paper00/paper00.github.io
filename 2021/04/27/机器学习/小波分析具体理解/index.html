@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="小波分析具体理解"/><meta name="keywords" content="keywords" /><link rel="alternate" href="https://github.com/paper00/paper00.github.io/issues" title="Euphoria"><link rel="shortcut icon" type="image/x-icon" href="/cookie128px.ico?v=2.11.0" />
+<link rel="canonical" href="https://paper00.github.io/2021/04/27/机器学习/小波分析具体理解/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>小波分析具体理解 - Euphoria</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Euphoria</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Euphoria</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">小波分析具体理解
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-04-27
+        </span><span class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小波变换的作用"><span class="toc-text">小波变换的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小波变换"><span class="toc-text">小波变换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CWT-连续小波变换"><span class="toc-text">CWT 连续小波变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DWT-离散小波变换"><span class="toc-text">DWT 离散小波变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重要概念"><span class="toc-text">重要概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小波分解与重构"><span class="toc-text">小波分解与重构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Daubechies-dbN-小波"><span class="toc-text">Daubechies(dbN) 小波</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>小波分析继承和发展了短时<code>傅立叶变换</code>局部化的思想，同时又克服了窗口大小不随频率变化等缺点，能够提供一个随 <strong><em>频率</em></strong> 改变的“时间-频率”窗口，是进行信号时频分析和处理的理想工具。</p>
+<p><code>小波函数</code>不同于<code>傅里叶变换</code>的正弦波函数，它是个快速衰减并且有限长的波函数，同时满足 <strong><em>积分为 0</em></strong> 的条件。</p>
+<p>能对时间（空间）频率的 <strong><em>局部化分析</em></strong>，通过 <strong><em>伸缩平移</em></strong> 运算对信号（函数）逐步进行多尺度细化，最终达到高频处时间细分，低频处频率细分，能 <strong><em>自动适应</em></strong> 时频信号分析的要求，<strong>从而可聚焦到信号的任意细节</strong>，解决了Fourier变换的困难问题，成为继Fourier变换以来在科学方法上的重大突破。</p>
+<h2 id="小波变换的作用"><a href="#小波变换的作用" class="headerlink" title="小波变换的作用"></a>小波变换的作用</h2><p>通过<code>变换</code>能够充分 <strong><em>突出</em></strong> 问题某些方面（信号）的 <strong><em>特征</em></strong> 。</p>
+<h2 id="小波变换"><a href="#小波变换" class="headerlink" title="小波变换"></a>小波变换</h2><p>小波变换的定义如下：</p>
+<p><img src="/images/%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2%E5%AE%9A%E4%B9%89.png" alt="小波变换定义"><br><img src="/images/%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2%E8%BF%87%E7%A8%8B.png" alt="小波变换过程"></p>
+<p><code>f(t)</code>为被分析的信号，<code>phi(t-b/a)</code>为小波函数，<code>phi(t-b/a)</code>通过 <strong><em>平移</em></strong> 在每一个点上求它们的乘积，并且求积分。这就是小波变换的整个过程。</p>
+<h3 id="CWT-连续小波变换"><a href="#CWT-连续小波变换" class="headerlink" title="CWT 连续小波变换"></a>CWT 连续小波变换</h3><p>小波函数与原信号对应点相乘，再相加，得到对应点的小波变换系数，平移小波基函数，再计算小波函数与原信号对应点相乘，再相加，这样就得到一系列的小波系数。</p>
+<h3 id="DWT-离散小波变换"><a href="#DWT-离散小波变换" class="headerlink" title="DWT 离散小波变换"></a>DWT 离散小波变换</h3><p>实际上，<code>离散小波变换</code>是对<code>连续小波变换</code>的 <strong><em>尺度</em></strong>、<strong><em>位移</em></strong> 按照 <em>2</em> 的幂次进行离散化得到的。</p>
+<h3 id="重要概念"><a href="#重要概念" class="headerlink" title="重要概念"></a>重要概念</h3><blockquote>
+<p><code>小波系数</code>： <strong><em>小波基函数</em></strong> 与 <strong><em>原信号</em></strong> 相似的系数，是小波分解中的一些参数，通过这些参数可以重构得到原始信号。</p>
+<p><code>基本小波</code>（母小波函数）：是一具有特殊性质的实值函数，是具有快速衰减的波函数(有限长)，在数学上满足 <strong><em>积分为 0</em></strong> 的条件。</p>
+<p><code>小波函数</code>（小波基函数）：通过将母小波函数 <strong><em>伸缩、平移</em></strong> 得到的。</p>
+<p><code>尺度函数</code>：通过一个母小波函数改变 <strong><em>伸缩 、平移</em></strong> 两个参数得到的 <strong><em>所有</em></strong> 小波函数的函数，可以以这 <strong><em>一组尺度函数</em></strong> 来代表原来的信息。</p>
+<p><code>支撑长度</code>：表示 <strong><em>滤波器</em></strong> 的长度（滤波的频率范围），滤波器的长度越短，小波变换的计算量就越低。</p>
+<p><code>消失矩</code>：对 <strong><em>基本小波</em></strong> 施加所谓的 <strong><em>消失矩</em></strong> 条件，使尽量多的 <strong><em>小波系数</em></strong> 为 <em>0</em> 或者产生尽量 <em>少</em> 的非零小波系数，这样有利于数据压缩和消除噪声。<strong><em>消失矩</em></strong> 越高，高频子带的<code>小波系数</code>越小，并且接近 0 的 <strong><em>小波系数</em></strong> 越多。</p>
+<p><code>紧支撑小波</code>：若函数在 <em>[a,b]</em> 外恒为 <em>0</em>，则称该函数 <strong><em>紧支撑</em></strong> 在这个区间上，具有该性质的小波称为 <strong><em>紧支撑小波</em></strong>。</p>
+<p><img src="/images/%E6%B6%88%E5%A4%B1%E7%9F%A9%E5%AE%9A%E4%B9%89%E5%85%AC%E5%BC%8F.png" alt="消失矩定义"></p>
+<p>其中，<em>phi(t)</em> 为基本小波，<em>0 &lt;= p &lt; N*。则称小波函数具有 *N</em> 阶消失矩。从上式还可以得出，同任意 <em>n-1</em> 阶多项式正交。</p>
+<p>小波的<code>消失矩</code>特性使函数在 <strong><em>小波展开</em></strong> 时消去了其 <strong><em>高阶平滑部分</em></strong>，因此 <strong><em>小波系数</em></strong> 将仅仅反映函数的 <strong><em>高阶变化部分</em></strong>，使我们能研究函数的高阶变化和某些高阶导数中可能的奇异性信息。</p>
+<p>一般来说，这个<code>消失矩</code>的数字越大，这个<code>小波</code>越 <strong><em>光滑</em></strong>（长的小波滤波器）</p>
+</blockquote>
+<h2 id="小波分解与重构"><a href="#小波分解与重构" class="headerlink" title="小波分解与重构"></a>小波分解与重构</h2><p><img src="/images/%E4%BF%A1%E5%8F%B7%E5%88%86%E8%A7%A3.png" alt="信号分解"></p>
+<p><code>小波分解</code>的意义就在于能够在 <strong><em>不同尺度</em></strong> 上对信号进行分解，而且对不同尺度的选择可以根据不同的目标来确定。</p>
+<p>对于许多信号，<strong><em>低频</em></strong> 成分相当重要，它常常蕴含着信号的特征，而 <strong><em>高频</em></strong> 成分则给出信号的细节或差别。人的话音如果去掉 <strong><em>高频</em></strong> 成分，听起来与以前可能不同，但仍能知道所说的内容；如果去掉足够的 <strong><em>低频</em></strong> 成分，则听到的是一些没有意义的声音。</p>
+<p><code>小波重构</code>是用处理后的系数重构信号。</p>
+<h2 id="Daubechies-dbN-小波"><a href="#Daubechies-dbN-小波" class="headerlink" title="Daubechies(dbN) 小波"></a>Daubechies(dbN) 小波</h2><p><strong><em>dbn</em></strong> 中 <strong><em>n</em></strong>  表示 <code>消失矩</code></p>
+<blockquote>
+<p><code>支撑长度</code>为 <em>2n-1</em></p>
+<p><em>小波滤波器</em> 的长度 = <em>2n</em><br>s<br>其理论意义在于，如果你感兴趣的信号在一个区间上是一个 <em>N</em> 阶多项式的形式，并且使用消失矩为 <em>N</em> 的小波，这个小波系数在这个区间内将会是 <em>0</em></p>
+</blockquote>
+<p>消失矩为 <em>N</em> 的小波正交于最多 <em>N</em> 阶多项式。</p>
+<p>因此，如果一个多项式信号的阶数最高是 <em>1</em> 的话，在一个区间上一个 <em>‘db1’</em> 小波的小波系数是 <em>0</em>。</p>
+<blockquote>
+<p>持续更新。</p>
+</blockquote>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2/">小波变换</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2021/04/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%9F%BA%E4%BA%8ERNN%E7%9A%84LSTM%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">基于RNN的LSTM长短期记忆神经网络</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2021/04/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Fourier%E5%88%86%E6%9E%90%EF%BC%9AFourier%E7%BA%A7%E6%95%B0%20+%20Fourier%E5%8F%98%E6%8D%A2/">
+        <span class="next-text nav-default">Fourier分析：Fourier级数 + Fourier变换</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:yunduanling@naver.com" target="_blank" rel="noopener" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/paper00" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="https://github.com/paper00/paper00.github.io/issues" target="_blank" rel="noopener" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">paper</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

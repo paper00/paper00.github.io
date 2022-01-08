@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="description"/><meta name="keywords" content="keywords" /><link rel="alternate" href="https://github.com/paper00/paper00.github.io/issues" title="Euphoria"><link rel="shortcut icon" type="image/x-icon" href="/cookie128px.ico?v=2.11.0" />
+<link rel="canonical" href="https://paper00.github.io/page/7/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>Euphoria</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Euphoria</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Euphoria</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><section id="posts" class="posts"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/21/scrap/JWT/">JWT</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-21
+        </span><span class="post-category">
+            <a href="/categories/scrap/">scrap</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="为什么使用JWT"><a href="#为什么使用JWT" class="headerlink" title="为什么使用JWT?"></a><strong>为什么使用JWT?</strong></h3><p>通过 <code>session</code> 管理用户登录状态成本越来越高，因此慢慢发展成为 <code>token</code> 的方式做登录身份校验，然后通过 <code>token</code> 去取 <code>redis</code>中的缓存的用户信息，随着之后jwt的出现，校验方式更加简单化，<code>无需</code> 通过 <code>redis</code> 缓存，而是 <code>直接</code> 根据 <code>token</code> 取出保存的用户信息，以及对 <code>token</code> 可用性校验，单点登录更为简单。</p>
+<h3 id="公钥和私钥"><a href="#公钥和私钥" class="headerlink" title="公钥和私钥"></a><strong>公钥和私钥</strong></h3><p>是通过一种 <code>算法</code> 得到的一个 <code>密钥对</code> = <code>公钥</code> + <code>私钥</code></p>
+<ul>
+<li><code>公钥</code>：向外界公开</li>
+<li><code>私钥</code>：自己保留</li>
+<li>通过算法得到的 <code>密钥对</code> 能保证在世界范围内是唯一的。使用这个密钥对的时候，如果用 <strong>其中一个密钥</strong> <code>加密</code> 一段数据，必须用 <strong>另一个密钥</strong><code>解密</code>。<blockquote>
+<p>比如用<code>公钥</code>加密数据就必须用<code>私钥</code>解密，用<code>私钥</code>加密必须用<code>公钥</code>解密，否则解密将不会成功。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="JWT-数据格式"><a href="#JWT-数据格式" class="headerlink" title="JWT 数据格式"></a><strong>JWT 数据格式</strong></h3><ol>
+<li><code>Header</code>：对头部进行<code>Base64Url</code>编码(可解码)，头部包含两部分信息：<br>声明类型（JWT）：<code>&quot;typ&quot;: &quot;JWT&quot;,</code><br>加密算法（自定义）：<code>&quot;alg&quot;: &quot;HS256&quot;</code></li>
+<li><code>Payload</code>：对载荷(有效数据)进行<code>Base64Url</code>编码(可解码)，载荷(有效数据)的7个示例信息<br>（JSON形式）：<ol>
+<li>iss (issuer)：表示签发人 （举例如下）：<code>&quot;iss&quot;: &quot;Oline JWT Builder&quot;</code></li>
+<li>exp (expiration time)：表示token过期时间</li>
+<li>sub (subject)：主题</li>
+<li>aud (audience)：受众</li>
+<li>nbf (Not Before)：生效时间</li>
+<li>iat (Issued At)：签发时间</li>
+<li>jti (JWT ID)：编号</li>
+</ol>
+</li>
+<li><code>Signature</code>：签名，是整个数据的认证信息。一般根据前两步的数据，再加上服务的的密钥 <code>secret</code> （密钥仅仅为保存在服务器中，并且不能向用户公开，即 <code>私钥</code>），通过 <code>Header</code> 中配置的加密算法 <code>alg</code> 生成。用于验证整个数据完整和可靠性。<br>  <code>HMACSHA256( base64UrlEncode(header) + &quot;.&quot; + base64UrlEncode(payload),secret )</code></li>
+</ol>
+<h4 id="最终生成的JWT数据格式如下图："><a href="#最终生成的JWT数据格式如下图：" class="headerlink" title="最终生成的JWT数据格式如下图："></a>最终生成的<strong>JWT数据格式</strong>如下图：</h4><p><img src="/images/jwt1.png" alt="ex1: "></p>
+<p><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=563276735,1576219691&fm=173&app=25&f=JPEG?w=640&h=237&s=D8243D7287E04D011E54B1CF0000A0B3" alt="ex2:"></p>
+<p><strong>注意</strong>：这里的数据通过 . 隔开成了三部分；另外，这里数据是不换行的，图片换行只是为了展示方便而已。</p>
+<h3 id="JWT交互流程"><a href="#JWT交互流程" class="headerlink" title="JWT交互流程"></a><strong>JWT交互流程</strong></h3><p>流程图：</p>
+<p><img src="/images/jwt2.png" alt="ex: "></p>
+<p>因为JWT签发的 <code>token</code> 中已经包含了用户的身份信息，并且每次请求都会携带，这样服务的就无需保存用户信息，甚至无需去数据库查询，这样就完全符合了RESTful的无状态规范。</p>
+<h3 id="JWT-存在的问题"><a href="#JWT-存在的问题" class="headerlink" title="JWT 存在的问题"></a><strong>JWT 存在的问题</strong></h3><ol>
+<li><strong><strong>续签问题</strong></strong>，传统的cookie+session的方案天然的支持续签，但是jwt由于<code>服务端</code>不保存用户状态，因此很难完美解决续签问题，如果引入redis，虽然可以解决问题，但是jwt也变得不伦不类了。</li>
+<li><strong><strong>注销问题</strong></strong>，由于<code>服务端</code>不再保存用户信息，所以一般可以通过修改secret来实现注销，服务端secret修改后，已经颁发的未过期的token就会认证失败，进而实现注销，不过毕竟没有传统的注销方便。</li>
+<li><strong><strong>密码重置</strong></strong>，密码重置后，原本的token依然可以访问系统，这时候也需要强制修改secret。</li>
+<li>基于第2点和第3点，建议不同用户取不同secret。</li>
+</ol>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/21/scrap/Dart/">Dart</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-21
+        </span><span class="post-category">
+            <a href="/categories/scrap/">scrap</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a><strong>匿名函数</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span>(Function calback) &#123;</span><br><span class="line">    calback(<span class="string">"hello"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">test</span>((param) &#123;</span><br><span class="line">       // Print hello</span><br><span class="line">       <span class="built_in">print</span>(param);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数作为变量"><a href="#函数作为变量" class="headerlink" title="函数作为变量"></a><strong>函数作为变量</strong></h3><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var say = (str) &#123;</span><br><span class="line">    <span class="built_in">print</span>(str);</span><br><span class="line">&#125;;</span><br><span class="line">say(<span class="string">"Hello, World!"</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a><strong>异步</strong></h3><ul>
+<li><code>Future</code> 表示一个异步操作的最终完成（或失败）及其结果值的表示</li>
+</ul>
+<p>&emsp;&emsp;<code>Future.delayed</code>： 创建一个延时任务<br>&emsp;&emsp;<code>Future.then</code>：接受异步结果</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Futrue.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"Hello, World!"</span>;</span><br><span class="line">&#125;).<span class="keyword">then</span>(data) &#123;</span><br><span class="line">    <span class="built_in">print</span>(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;<code>Future.wait</code> 只有数组中 <code>所有Future</code> 都执行成功后，才会触发 <code>then</code> 的成功回调，只要有一个<br>&emsp;&emsp;<code>Future</code> 执行失败，就会触发错误回调</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Future.wait([</span><br><span class="line">    // 2秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 2), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"Hello, "</span>;</span><br><span class="line">    &#125;),</span><br><span class="line">    // 4秒后返回结果</span><br><span class="line">    Future.delayed(new Duration(seconds: 4), () &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="string">"World!"</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]).<span class="keyword">then</span>((results) &#123;</span><br><span class="line">      <span class="built_in">print</span>(results[0] + results[1]);</span><br><span class="line">  &#125;).catchError((e) &#123;</span><br><span class="line">      <span class="built_in">print</span>(e);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Dart提供了类似ES7中的 <code>async</code>, <code>await</code> 等异步操作</li>
+<li><code>async</code> 和 <code>await</code> 往往是成对出现的，如果一个方法中有耗时的操作，你需要将这个方法设置成 <code>async</code>，并给其中的耗时操作加上 <code>await</code>关键字，如果这个方法有返回值，你需要将返回值塞到 <code>Future</code> 中并返回</li>
+</ul>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'dart.async'</span>;</span><br><span class="line">import <span class="string">'package:http/http.dart'</span> as http;</span><br><span class="line"></span><br><span class="line">Future&lt;String&gt; getNetData() async &#123;</span><br><span class="line">    http.Response res = await.get(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">    <span class="built_in">return</span> res.body;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    getNetData().<span class="keyword">then</span>((str) &#123;</span><br><span class="line">        <span class="built_in">print</span>(str);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/10/20/Docker/Docker/">Docker</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-10-20
+        </span><span class="post-category">
+            <a href="/categories/Docker/">Docker</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="Docker-简介"><a href="#Docker-简介" class="headerlink" title="Docker 简介"></a><strong>Docker 简介</strong></h3><ul>
+<li>Docker 是一个开源的 <code>应用容器引擎</code>，基于 Go 语言并遵从Apache2.0协议开源。</li>
+<li>Docker可以让开发者打包他们的 <code>应用</code> 以及 <code>依赖包</code> 到一个轻量级、可移植的 <code>容器</code> 中，然后 <code>发布</code> 到任何流行的 <strong><strong>Linux</strong></strong> 机器上，也可以实现虚拟化。</li>
+<li>Linux容器的封装</li>
+</ul>
+<h3 id="Docker的应用场景"><a href="#Docker的应用场景" class="headerlink" title="Docker的应用场景"></a><strong>Docker的应用场景</strong></h3><ul>
+<li>Web应用的自动化 <code>打包</code> 和 <code>发布</code></li>
+<li>自动化测试和持续集成、发布</li>
+<li>在服务性环境中 <code>部署</code> 和调整数据库或其他的后台应用</li>
+<li>微服务的架构</li>
+</ul>
+<h3 id="Docker-容器和虚拟机的对比"><a href="#Docker-容器和虚拟机的对比" class="headerlink" title="Docker 容器和虚拟机的对比"></a><strong>Docker 容器和虚拟机的对比</strong></h3><ul>
+<li>虚拟化<br>&emsp;&emsp;虚拟机的虚拟化可能需要 <code>硬件</code> 的支持<br>&emsp;&emsp;容器基于 <code>操作系统</code> 的级别进行虚拟化</li>
+<li>Docker 容器</li>
+</ul>
+<ol>
+<li>更少占用</li>
+<li>启动更快</li>
+<li>一致的环境</li>
+<li>可以在任何地方运行</li>
+</ol>
+<ul>
+<li>可以在同一个 <code>操作系统</code> 上运行很多的 <code>容器</code>，轻量化.</li>
+</ul>
+
+        </div></article>
+      <nav class="pagination"><a class="prev" href="/page/6/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    <a class="next" href="/page/8/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></section></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:yunduanling@naver.com" target="_blank" rel="noopener" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/paper00" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="https://github.com/paper00/paper00.github.io/issues" target="_blank" rel="noopener" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">paper</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

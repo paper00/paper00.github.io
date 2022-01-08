@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="死锁的4个必要条件、避免死锁、解除死锁"/><meta name="keywords" content="keywords" /><link rel="alternate" href="https://github.com/paper00/paper00.github.io/issues" title="Euphoria"><link rel="shortcut icon" type="image/x-icon" href="/cookie128px.ico?v=2.11.0" />
+<link rel="canonical" href="https://paper00.github.io/2020/08/08/多线程/死锁的4个必要条件、避免死锁、解除死锁/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>死锁的4个必要条件、避免死锁、解除死锁 - Euphoria</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Euphoria</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Euphoria</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">死锁的4个必要条件、避免死锁、解除死锁
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-08-08
+        </span><span class="post-category">
+            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是死锁？"><span class="toc-text">什么是死锁？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#死锁产生的4个必要条件"><span class="toc-text">死锁产生的4个必要条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#避免死锁的方法（银行家算法）"><span class="toc-text">避免死锁的方法（银行家算法）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解除死锁"><span class="toc-text">解除死锁</span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="什么是死锁？"><a href="#什么是死锁？" class="headerlink" title="什么是死锁？"></a>什么是死锁？</h2><p><code>死锁</code>是指多个进程在执行过程中，由于<code>竞争资源</code>造成 <strong>阻塞</strong> 的现象，如果没有 <strong>外力</strong> 的作用，永远无法推进下去。</p>
+<h2 id="死锁产生的4个必要条件"><a href="#死锁产生的4个必要条件" class="headerlink" title="死锁产生的4个必要条件"></a>死锁产生的4个必要条件</h2><ol>
+<li><code>互斥条件</code></li>
+<li><code>请求和保持条件</code></li>
+<li><code>不剥夺条件</code></li>
+<li><code>环路等待条件</code></li>
+</ol>
+<p>这4个条件是死锁的必要条件，只要系统发生了死锁，这些条件是必然成立的。所以想要<code>预防死锁</code>，我们可以 <strong>破坏</strong> 这4个条件来防止死锁。</p>
+<ol>
+<li><code>互斥条件</code>是指，在一段时间内，如果某资源已经被一个进程占用了，其他线程是只能等待，直到占有资源的进程释放资源为止。但一般情况下，有些资源是的确不能够同时访问的，这种互斥性还是需要保留的。</li>
+<li><code>请求和保持条件</code>，当进程对其他资源的请求阻塞时，对自己已经获得的资源保持不放。如果通过一次性分配所有资源，就不会有新的请求了。</li>
+<li><code>不剥夺条件</code>，是对于进程已获取的资源，在没有使用完之前，不能被剥夺，只能使用完后自己释放。这种不剥夺条件可以改为，如果进程没法获取全部的资源，就要释放自己已占有的资源。</li>
+<li><code>环路等待条件</code>，是指进程发生死锁后，若干进程之间形成 <strong>环路</strong> 的 <strong>循环等待</strong> 关系。为了破坏环路等待条件，可以采用<code>顺序资源分配法</code>。系统给每个资源指定编号，并且规定每个进程必须按编号递增的顺序来请求资源，这样可以破坏<code>环路等待条件</code>，但这种算法必定会带来额外的开销。</li>
+</ol>
+<h3 id="避免死锁的方法（银行家算法）"><a href="#避免死锁的方法（银行家算法）" class="headerlink" title="避免死锁的方法（银行家算法）"></a>避免死锁的方法（银行家算法）</h3><p><img src="/images/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95.png" alt="银行家算法"></p>
+<p>避免死锁的方法有<code>银行家算法</code>，每个进程都要声明，在运行过程中所需要的每种资源类型的最大数目，这些数目一定不能超过系统里每种资源的最大总量，每当进程请求资源时，系统需要判断分配资源后，系统会不会处于安全状态(有至少一个安全序列，一定不会发生死锁)，如果不处于安全状态，就要等待。</p>
+<h3 id="解除死锁"><a href="#解除死锁" class="headerlink" title="解除死锁"></a>解除死锁</h3><ol>
+<li>从死锁进程剥夺资源</li>
+<li>终止部分或者全部进程</li>
+</ol>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E6%AD%BB%E9%94%81/">死锁</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B/ThreadLocal/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">ThreadLocal 原理、使用场景</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2020/03/14/Java/Java%208%20vs%20Java%2011,%20Java%2011%20%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD/">
+        <span class="next-text nav-default">Java 8 vs Java 11, Java 11 的新功能!</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:yunduanling@naver.com" target="_blank" rel="noopener" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/paper00" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="https://github.com/paper00/paper00.github.io/issues" target="_blank" rel="noopener" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">paper</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
