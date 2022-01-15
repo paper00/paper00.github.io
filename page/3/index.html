@@ -98,28 +98,6 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2021/01/02/scrap/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E9%A1%B5%E5%88%86%E6%AE%B5/">操作系统分页分段思想</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2021-01-02
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="分页存储"><a href="#分页存储" class="headerlink" title="分页存储"></a>分页存储</h2><p>分页存储管理的基本思想是： 将<code>进程</code>的 <strong>地址空间</strong> 被划分成若干固定大小的区域，称为“页”；相应地，<code>内存空间</code>分成若干个物理块，<em>页和块的大小相等</em>。<strong><em>可将进程的任一页放在内存的任一块中</em></strong>，以此实现离散分配。</p>
-<h2 id="分段存储"><a href="#分段存储" class="headerlink" title="分段存储"></a>分段存储</h2><blockquote>
-<p><code>分页方式优点</code>：因为页长固定，便于构造页表、易于管理，且不存在外碎片。</p>
-<p><code>分页方式缺点</code>：页长与程序的逻辑大小不相关。例如，某个时刻一个子程序可能有一部分在主存中，另一部分则在辅存中。这不利于编程时的独立性，并给换入换出处理、存储保护和存储共享等操作造成麻烦。</p>
-</blockquote>
-<pre><code>https://blog.csdn.net/u014558484/article/details/52155959 以下继续整理！！！！！</code></pre><p>另一种划分可寻址的存储空间的方法称为分段。段是按照程序的自然分界划分的长度可以动态改变的区域。通常，程序员把子程序、操作数和常数等不同类型的数据划分到不同的段中（写c程序时会用到），并且每个程序可以有多个相同类型的段。<br>段表本身也是一个段，可以存在辅存中，但一般是驻留在主存中。<br>将用户程序地址空间分成若干个大小不等的段，每段可以定义一组相对完整的逻辑信息。存储分配时，以段为单位，段与段在内存中可以不相邻接，也实现了离散分配。</p>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B/ThreadLocal/">ThreadLocal 原理、使用场景</a>
         </h1>
 
@@ -183,6 +161,83 @@
 <li>从死锁进程剥夺资源</li>
 <li>终止部分或者全部进程</li>
 </ol>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2020/03/14/Java/Java%208%20vs%20Java%2011,%20Java%2011%20%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD/">Java 8 vs Java 11, Java 11 的新功能!</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-03-14
+        </span><span class="post-category">
+            <a href="/categories/Java/">Java</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><ul>
+<li>在目前，比较主流的<code>稳定版</code>是<code>Java 8</code>和<code>Java 11</code>（Java 9，10 非稳定版）</li>
+<li><code>Java 11</code>相比<code>Java 8</code>进化了一部分（有些是 Java 9，10 时已引入）</li>
+</ul>
+<h2 id="Java-11-新特性有哪些？"><a href="#Java-11-新特性有哪些？" class="headerlink" title="Java 11 新特性有哪些？"></a>Java 11 新特性有哪些？</h2><h3 id="1-变量类型-var"><a href="#1-变量类型-var" class="headerlink" title="1. 变量类型 var"></a>1. 变量类型 var</h3><ul>
+<li>引入了 <code>var</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 普通变量</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">"paper"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 集合</span></span><br><span class="line"><span class="keyword">var</span> list1 = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list2 = List.of(<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"><span class="keyword">var</span> list3 = List.of(<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// List&lt;List&lt;T&gt;&gt; 嵌套</span></span><br><span class="line"><span class="keyword">var</span> list = List.of(list1, list2, list3);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>var</code> 不能使用的情况，如下：<ol>
+<li>重新赋值另一种类型    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">"paper"</span>;	<span class="comment">// String 类型</span></span><br><span class="line">name = <span class="number">666</span>;		<span class="comment">// int 类型</span></span><br></pre></td></tr></table></figure></li>
+<li>没有初始化<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age;</span><br><span class="line">age = <span class="number">22</span>;</span><br></pre></td></tr></table></figure></li>
+<li>类的<code>成员变量</code></li>
+<li>方法<code>入参</code>类型</li>
+<li><code>返回值</code>类型</li>
+</ol>
+</li>
+</ul>
+<h3 id="2-HTTP-Client-加持"><a href="#2-HTTP-Client-加持" class="headerlink" title="2. HTTP Client 加持"></a>2. HTTP Client 加持</h3><ul>
+<li>位于 java.net.http 包下</li>
+<li>支持<code>发送同步</code>、<code>异步请求</code>，还可以带上<code>自定义请求头</code>（ex：携带 JWT Token 权限信息去请求）</li>
+</ul>
+<ul>
+<li>发送同步请求<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = HttpRequest.newBuilder()</span><br><span class="line">        .uri(URI.create(<span class="string">"https://paper00.github.io/"</span>))</span><br><span class="line">        .GET()</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> response = httpClient.newHttpClient()</span><br><span class="line">        .send(request, HttpResponse.BodyHandlers.ofString());</span><br><span class="line"></span><br><span class="line">System.out.println(response);</span><br></pre></td></tr></table></figure></li>
+<li>发送异步请求<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture&lt;String&gt; future = HttpClient.newHttpClient()</span><br><span class="line">        .sendAsync(request, HttpResponse.BodyHandlers.ofString())</span><br><span class="line">        .thenApply(HttpResponse::body);</span><br><span class="line">System.out.println(<span class="string">"先做别的事情"</span>);</span><br><span class="line">System.out.println(future.get());</span><br></pre></td></tr></table></figure></li>
+<li>可以带自定义请求头<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = HttpRequest.newBuilder()</span><br><span class="line">        .uri(URI.create(<span class="string">"https://paper00.github.io/"</span>))</span><br><span class="line">        .header(<span class="string">"Authorization"</span>, <span class="string">"Bearer eysdjEqoeiwQWeiowoQoieWruqoweE"</span>)</span><br><span class="line">        .GET()</span><br><span class="line">        .build();</span><br><span class="line">    </span><br><span class="line"><span class="keyword">var</span> response = HttpClient.newHttpClient()</span><br><span class="line">        .send(request, HttpResponse.BodyHandlers.ofString());</span><br><span class="line"></span><br><span class="line">System.out.println(response.body());</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-String-处理增强"><a href="#3-String-处理增强" class="headerlink" title="3. String 处理增强"></a>3. String 处理增强</h3><ul>
+<li><code>isBlank()</code></li>
+<li><code>strip()</code> - 去空格</li>
+<li><code>repeat(7)</code></li>
+</ul>
+<h3 id="4-集合增强"><a href="#4-集合增强" class="headerlink" title="4. 集合增强"></a>4. 集合增强</h3><p><code>of()</code> - 创建集合<br><code>copyOf()</code> - 复制集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list0 = List.copyOf(list);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> set = Set.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> set0 = Set.copyOf(set);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> map = Map.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> map0 = Map.copyOf(map);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-函数上编程增强"><a href="#5-函数上编程增强" class="headerlink" title="5. 函数上编程增强"></a>5. 函数上编程增强</h3><p><code>Stream</code> 流中的</p>
+<ul>
+<li><code>takeWhile()</code></li>
+<li><code>dropWhile()</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = List.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> list0 = list.stream()</span><br><span class="line">        .dropWhile(item -&gt; item.equals(<span class="number">1</span>))   <span class="comment">// 条件</span></span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line">System.out.println(list0);	<span class="comment">// 2, 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-文件读写增强"><a href="#6-文件读写增强" class="headerlink" title="6. 文件读写增强"></a>6. 文件读写增强</h3><p>Files 类</p>
+<ul>
+<li><code>writeString()</code></li>
+<li><code>readString()</code></li>
+</ul>
+<p>InputStream 类</p>
+<ul>
+<li>transferTo()</li>
+</ul>
+<p>支持直接通过字符串<code>String</code>类读取写入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取</span></span><br><span class="line">Path path = Paths.get(<span class="string">"/Users/paper/test.txt"</span>);</span><br><span class="line">String content = Files.readString(path, StandardCharsets.UTF_8);</span><br><span class="line"><span class="comment">// 写入</span></span><br><span class="line">String str = <span class="string">"abc"</span>;</span><br><span class="line">Files.writeString(path, str, StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-支持-java-源文件直接运行！"><a href="#7-支持-java-源文件直接运行！" class="headerlink" title="7. 支持 .java 源文件直接运行！"></a>7. 支持 .java 源文件直接运行！</h3><ul>
+<li>省去以前 javac 编译源文件过程，可以直接通过<code>java 指令</code>运行 .java 源文件<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java hello.java</span><br></pre></td></tr></table></figure>
+和<code>python</code>源文件的运行有点像</li>
+</ul>
 
         </div></article>
       <nav class="pagination"><a class="prev" href="/page/2/">

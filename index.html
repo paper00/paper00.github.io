@@ -98,36 +98,6 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2022/01/08/scrap/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF/">区块链技术</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2022-01-08
-        </span><span class="post-category">
-            <a href="/categories/scrap/">scrap</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><h2 id="什么是区块链"><a href="#什么是区块链" class="headerlink" title="什么是区块链"></a>什么是区块链</h2><p><code>区块链</code>是一种比较特殊的分布式数据库。将数据放在每台计算机，且存储的信息的一致的，如果有一两台计算机坏掉了，信息也不会丢失，你还可以在其他计算机上查看到。</p>
-<p><code>区块链</code>是一种分布式的，所以它是没有中心点的，信息存储在所有加入到区块链网络的节点当中，节点的数据是同步的。节点可以是一台服务器，笔记本电脑，手机等。你要知道的是这些节点的存储的数据都是一模一样。</p>
-<h3 id="区块链特性"><a href="#区块链特性" class="headerlink" title="区块链特性"></a>区块链特性</h3><h5 id="去中心化"><a href="#去中心化" class="headerlink" title="去中心化"></a>去中心化</h5><p>因为它是分布式存储的，所以不存在中心点，也可以说各个节点都是中心点，生活中应用就是不需要第三方系统了（银行、支付宝、房产中介等都属于第三方）。</p>
-<h5 id="开放性"><a href="#开放性" class="headerlink" title="开放性"></a>开放性</h5><p>区块链的系统数据是公开透明的，每个人都可以参与进来，比如租房子，你可以知道这个房子以前的出租信息，有没出现过问题，当然这里头的一些个人私有信息是加密的。</p>
-<h5 id="自治性"><a href="#自治性" class="headerlink" title="自治性"></a>自治性</h5><p>区块链采用基于协商一致的规范和协议（比如一套公开透明的算法），然后各个节点就按照这个规范来操作，这样就是所有的东西都有机器完成，就没有人情成分。 使得对”人”的信任改成了对机器的信任，任何人为的干预不起作用。</p>
-<h5 id="信息不可篡改"><a href="#信息不可篡改" class="headerlink" title="信息不可篡改"></a>信息不可篡改</h5><p>如果信息存储到区块链中就被永久保存，是没办法去改变，至于 51% 攻击，基本不可能实现。</p>
-<h5 id="匿名性"><a href="#匿名性" class="headerlink" title="匿名性"></a>匿名性</h5><p>区块链上面没有个人的信息，因为这些都是加密的，是一堆数字字母组成的字符串，这样就不会出现你的各种身份证信息、电话号码被倒卖的现象。</p>
-<h2 id="区块链结构"><a href="#区块链结构" class="headerlink" title="区块链结构"></a>区块链结构</h2><p><strong>区块包含两个部分：</strong></p>
-<blockquote>
-<p>区块头（Head）：记录当前区块的元信息</p>
-<p>区块体（Body）：实际数据</p>
-</blockquote>
-<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="区块链结构图"></p>
-<h2 id="区块链如何工作"><a href="#区块链如何工作" class="headerlink" title="区块链如何工作"></a>区块链如何工作</h2><p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8Bpng" alt="区块链工作流程"></p>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2022/01/04/scrap/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%87%E5%88%86%E7%AD%96%E7%95%A5/">数据切分策略</a>
         </h1>
 
@@ -143,7 +113,9 @@
     <div class="post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>随着业务的快速发展，海量数据与其高效使用已成为企业关注的重点问题。当数据量达到一定限制之后，企业面临着如何缓解数据库的<strong><em>性能问题</em></strong>，初步的方案可以为优化数据库索引，但它不可能成为持久的解决方案。为了持续保证数据库性能健壮，务必从数据层面对问题寻找方案，即需以有效的策略<code>对数据进行切分</code>。</p>
 <h2 id="数据切分"><a href="#数据切分" class="headerlink" title="数据切分"></a>数据切分</h2><p><code>数据库分片</code>，即<code>Sharding</code>的基本思想是将海量数据切分到不同的数据库中，从而缓解单一数据库的性能压力。数据库分片的意义在于把数据分到不同的物理机的数据库中，增加主机的数量，这样可以减轻单一物理机的CPU、内存、网络IO方面的压力，为此实现提升性能。</p>
 <p><code>数据切分</code>分为两种：<em>垂直切分</em> 和 <em>水平切分</em>。</p>
+<hr>
 <h3 id="垂直切分"><a href="#垂直切分" class="headerlink" title="垂直切分"></a>垂直切分</h3><p><code>垂直切分</code>分为 <em>垂直分库</em> 与 <em>垂直分表</em>。<br><code>垂直分库</code>是根据业务需求，将关联度较低的数据表分散存储到不同的数据库中；<code>垂直分表</code>是当某一表字段较多时，可以通过创建新的扩展表的形式对“大表”进行拆分，将不常用的字段或者长度较长的字段拆分到另一张扩展表中，以主键进行关联。</p>
+<p><img src="/images/%E5%9E%82%E7%9B%B4%E5%88%86%E5%BA%93.png" alt="垂直分库"></p>
 <p>简单来讲就是以不同的表或者表字段为单位，把数据存储到不同的数据库中。</p>
 <h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
 <li>业务明确，降低各业务间的耦合度；</li>
@@ -153,8 +125,59 @@
 <li>无法进行join操作，只能通过接口聚合方式解决，提升了开发的复杂度；</li>
 <li>对于单表数据量行数过大的情况，效果不大。</li>
 </ol>
+<hr>
 <h3 id="水平切分"><a href="#水平切分" class="headerlink" title="水平切分"></a>水平切分</h3><p>对于单表数据量行数过大的情况，存在单表读写、存储性能瓶颈，单靠垂直切分不够，需要考虑水平切分。<code>水平切分</code>是在同一个表里，根据特定规则，将数据按行分散存储到不同的数据库中，这样每个数据库只存储部分数据，达到分布式的效果。</p>
-<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4>
+<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>对于单表数据行过大的情况，有效避免性能瓶颈；</li>
+<li>不需要额外拆分业务。</li>
+</ol>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>跨库的join操作较缓慢；</li>
+<li>后期修改表结构或者维护困难；</li>
+</ol>
+<p>水平切分时，一般通过特定规则，将一张表拆分存储在不同的数据库的数据表中。以下为较为常见的切分方法：</p>
+<h4 id="1-根据数值范围切分"><a href="#1-根据数值范围切分" class="headerlink" title="1. 根据数值范围切分"></a>1. 根据数值范围切分</h4><p><img src="/images/%E6%A0%B9%E6%8D%AE%E6%95%B0%E5%80%BC%E8%8C%83%E5%9B%B4%E5%88%87%E5%88%86.png" alt="根据数值范围切分"></p>
+<p>根据业务需求，可通过数据表的ID或者时间范围来进行切分。如图所示，将 <em>key</em> 的取值范围为[1,100000]的数据分到第一个库中，取值范围为[100001,200000]的数据分到第二个库中，取值范围为[200001,300000]的数据分到第三个库中。若以根据时间范围切分举例，可以把把1,2,3月份数据放到第一个数据库中，4,5,6月份数据放到第二个数据库中，以此类推。</p>
+<h4 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>可以有效控制单表数据量过大的情况；</li>
+<li>便于后期扩容，只需要添加节点即可；</li>
+<li>当查询连续数据时，可快速在定位分片里进行查询，不用跨分片查询；</li>
+</ol>
+<h4 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h4><p>连续分片可能存在热点数据，即有些分数据频繁被读写，而有些很少被调用。</p>
+<h4 id="2-根据数值取模切分"><a href="#2-根据数值取模切分" class="headerlink" title="2. 根据数值取模切分"></a>2. 根据数值取模切分</h4><p>一般采用hash取模的方式，对数据进行切分。例如，将对 key 模 3 取余数，余数为0的数据分到第一个数据库中，余数为1的数据分到第二个数据库中，余数为2的数据分到第三个数据库中。</p>
+<h4 id="优点-3"><a href="#优点-3" class="headerlink" title="优点"></a>优点</h4><p>数据分片相比较均匀，出现热点数据的可能性较小；</p>
+<h4 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>如果查询条件中不包括此 key，则较难确定数据具体分布在哪个数据库，所以需要向所有数据库进行查询，并在内存中合并数据，取交集返回。</li>
+</ol>
+<h2 id="分库分表带来的问题及解决方案"><a href="#分库分表带来的问题及解决方案" class="headerlink" title="分库分表带来的问题及解决方案"></a>分库分表带来的问题及解决方案</h2><h3 id="1-跨库join查询问题"><a href="#1-跨库join查询问题" class="headerlink" title="1. 跨库join查询问题"></a>1. 跨库join查询问题</h3><p>在应用中通过<code>join</code>来关联查询多个表是较为普遍的场景，而将数据切分到不同的数据库之后，<code>join</code>操作就变得不简单了，跨库的<code>join</code>则带来性能和安全方面的问题，考虑到架构规范也是不提倡的。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
+<li><p>全局表<br>维护一些表，用来存放所有模块可能共同依赖的字段，为了避免垮库join查询，所有节点都需维护这些表。在这里需要注意的是，这些字段应当为修改频率较低的字段，比如id、日期这种属性，不然维护起来难度较大，可能会带来数据不一致的新问题。</p>
+</li>
+<li><p>字段冗余<br>这是一种以空间换时间的思想。例如，设计订单表的时候，除了定义userId之外，再定义usnerName冗余一份，这样可以不同通过<code>join</code>来关联查询。</p>
+</li>
+</ol>
+<h3 id="2-ID主键重复问题"><a href="#2-ID主键重复问题" class="headerlink" title="2. ID主键重复问题"></a>2. ID主键重复问题</h3><p>主键为保证某一条数据唯一性的唯一标识。在分库的情况下，如果通过自增ID的方式创建主键的话，会导致多条数据主键重复的问题，这样显然不可行。为了保证主键的唯一性，必须设计一个满足要求的特殊形式ID。</p>
+<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4><h5 id="1-UUID"><a href="#1-UUID" class="headerlink" title="1. UUID"></a>1. UUID</h5><p>UUID = 4个连字号(-) + 32个字节长的字符串，总共36个字节长。比如：</p>
+<blockquote>
+<p>550e8400-e29b-41d4-a716-446655440000</p>
+</blockquote>
+<p><strong>优点：</strong><br>能够保证 <code>独立性</code>，程序可以在不同的 <code>数据库间迁移</code>，效果不受影响。</p>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>不易于存储 / 性能问题：UUID太长，128位、36长度字符，不利于Mysql索引（在InnoDB引擎下，<code>UUID的无序性</code> 可能会引起数据位置频繁变动，严重影响<code>性能</code>），很多场景不适用。</li>
+<li>采用<code>无意义字符串</code>，数据量增大时造成访问过慢，且<code>不宜排序</code>。</li>
+<li>信息不安全：基于MAC地址生成UUID的算法可能会造成MAC地址泄露，这个漏洞曾被用于寻找梅丽莎病毒的制作者位置。</li>
+</ol>
+<h5 id="2-雪花算法"><a href="#2-雪花算法" class="headerlink" title="2. 雪花算法"></a>2. 雪花算法</h5><p><img src="/images/snowflake-64bit.png" alt="snowflake-64bit"><br>算法描述：</p>
+<ul>
+<li>最高位是符号位，始终为0，不可用。</li>
+<li>41位的时间序列，精确到毫秒级，41位的长度可以使用69年。时间位还有一个很重要的作用是可以根据<code>时间</code>进行<code>排序</code>。</li>
+<li>10位的<code>机器</code> 标识，10位的长度最多支持<code>部署</code>1024个节点。</li>
+<li>12位的计数序列号，序列号即一系列的<code>自增id</code>，可以支持<code>同一节点</code>同一毫秒<code>生成多个ID</code>序号，<code>12位</code>的计数序列号支持每个节点每毫秒产生<code>4096个</code>ID序号。</li>
+</ul>
+<p>此外，还存在事务一致性、跨节点分页、排序、函数等问题。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>那我们该什么情况下需要考虑数据的切分？其实，能不切法尽量避免切分。数据切分所带来的问题较难控制，有些解决方案也不够成熟。只有在数据量过大，正常运维影响业务访问，或者随着业务发展，需要对某些字段垂直切分的情况下，可以考虑数据切分。此外，数据切分可以在一定程度下提升数据的安全性和可用性，当某个节点出现问题的时候，不会影响到所有的业务处理，因为数据是分布存储到多个节点的，存储在其他数据库的数据将不会受到影响。</p>
+
         </div></article>
       <article class="post">
     <header class="post-header">
@@ -209,6 +232,58 @@
 <li><code>ht = Ot * tanh(Ct)</code></li>
 </ol>
 <p>这样，可以认为所有输入的 <em>x</em> 信息都积累在状态向量 <strong><em>ht</em></strong> 里面。</p>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2021/04/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%B0%8F%E6%B3%A2%E5%88%86%E6%9E%90%E5%85%B7%E4%BD%93%E7%90%86%E8%A7%A3/">小波分析具体理解</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-04-27
+        </span><span class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>小波分析继承和发展了短时<code>傅立叶变换</code>局部化的思想，同时又克服了窗口大小不随频率变化等缺点，能够提供一个随 <strong><em>频率</em></strong> 改变的“时间-频率”窗口，是进行信号时频分析和处理的理想工具。</p>
+<p><code>小波函数</code>不同于<code>傅里叶变换</code>的正弦波函数，它是个快速衰减并且有限长的波函数，同时满足 <strong><em>积分为 0</em></strong> 的条件。</p>
+<p>能对时间（空间）频率的 <strong><em>局部化分析</em></strong>，通过 <strong><em>伸缩平移</em></strong> 运算对信号（函数）逐步进行多尺度细化，最终达到高频处时间细分，低频处频率细分，能 <strong><em>自动适应</em></strong> 时频信号分析的要求，<strong>从而可聚焦到信号的任意细节</strong>，解决了Fourier变换的困难问题，成为继Fourier变换以来在科学方法上的重大突破。</p>
+<h2 id="小波变换的作用"><a href="#小波变换的作用" class="headerlink" title="小波变换的作用"></a>小波变换的作用</h2><p>通过<code>变换</code>能够充分 <strong><em>突出</em></strong> 问题某些方面（信号）的 <strong><em>特征</em></strong> 。</p>
+<h2 id="小波变换"><a href="#小波变换" class="headerlink" title="小波变换"></a>小波变换</h2><p>小波变换的定义如下：</p>
+<p><img src="/images/%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2%E5%AE%9A%E4%B9%89.png" alt="小波变换定义"><br><img src="/images/%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2%E8%BF%87%E7%A8%8B.png" alt="小波变换过程"></p>
+<p><code>f(t)</code>为被分析的信号，<code>phi(t-b/a)</code>为小波函数，<code>phi(t-b/a)</code>通过 <strong><em>平移</em></strong> 在每一个点上求它们的乘积，并且求积分。这就是小波变换的整个过程。</p>
+<h3 id="CWT-连续小波变换"><a href="#CWT-连续小波变换" class="headerlink" title="CWT 连续小波变换"></a>CWT 连续小波变换</h3><p>小波函数与原信号对应点相乘，再相加，得到对应点的小波变换系数，平移小波基函数，再计算小波函数与原信号对应点相乘，再相加，这样就得到一系列的小波系数。</p>
+<h3 id="DWT-离散小波变换"><a href="#DWT-离散小波变换" class="headerlink" title="DWT 离散小波变换"></a>DWT 离散小波变换</h3><p>实际上，<code>离散小波变换</code>是对<code>连续小波变换</code>的 <strong><em>尺度</em></strong>、<strong><em>位移</em></strong> 按照 <em>2</em> 的幂次进行离散化得到的。</p>
+<h3 id="重要概念"><a href="#重要概念" class="headerlink" title="重要概念"></a>重要概念</h3><blockquote>
+<p><code>小波系数</code>： <strong><em>小波基函数</em></strong> 与 <strong><em>原信号</em></strong> 相似的系数，是小波分解中的一些参数，通过这些参数可以重构得到原始信号。</p>
+<p><code>基本小波</code>（母小波函数）：是一具有特殊性质的实值函数，是具有快速衰减的波函数(有限长)，在数学上满足 <strong><em>积分为 0</em></strong> 的条件。</p>
+<p><code>小波函数</code>（小波基函数）：通过将母小波函数 <strong><em>伸缩、平移</em></strong> 得到的。</p>
+<p><code>尺度函数</code>：通过一个母小波函数改变 <strong><em>伸缩 、平移</em></strong> 两个参数得到的 <strong><em>所有</em></strong> 小波函数的函数，可以以这 <strong><em>一组尺度函数</em></strong> 来代表原来的信息。</p>
+<p><code>支撑长度</code>：表示 <strong><em>滤波器</em></strong> 的长度（滤波的频率范围），滤波器的长度越短，小波变换的计算量就越低。</p>
+<p><code>消失矩</code>：对 <strong><em>基本小波</em></strong> 施加所谓的 <strong><em>消失矩</em></strong> 条件，使尽量多的 <strong><em>小波系数</em></strong> 为 <em>0</em> 或者产生尽量 <em>少</em> 的非零小波系数，这样有利于数据压缩和消除噪声。<strong><em>消失矩</em></strong> 越高，高频子带的<code>小波系数</code>越小，并且接近 0 的 <strong><em>小波系数</em></strong> 越多。</p>
+<p><code>紧支撑小波</code>：若函数在 <em>[a,b]</em> 外恒为 <em>0</em>，则称该函数 <strong><em>紧支撑</em></strong> 在这个区间上，具有该性质的小波称为 <strong><em>紧支撑小波</em></strong>。</p>
+<p><img src="/images/%E6%B6%88%E5%A4%B1%E7%9F%A9%E5%AE%9A%E4%B9%89%E5%85%AC%E5%BC%8F.png" alt="消失矩定义"></p>
+<p>其中，<em>phi(t)</em> 为基本小波，<em>0 &lt;= p &lt; N*。则称小波函数具有 *N</em> 阶消失矩。从上式还可以得出，同任意 <em>n-1</em> 阶多项式正交。</p>
+<p>小波的<code>消失矩</code>特性使函数在 <strong><em>小波展开</em></strong> 时消去了其 <strong><em>高阶平滑部分</em></strong>，因此 <strong><em>小波系数</em></strong> 将仅仅反映函数的 <strong><em>高阶变化部分</em></strong>，使我们能研究函数的高阶变化和某些高阶导数中可能的奇异性信息。</p>
+<p>一般来说，这个<code>消失矩</code>的数字越大，这个<code>小波</code>越 <strong><em>光滑</em></strong>（长的小波滤波器）</p>
+</blockquote>
+<h2 id="小波分解与重构"><a href="#小波分解与重构" class="headerlink" title="小波分解与重构"></a>小波分解与重构</h2><p><img src="/images/%E4%BF%A1%E5%8F%B7%E5%88%86%E8%A7%A3.png" alt="信号分解"></p>
+<p><code>小波分解</code>的意义就在于能够在 <strong><em>不同尺度</em></strong> 上对信号进行分解，而且对不同尺度的选择可以根据不同的目标来确定。</p>
+<p>对于许多信号，<strong><em>低频</em></strong> 成分相当重要，它常常蕴含着信号的特征，而 <strong><em>高频</em></strong> 成分则给出信号的细节或差别。人的话音如果去掉 <strong><em>高频</em></strong> 成分，听起来与以前可能不同，但仍能知道所说的内容；如果去掉足够的 <strong><em>低频</em></strong> 成分，则听到的是一些没有意义的声音。</p>
+<p><code>小波重构</code>是用处理后的系数重构信号。</p>
+<h2 id="Daubechies-dbN-小波"><a href="#Daubechies-dbN-小波" class="headerlink" title="Daubechies(dbN) 小波"></a>Daubechies(dbN) 小波</h2><p><strong><em>dbn</em></strong> 中 <strong><em>n</em></strong>  表示 <code>消失矩</code></p>
+<blockquote>
+<p><code>支撑长度</code>为 <em>2n-1</em></p>
+<p><em>小波滤波器</em> 的长度 = <em>2n</em><br>s<br>其理论意义在于，如果你感兴趣的信号在一个区间上是一个 <em>N</em> 阶多项式的形式，并且使用消失矩为 <em>N</em> 的小波，这个小波系数在这个区间内将会是 <em>0</em></p>
+</blockquote>
+<p>消失矩为 <em>N</em> 的小波正交于最多 <em>N</em> 阶多项式。</p>
+<p>因此，如果一个多项式信号的阶数最高是 <em>1</em> 的话，在一个区间上一个 <em>‘db1’</em> 小波的小波系数是 <em>0</em>。</p>
+<blockquote>
+<p>持续更新。</p>
+</blockquote>
 
         </div></article>
       <nav class="pagination"><a class="next" href="/page/2/">

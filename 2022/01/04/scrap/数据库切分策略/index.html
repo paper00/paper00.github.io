@@ -113,12 +113,14 @@
     <div class="post-toc" id="post-toc">
     <h2 class="post-toc-title">Contents</h2>
     <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据切分"><span class="toc-text">数据切分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#垂直切分"><span class="toc-text">垂直切分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#水平切分"><span class="toc-text">水平切分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-1"><span class="toc-text">优点</span></a></li></ol></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据切分"><span class="toc-text">数据切分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#垂直切分"><span class="toc-text">垂直切分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#水平切分"><span class="toc-text">水平切分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-1"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点-1"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-根据数值范围切分"><span class="toc-text">1. 根据数值范围切分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-2"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点-2"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-根据数值取模切分"><span class="toc-text">2. 根据数值取模切分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-3"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点-3"><span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分库分表带来的问题及解决方案"><span class="toc-text">分库分表带来的问题及解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-跨库join查询问题"><span class="toc-text">1. 跨库join查询问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-ID主键重复问题"><span class="toc-text">2. ID主键重复问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案-1"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-UUID"><span class="toc-text">1. UUID</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-雪花算法"><span class="toc-text">2. 雪花算法</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
     </div>
   </div><div class="post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>随着业务的快速发展，海量数据与其高效使用已成为企业关注的重点问题。当数据量达到一定限制之后，企业面临着如何缓解数据库的<strong><em>性能问题</em></strong>，初步的方案可以为优化数据库索引，但它不可能成为持久的解决方案。为了持续保证数据库性能健壮，务必从数据层面对问题寻找方案，即需以有效的策略<code>对数据进行切分</code>。</p>
 <h2 id="数据切分"><a href="#数据切分" class="headerlink" title="数据切分"></a>数据切分</h2><p><code>数据库分片</code>，即<code>Sharding</code>的基本思想是将海量数据切分到不同的数据库中，从而缓解单一数据库的性能压力。数据库分片的意义在于把数据分到不同的物理机的数据库中，增加主机的数量，这样可以减轻单一物理机的CPU、内存、网络IO方面的压力，为此实现提升性能。</p>
 <p><code>数据切分</code>分为两种：<em>垂直切分</em> 和 <em>水平切分</em>。</p>
+<hr>
 <h3 id="垂直切分"><a href="#垂直切分" class="headerlink" title="垂直切分"></a>垂直切分</h3><p><code>垂直切分</code>分为 <em>垂直分库</em> 与 <em>垂直分表</em>。<br><code>垂直分库</code>是根据业务需求，将关联度较低的数据表分散存储到不同的数据库中；<code>垂直分表</code>是当某一表字段较多时，可以通过创建新的扩展表的形式对“大表”进行拆分，将不常用的字段或者长度较长的字段拆分到另一张扩展表中，以主键进行关联。</p>
+<p><img src="/images/%E5%9E%82%E7%9B%B4%E5%88%86%E5%BA%93.png" alt="垂直分库"></p>
 <p>简单来讲就是以不同的表或者表字段为单位，把数据存储到不同的数据库中。</p>
 <h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
 <li>业务明确，降低各业务间的耦合度；</li>
@@ -128,8 +130,59 @@
 <li>无法进行join操作，只能通过接口聚合方式解决，提升了开发的复杂度；</li>
 <li>对于单表数据量行数过大的情况，效果不大。</li>
 </ol>
+<hr>
 <h3 id="水平切分"><a href="#水平切分" class="headerlink" title="水平切分"></a>水平切分</h3><p>对于单表数据量行数过大的情况，存在单表读写、存储性能瓶颈，单靠垂直切分不够，需要考虑水平切分。<code>水平切分</code>是在同一个表里，根据特定规则，将数据按行分散存储到不同的数据库中，这样每个数据库只存储部分数据，达到分布式的效果。</p>
-<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4>
+<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>对于单表数据行过大的情况，有效避免性能瓶颈；</li>
+<li>不需要额外拆分业务。</li>
+</ol>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>跨库的join操作较缓慢；</li>
+<li>后期修改表结构或者维护困难；</li>
+</ol>
+<p>水平切分时，一般通过特定规则，将一张表拆分存储在不同的数据库的数据表中。以下为较为常见的切分方法：</p>
+<h4 id="1-根据数值范围切分"><a href="#1-根据数值范围切分" class="headerlink" title="1. 根据数值范围切分"></a>1. 根据数值范围切分</h4><p><img src="/images/%E6%A0%B9%E6%8D%AE%E6%95%B0%E5%80%BC%E8%8C%83%E5%9B%B4%E5%88%87%E5%88%86.png" alt="根据数值范围切分"></p>
+<p>根据业务需求，可通过数据表的ID或者时间范围来进行切分。如图所示，将 <em>key</em> 的取值范围为[1,100000]的数据分到第一个库中，取值范围为[100001,200000]的数据分到第二个库中，取值范围为[200001,300000]的数据分到第三个库中。若以根据时间范围切分举例，可以把把1,2,3月份数据放到第一个数据库中，4,5,6月份数据放到第二个数据库中，以此类推。</p>
+<h4 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>可以有效控制单表数据量过大的情况；</li>
+<li>便于后期扩容，只需要添加节点即可；</li>
+<li>当查询连续数据时，可快速在定位分片里进行查询，不用跨分片查询；</li>
+</ol>
+<h4 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h4><p>连续分片可能存在热点数据，即有些分数据频繁被读写，而有些很少被调用。</p>
+<h4 id="2-根据数值取模切分"><a href="#2-根据数值取模切分" class="headerlink" title="2. 根据数值取模切分"></a>2. 根据数值取模切分</h4><p>一般采用hash取模的方式，对数据进行切分。例如，将对 key 模 3 取余数，余数为0的数据分到第一个数据库中，余数为1的数据分到第二个数据库中，余数为2的数据分到第三个数据库中。</p>
+<h4 id="优点-3"><a href="#优点-3" class="headerlink" title="优点"></a>优点</h4><p>数据分片相比较均匀，出现热点数据的可能性较小；</p>
+<h4 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>如果查询条件中不包括此 key，则较难确定数据具体分布在哪个数据库，所以需要向所有数据库进行查询，并在内存中合并数据，取交集返回。</li>
+</ol>
+<h2 id="分库分表带来的问题及解决方案"><a href="#分库分表带来的问题及解决方案" class="headerlink" title="分库分表带来的问题及解决方案"></a>分库分表带来的问题及解决方案</h2><h3 id="1-跨库join查询问题"><a href="#1-跨库join查询问题" class="headerlink" title="1. 跨库join查询问题"></a>1. 跨库join查询问题</h3><p>在应用中通过<code>join</code>来关联查询多个表是较为普遍的场景，而将数据切分到不同的数据库之后，<code>join</code>操作就变得不简单了，跨库的<code>join</code>则带来性能和安全方面的问题，考虑到架构规范也是不提倡的。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
+<li><p>全局表<br>维护一些表，用来存放所有模块可能共同依赖的字段，为了避免垮库join查询，所有节点都需维护这些表。在这里需要注意的是，这些字段应当为修改频率较低的字段，比如id、日期这种属性，不然维护起来难度较大，可能会带来数据不一致的新问题。</p>
+</li>
+<li><p>字段冗余<br>这是一种以空间换时间的思想。例如，设计订单表的时候，除了定义userId之外，再定义usnerName冗余一份，这样可以不同通过<code>join</code>来关联查询。</p>
+</li>
+</ol>
+<h3 id="2-ID主键重复问题"><a href="#2-ID主键重复问题" class="headerlink" title="2. ID主键重复问题"></a>2. ID主键重复问题</h3><p>主键为保证某一条数据唯一性的唯一标识。在分库的情况下，如果通过自增ID的方式创建主键的话，会导致多条数据主键重复的问题，这样显然不可行。为了保证主键的唯一性，必须设计一个满足要求的特殊形式ID。</p>
+<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4><h5 id="1-UUID"><a href="#1-UUID" class="headerlink" title="1. UUID"></a>1. UUID</h5><p>UUID = 4个连字号(-) + 32个字节长的字符串，总共36个字节长。比如：</p>
+<blockquote>
+<p>550e8400-e29b-41d4-a716-446655440000</p>
+</blockquote>
+<p><strong>优点：</strong><br>能够保证 <code>独立性</code>，程序可以在不同的 <code>数据库间迁移</code>，效果不受影响。</p>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>不易于存储 / 性能问题：UUID太长，128位、36长度字符，不利于Mysql索引（在InnoDB引擎下，<code>UUID的无序性</code> 可能会引起数据位置频繁变动，严重影响<code>性能</code>），很多场景不适用。</li>
+<li>采用<code>无意义字符串</code>，数据量增大时造成访问过慢，且<code>不宜排序</code>。</li>
+<li>信息不安全：基于MAC地址生成UUID的算法可能会造成MAC地址泄露，这个漏洞曾被用于寻找梅丽莎病毒的制作者位置。</li>
+</ol>
+<h5 id="2-雪花算法"><a href="#2-雪花算法" class="headerlink" title="2. 雪花算法"></a>2. 雪花算法</h5><p><img src="/images/snowflake-64bit.png" alt="snowflake-64bit"><br>算法描述：</p>
+<ul>
+<li>最高位是符号位，始终为0，不可用。</li>
+<li>41位的时间序列，精确到毫秒级，41位的长度可以使用69年。时间位还有一个很重要的作用是可以根据<code>时间</code>进行<code>排序</code>。</li>
+<li>10位的<code>机器</code> 标识，10位的长度最多支持<code>部署</code>1024个节点。</li>
+<li>12位的计数序列号，序列号即一系列的<code>自增id</code>，可以支持<code>同一节点</code>同一毫秒<code>生成多个ID</code>序号，<code>12位</code>的计数序列号支持每个节点每毫秒产生<code>4096个</code>ID序号。</li>
+</ul>
+<p>此外，还存在事务一致性、跨节点分页、排序、函数等问题。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>那我们该什么情况下需要考虑数据的切分？其实，能不切法尽量避免切分。数据切分所带来的问题较难控制，有些解决方案也不够成熟。只有在数据量过大，正常运维影响业务访问，或者随着业务发展，需要对某些字段垂直切分的情况下，可以考虑数据切分。此外，数据切分可以在一定程度下提升数据的安全性和可用性，当某个节点出现问题的时候，不会影响到所有的业务处理，因为数据是分布存储到多个节点的，存储在其他数据库的数据将不会受到影响。</p>
+
       </div>
       
       <footer class="post-footer">
@@ -137,12 +190,7 @@
             <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%87%E5%88%86/">数据库、数据库切分</a>
             </div>
         
-        <nav class="post-nav"><a class="prev" href="/2022/01/08/scrap/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">区块链技术</span>
-        <span class="prev-text nav-mobile">Prev</span>
-      </a>
-    <a class="next" href="/2021/04/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%9F%BA%E4%BA%8ERNN%E7%9A%84LSTM%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+        <nav class="post-nav"><a class="next" href="/2021/04/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%9F%BA%E4%BA%8ERNN%E7%9A%84LSTM%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
         <span class="next-text nav-default">基于RNN的LSTM长短期记忆神经网络</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
